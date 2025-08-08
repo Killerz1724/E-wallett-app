@@ -10,7 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mdi/js": "^7.4.47",
+    "@mdi/react": "^1.6.1",
+    "@riverfl0w/clsxm": "^0.1.2",
     "@tailwindcss/vite": "^4.1.11",
+    "clsx": "^2.1.1",
+    "mdi-react": "^9.4.0",
     "pnpm": "^10.14.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
