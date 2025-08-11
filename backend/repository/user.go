@@ -3,11 +3,12 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"ewallet/entity"
 )
 
 type UserRepoItf interface {
-	UserLoginRepo(c context.Context, req entity.LoginBody) error 
+	UserLoginRepo(c context.Context, req entity.LoginBody) (string, error) 
 }
 
 type UserRepoImpl struct {
@@ -20,8 +21,21 @@ func NewUserRepo(dbConn *sql.DB) UserRepoImpl {
 	}
 }
 
-func (ur UserRepoImpl) UserLoginRepo(c context.Context, req entity.LoginBody) error {
+func (ur UserRepoImpl) UserLoginRepo(c context.Context, req entity.LoginBody) (string, error) {
 
+	row := ur.db.QueryRowContext(c, `
+	SELECT password 
+	FROM users
+	WHERE email = $1;
+	`, req.Email)
 
-	return nil
+	
+	var password string
+	err := row.Scan(&password)
+
+	if err != nil {
+		
+		return "", errors.New("invalid email or password")
+	}
+	return password, nil
 }

@@ -2,6 +2,7 @@ package handler
 
 import (
 	"ewallet/dto"
+	"ewallet/entity"
 	"ewallet/usecase"
 	"net/http"
 
@@ -20,10 +21,33 @@ func NewUserHandler(uuc usecase.UserUsecaseItf) UserHandlerImpl {
 }
 
 func (uh UserHandlerImpl) UserLoginHandler(c *gin.Context) {
+	var reqBody dto.LoginBody
+	err := c.ShouldBindBodyWithJSON(&reqBody)
 
+	if err != nil {
+		c.Error(err)
+		c.JSON(http.StatusInternalServerError, dto.Response{
+			Success: false,
+			Error:   err.Error(),
+		})
+		return
+	}
+
+	req := entity.LoginBody(reqBody)
+
+	err = uh.uuc.UserLoginUsecase(c, req)
+
+	if err != nil {
+		c.Error(err)
+		c.JSON(http.StatusInternalServerError, dto.Response{
+			Success: false,
+			Error:   err.Error(),
+		})
+		return
+	}
 
 	c.JSON(http.StatusOK, dto.Response{
 		Success: true,
-		Error:   nil,
+		Error:   "",
 	})
 }
