@@ -6,12 +6,12 @@ var (
 	LoginError          = errors.New("invalid credentials")
 	RegisterError       = errors.New("already exists")
 	QueryError          = errors.New("failed to query data")
-	AccountAlreadyExist = errors.New("book already exist")
+	AccountAlreadyExist = errors.New("account already exist")
 	ScanError           = errors.New("failed to scan data from database")
 	DecodeError         = errors.New("failed to decode data")
 	NotFound            = errors.New("no product found")
 	TimeOutError        = errors.New("request timeout")
-	ValidationError     = errors.New("validation failed")
+	ValidationError     = errors.New("one of the input is invalid please check again")
 	CommonError         = errors.New("error internal")
 	DuplicateError      = errors.New("data already exist")
 	DuplicateErrorCode  = "23505"
@@ -29,6 +29,10 @@ var (
 type LoginErrorType struct{ Msg string }
 
 func (d LoginErrorType) Error() string { return d.Msg }
+
+type RegisterErrorType struct{ Msg string }
+
+func (d RegisterErrorType) Error() string { return d.Msg }
 
 type DataNotFound struct{ Msg string }
 

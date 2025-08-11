@@ -20,6 +20,39 @@ func NewUserHandler(uuc usecase.UserUsecaseItf) UserHandlerImpl {
 	}
 }
 
+
+
+func (uh UserHandlerImpl) UserHandlerRegister(c *gin.Context) {
+	var reqBody dto.RegisterBody
+	err := c.ShouldBindBodyWithJSON(&reqBody)
+
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	req := entity.RegisterBody{
+		Username: reqBody.Username,
+		Email:    reqBody.Email,
+		Password: reqBody.Password,
+	}
+
+	err = uh.uuc.UsecaseRegister(c, req)
+
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	res := dto.Response{
+		Success: true,
+		Error:   "",
+	}
+
+	c.JSON(http.StatusCreated, res)
+
+}
+
 func (uh UserHandlerImpl) UserLoginHandler(c *gin.Context) {
 	var reqBody dto.LoginBody
 	err := c.ShouldBindBodyWithJSON(&reqBody)

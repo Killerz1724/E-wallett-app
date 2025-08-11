@@ -51,33 +51,36 @@ func ErrorMiddleware() gin.HandlerFunc {
 		if errors.As(err, &cerr) {
 
 			c.Error(cerr.Log).SetType(gin.ErrorTypePrivate)
-	
-			if errors.As(cerr.Msg, &constant.LoginErrorType{}){
-				c.JSON(http.StatusBadRequest, dto.Response{
-					Success: false,
-					Error:   cerr.Msg.Error(),
-					Data:    nil,
-				})
-				return
-			}
-
-			if errors.As(cerr.Msg, &constant.QueryErrorType{}) {
-				c.JSON(http.StatusBadRequest, dto.Response{
-					Success: false,
-					Error:   cerr.Msg.Error(),
-					Data:    nil,
-				})
-				return
-			}
-
-			if errors.As(cerr.Msg, &constant.ExpiredToken{}) {
-				c.JSON(http.StatusBadRequest, dto.Response{
-					Success: false,
-					Error:   cerr.Msg.Error(),
-					Data:    nil,
-				})
-				return 
-			}
+			switch {
+				case errors.As(cerr.Msg, &constant.LoginErrorType{}) :
+					c.JSON(http.StatusBadRequest, dto.Response{
+						Success: false,
+						Error:   cerr.Msg.Error(),
+						Data:    nil,
+					})
+					return
+				case errors.As(cerr.Msg, &constant.RegisterErrorType{}):
+					c.JSON(http.StatusBadRequest, dto.Response{
+						Success: false,
+						Error:   cerr.Msg.Error(),
+						Data:    nil,
+					})
+					return
+				case errors.As(cerr.Msg, &constant.QueryErrorType{}):
+					c.JSON(http.StatusBadRequest, dto.Response{
+						Success: false,
+						Error:   cerr.Msg.Error(),
+						Data:    nil,
+					})
+					return
+				case	errors.As(cerr.Msg, &constant.ExpiredToken{}) :
+					c.JSON(http.StatusBadRequest, dto.Response{
+						Success: false,
+						Error:   cerr.Msg.Error(),
+						Data:    nil,
+					})
+					return 
+				}
 		}
 
 		c.AbortWithStatusJSON(http.StatusInternalServerError, dto.Response{

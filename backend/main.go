@@ -34,6 +34,7 @@ func main() {
 	{
 		auth := r.Group("/auth")
 		auth.POST("/login", uh.UserLoginHandler)
+		auth.POST("/register", uh.UserHandlerRegister)
 	}
 
 
