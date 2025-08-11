@@ -1,0 +1,9 @@
+drop sequence if exists wallet_number_seq cascade; 
+drop table if exists users cascade;  
+drop table if exists wallets cascade;
+drop table if exists password_tokens cascade;
+drop table if exists transaction_categories cascade; 
+drop table if exists source_funds cascade;
+drop table if exists prizes cascade;
+drop table if exists gacha_histories cascade;
+drop table if exists transaction_histories cascade;
