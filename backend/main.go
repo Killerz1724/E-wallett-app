@@ -3,6 +3,7 @@ package main
 import (
 	"ewallet/database"
 	"ewallet/handler"
+	"ewallet/middleware"
 	"ewallet/repository"
 	"ewallet/usecase"
 	"log"
@@ -21,7 +22,10 @@ func main() {
 		return
 	}
 
-	r := gin.Default()
+	r := gin.New()
+	r.ContextWithFallback = true
+	r.Use(middleware.Logger())
+	r.Use(middleware.ErrorMiddleware())
 
 	ur := repository.NewUserRepo(db)
 	uuc := usecase.NewUserUsecase(ur)

@@ -2,7 +2,7 @@ package usecase
 
 import (
 	"context"
-	"errors"
+	"ewallet/constant"
 	"ewallet/entity"
 	"ewallet/repository"
 	"strings"
@@ -38,7 +38,10 @@ func (uuc UserUsecaseImpl) UserLoginUsecase(c context.Context, req entity.LoginB
 
 	if err != nil {
 		
-		return errors.New("invalid email or password")
+		return &entity.CustomError{
+			Msg: constant.LoginErrorType{Msg: constant.LoginError.Error()},
+			Log: err,
+		}
 	}
 
 	return nil

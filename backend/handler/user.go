@@ -25,11 +25,7 @@ func (uh UserHandlerImpl) UserLoginHandler(c *gin.Context) {
 	err := c.ShouldBindBodyWithJSON(&reqBody)
 
 	if err != nil {
-		c.Error(err)
-		c.JSON(http.StatusInternalServerError, dto.Response{
-			Success: false,
-			Error:   err.Error(),
-		})
+		c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -38,11 +34,7 @@ func (uh UserHandlerImpl) UserLoginHandler(c *gin.Context) {
 	err = uh.uuc.UserLoginUsecase(c, req)
 
 	if err != nil {
-		c.Error(err)
-		c.JSON(http.StatusInternalServerError, dto.Response{
-			Success: false,
-			Error:   err.Error(),
-		})
+		c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 

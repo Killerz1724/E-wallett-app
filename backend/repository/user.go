@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
-	"errors"
+	"ewallet/constant"
 	"ewallet/entity"
 )
 
@@ -35,7 +35,10 @@ func (ur UserRepoImpl) UserLoginRepo(c context.Context, req entity.LoginBody) (s
 
 	if err != nil {
 		
-		return "", errors.New("invalid email or password")
+		return "", &entity.CustomError{
+			Msg: constant.LoginErrorType{Msg: constant.LoginError.Error()},
+			Log: err,
+		}
 	}
 	return password, nil
 }
