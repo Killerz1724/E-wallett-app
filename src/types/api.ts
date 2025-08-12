@@ -3,3 +3,7 @@ export type UninterceptedApiError = {
     message: string;
   };
 };
+
+export type ApiError = {
+  message: string;
+};
