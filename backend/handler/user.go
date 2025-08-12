@@ -64,15 +64,18 @@ func (uh UserHandlerImpl) UserLoginHandler(c *gin.Context) {
 
 	req := entity.LoginBody(reqBody)
 
-	err = uh.uuc.UserLoginUsecase(c, req)
+	res, err := uh.uuc.UserLoginUsecase(c, req)
 
 	if err != nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
 		return
 	}
 
+	resBody := dto.LoginResponse(*res)
+
 	c.JSON(http.StatusOK, dto.Response{
 		Success: true,
 		Error:   "",
+		Data:    resBody,
 	})
 }

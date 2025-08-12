@@ -7,15 +7,9 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/joho/godotenv"
 )
 
 func GeneratingJWTToken(sub string) (string, error) {
-	err := godotenv.Load()
-
-	if err != nil {
-		return "", err
-	}
 
 	// create the claims
 	now := time.Now()
@@ -28,18 +22,18 @@ func GeneratingJWTToken(sub string) (string, error) {
 		ExpiresAt: &jwt.NumericDate{
 			Time: now.Add(24 * time.Hour),
 		},
-		Audience: jwt.ClaimStrings{"https://google.com", "https://yahoo.com"},
+		// Audience: jwt.ClaimStrings{"https://google.com", "https://yahoo.com"},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, registeredClaims)
 
 	// sign the token
 	tokenString, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
 	if err != nil {
-		return "", err
+		return "", &entity.CustomError{
+			Msg: constant.CommonError,
+			Log: err,
+		}
 	}
-	// log.Println("tokenString registered claims:", tokenString)
-
-	// fmt.Println()
 
 	return tokenString, nil
 }
@@ -56,7 +50,7 @@ func ExtractTokenSubject(tokenString string) (string, error) {
 		tokenString,
 		func(t *jwt.Token) (interface{}, error) {
 			if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
-				cusErr := entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
+				cusErr := &entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
 				return nil, cusErr
 			}
 			return []byte(os.Getenv("JWT_SECRET")), nil
@@ -67,7 +61,7 @@ func ExtractTokenSubject(tokenString string) (string, error) {
 	)
 
 	if err != nil {
-		cusErr := entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
+		cusErr := &entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
 		return "", cusErr
 	}
 
@@ -77,7 +71,7 @@ func ExtractTokenSubject(tokenString string) (string, error) {
 		sub, ok = claims["sub"].(string)
 
 		if !ok {
-			cusErr := entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: constant.JwtTokenSubject}
+			cusErr := &entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: constant.JwtTokenSubject}
 			return "", cusErr
 		}
 

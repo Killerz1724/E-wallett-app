@@ -12,7 +12,7 @@ import (
 )
 
 type UserUsecaseItf interface {
-	UserLoginUsecase(context.Context, entity.LoginBody) error
+	UserLoginUsecase(context.Context, entity.LoginBody) (*entity.LoginResponse,error)
 	UsecaseRegister(context.Context, entity.RegisterBody) error
 }
 
@@ -31,7 +31,7 @@ func (uuc UserUsecaseImpl) UsecaseRegister(c context.Context, req entity.Registe
 	hash, errCrypt := utils.HashPassword(req.Password)
 
 	if errCrypt != nil {
-		return entity.CustomError{Msg: constant.RegisterErrorType{Msg: constant.CommonError.Error()}, Log: errCrypt}
+		return &entity.CustomError{Msg: constant.RegisterErrorType{Msg: constant.CommonError.Error()}, Log: errCrypt}
 	}
 
 	req.Email = strings.ToLower(req.Email)
@@ -46,25 +46,33 @@ func (uuc UserUsecaseImpl) UsecaseRegister(c context.Context, req entity.Registe
 	return err
 }
 
-func (uuc UserUsecaseImpl) UserLoginUsecase(c context.Context, req entity.LoginBody) error {
+func (uuc UserUsecaseImpl) UserLoginUsecase(c context.Context, req entity.LoginBody) (*entity.LoginResponse,error) {
 
 	req.Email = strings.ToLower(req.Email)
 
-
 	password, err := uuc.ur.UserLoginRepo(c, req)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	err = bcrypt.CompareHashAndPassword([]byte(password), []byte(req.Password))
 
 	if err != nil {
-		
-		return &entity.CustomError{
+		return nil, &entity.CustomError{
 			Msg: constant.LoginErrorType{Msg: constant.LoginError.Error()},
 			Log: err,
 		}
 	}
 
-	return nil
+	token, err := utils.GeneratingJWTToken(req.Email)
+
+	if err != nil {
+		return nil, err
+	}
+
+	res := &entity.LoginResponse{
+		AccessToken: token,
+	}
+
+	return res, nil
 }

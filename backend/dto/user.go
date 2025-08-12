@@ -10,3 +10,7 @@ type RegisterBody struct {
 	Password string `json:"password" binding:"required"`
 	Username string `json:"username" binding:"required"`
 }
+
+type LoginResponse struct {
+	AccessToken string `json:"access_token"`
+}

@@ -10,3 +10,7 @@ type RegisterBody struct {
 	Password string
 	Username string
 }
+
+type LoginResponse struct {
+	AccessToken string
+}
