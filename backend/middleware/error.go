@@ -73,8 +73,8 @@ func ErrorMiddleware() gin.HandlerFunc {
 						Data:    nil,
 					})
 					return
-				case	errors.As(cerr.Msg, &constant.ExpiredToken{}) :
-					c.JSON(http.StatusBadRequest, dto.Response{
+				case	errors.As(cerr.Msg, &constant.TokenProblem{}) :
+					c.JSON(http.StatusUnauthorized, dto.Response{
 						Success: false,
 						Error:   cerr.Msg.Error(),
 						Data:    nil,

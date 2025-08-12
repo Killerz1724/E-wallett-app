@@ -21,6 +21,7 @@ var (
 	JwtTokenError       = errors.New("user token error, please re-login")
 	JwtTokenInvalid     = errors.New("user token is invalid, please re-login")
 	JwtTokenExpired     = errors.New("user token expired, please re-login")
+	JwtTokenSubject     = errors.New("user token subject is invalid")
 	TransactionFailed   = errors.New("transaction failed")
 	JsonBad             = errors.New("invalid field or value input, check again")
 )
@@ -54,8 +55,8 @@ type FailedJson struct{ Msg string }
 
 func (d FailedJson) Error() string { return d.Msg }
 
-type ExpiredToken struct{ Msg string }
+type TokenProblem struct{ Msg string }
 
-func (d ExpiredToken) Error() string { return d.Msg }
+func (d TokenProblem) Error() string { return d.Msg }
 
 

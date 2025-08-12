@@ -1,9 +1,9 @@
 package middleware
 
 import (
-	"assignment-e-wallet-rest-api/constant"
-	"assignment-e-wallet-rest-api/entity"
 	"errors"
+	"ewallet/constant"
+	"ewallet/entity"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -16,8 +16,8 @@ func AuthMiddleware() gin.HandlerFunc {
 		err := godotenv.Load()
 
 		if err != nil {
-			cusErr := &entity.CustomError{Msg: constant.ExpiredToken{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
-			c.Error(cusErr)
+			cusErr := entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
+			c.Error(cusErr).SetType(gin.ErrorTypePrivate)
 			c.Abort()
 			return
 		}
@@ -25,8 +25,8 @@ func AuthMiddleware() gin.HandlerFunc {
 		// bearer := "Bearer "
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
-			cusErr := &entity.CustomError{Msg: constant.ExpiredToken{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
-			c.Error(cusErr)
+			cusErr := entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
+			c.Error(cusErr).SetType(gin.ErrorTypePrivate)
 			c.Abort()
 			return
 		}
@@ -37,8 +37,8 @@ func AuthMiddleware() gin.HandlerFunc {
 			tokenString,
 			func(t *jwt.Token) (interface{}, error) {
 				if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
-					cusErr := &entity.CustomError{Msg: constant.ExpiredToken{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
-					c.Error(cusErr)
+					cusErr := entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
+					c.Error(cusErr).SetType(gin.ErrorTypePrivate)
 					return nil, cusErr
 				}
 				return []byte(os.Getenv("JWT_SECRET")), nil
@@ -50,22 +50,22 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		if err != nil {
 			if errors.Is(err, jwt.ErrTokenExpired) { // error handling
-				cusErr := &entity.CustomError{Msg: constant.ExpiredToken{Msg: constant.JwtTokenExpired.Error()}, Log: err}
-				c.Error(cusErr)
+				cusErr := entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenExpired.Error()}, Log: err}
+				c.Error(cusErr).SetType(gin.ErrorTypePrivate)
 
 				c.Abort()
 				return
 			}
-			cusErr := &entity.CustomError{Msg: constant.ExpiredToken{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
-			c.Error(cusErr)
+			cusErr := entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
+			c.Error(cusErr).SetType(gin.ErrorTypePrivate)
 			c.Abort()
 			return
 		}
 
 		claims, ok := token.Claims.(jwt.MapClaims)
 		if !ok {
-			cusErr := &entity.CustomError{Msg: constant.ExpiredToken{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
-			c.Error(cusErr)
+			cusErr := entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
+			c.Error(cusErr).SetType(gin.ErrorTypePrivate)
 			c.Abort()
 			return
 		}
@@ -73,8 +73,8 @@ func AuthMiddleware() gin.HandlerFunc {
 		sub, err := claims.GetSubject()
 
 		if err != nil {
-			cusErr := &entity.CustomError{Msg: constant.ExpiredToken{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
-			c.Error(cusErr)
+			cusErr := entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
+			c.Error(cusErr).SetType(gin.ErrorTypePrivate)
 			c.Abort()
 			return
 		}
