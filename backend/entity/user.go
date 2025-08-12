@@ -14,3 +14,9 @@ type RegisterBody struct {
 type LoginResponse struct {
 	AccessToken string
 }
+
+type ShowUserProfileRes struct {
+	ImgUrl   string
+	Username string
+	Email    string
+}

@@ -36,6 +36,11 @@ func main() {
 		auth.POST("/login", uh.UserLoginHandler)
 		auth.POST("/register", uh.UserHandlerRegister)
 	}
+	{
+		profile := r.Group("/api/profile")
+		profile.Use(middleware.AuthMiddleware())
+		profile.GET("/me", uh.UserShowUserDetailsHandler)
+	}
 
 
 	srv := &http.Server{

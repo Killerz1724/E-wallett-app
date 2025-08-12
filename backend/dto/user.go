@@ -14,3 +14,9 @@ type RegisterBody struct {
 type LoginResponse struct {
 	AccessToken string `json:"access_token"`
 }
+
+type ShowUserProfileRes struct {
+	ImgUrl   string `json:"img_url"`
+	Username string `json:"username"`
+	Email    string `json:"email"`
+}

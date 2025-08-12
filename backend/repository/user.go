@@ -13,6 +13,7 @@ import (
 type UserRepoItf interface {
 	UserLoginRepo( context.Context,  entity.LoginBody) (string, error) 
 	UserRepoRegister( context.Context,  entity.RegisterBody) error
+	UserShowUserDetailsRepo( context.Context,  string) (*entity.ShowUserProfileRes, error)
 }
 
 type UserRepoImpl struct {
@@ -28,9 +29,9 @@ func NewUserRepo(dbConn *sql.DB) UserRepoImpl {
 func (ur UserRepoImpl) UserRepoRegister(c context.Context, req entity.RegisterBody) error {
 
 	_, err := ur.db.ExecContext(c, `
-	INSERT INTO users(username, password, email)
+	INSERT INTO users(username, profile_image, password, email)
 	VALUES
-		($1, $2, $3);
+		($1, '', $2, $3);
 	`, req.Username, req.Password, req.Email)
 
 	if err != nil {
@@ -71,4 +72,30 @@ func (ur UserRepoImpl) UserLoginRepo(c context.Context, req entity.LoginBody) (s
 		}
 	}
 	return password, nil
+}
+
+func (ur UserRepoImpl) UserShowUserDetailsRepo(c context.Context, sub string) (*entity.ShowUserProfileRes, error){
+
+	row := ur.db.QueryRowContext(c, `
+	SELECT username, email, profile_image
+	FROM users u
+	WHERE u.email = $1;
+	`, sub)
+
+	var user entity.ShowUserProfileRes
+
+	err := row.Scan(
+		&user.Username,
+		&user.Email,
+		&user.ImgUrl,
+	)
+
+	if err != nil {
+		return nil, &entity.CustomError{
+			Msg: constant.ShowUserDetailError{Msg: constant.ShowUserDetailsError.Error()},
+			Log: err,
+		}
+	}
+
+	return &user, nil
 }

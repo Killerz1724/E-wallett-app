@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"ewallet/constant"
 	"ewallet/dto"
 	"ewallet/entity"
 	"ewallet/usecase"
@@ -77,5 +78,28 @@ func (uh UserHandlerImpl) UserLoginHandler(c *gin.Context) {
 		Success: true,
 		Error:   "",
 		Data:    resBody,
+	})
+}
+
+func (uh UserHandlerImpl) UserShowUserDetailsHandler(c *gin.Context) {
+	token, exist := c.Get("subject")
+
+	if !exist {
+		c.Error(&entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: constant.JwtTokenInvalid}).SetType(gin.ErrorTypePublic)
+		return
+	}
+	res, err := uh.uuc.UserShowUserDetailsUsecase(c, token.(string))
+
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	resBody := dto.ShowUserProfileRes(*res)
+
+	c.JSON(http.StatusOK, dto.Response{
+		Success: true,
+		Error: "",
+		Data: resBody,
 	})
 }

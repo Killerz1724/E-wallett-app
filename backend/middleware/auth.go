@@ -8,36 +8,36 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/joho/godotenv"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		err := godotenv.Load()
+		// err := godotenv.Load()
 
-		if err != nil {
-			cusErr := &entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
-			c.Error(cusErr).SetType(gin.ErrorTypePrivate)
-			c.Abort()
-			return
-		}
+		// if err != nil {
+		// 	cusErr := &entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
+		// 	c.Error(cusErr).SetType(gin.ErrorTypePrivate)
+		// 	c.Abort()
+		// 	return
+		// }
 		// log.Println("token auth")
 		// bearer := "Bearer "
 		authHeader := c.GetHeader("Authorization")
+	
 		if authHeader == "" {
-			cusErr := &entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
+			cusErr := &entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: constant.JwtTokenInvalid}
 			c.Error(cusErr).SetType(gin.ErrorTypePrivate)
 			c.Abort()
 			return
 		}
 		tokenString := authHeader[7:]
-		// log.Println(authHeader)
+	
 
 		token, err := jwt.Parse(
 			tokenString,
 			func(t *jwt.Token) (interface{}, error) {
 				if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
-					cusErr := &entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: err}
+					cusErr := &entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: constant.JwtTokenInvalid}
 					c.Error(cusErr).SetType(gin.ErrorTypePrivate)
 					return nil, cusErr
 				}

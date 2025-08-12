@@ -10,6 +10,7 @@ create table users(
 	id BIGSERIAL primary key,
 	username VARCHAR not null,
 	email VARCHAR UNIQUE not null,
+	profile_image VARCHAR,
 	password VARCHAR not null,
 	gacha_chance INT not null default 0,
 	created_at TIMESTAMPTZ default NOW(),
@@ -101,13 +102,13 @@ create table transaction_histories(
 	foreign key (source_fund_id) references source_funds(id)
 );
 
-insert into users(username, email, password)
+insert into users(username, profile_image, email, password)
 values 
-	('user1', 'user1@mail.com', '$2a$12$2XvhkL9flrf8ZguSrHR8M.so6lgXrEz2YVPHh//49nf5KuWQcznI.'),
-	('yunus granger', 'yunus@mail.com', '$2a$12$WsyhnJ/lUSJRk.2N9lirl.EHQAHMxntdwVXPSq2e1A5rtpiq9XLpm'),
-	('rio deterjen', 'rio@mail.com', '$2a$12$8KH8Tkp2AStBP5UEcCDU4Oc6HURe.R6cXRJTGRRDNVUK5AHXPL5qy'),
-	('ino maheswara', 'ino@mail.com', '$2a$12$oQ/KSe8TTXKq1DYWOkbTgO7h68pfVgbtbRfTJBLe0DEArTR/zRhke'),
-	('bryan tikitaka', 'bryan@mail.com', '$2a$12$tM7H9/McRkxFo3DhwrzHsugzCtW5Day/Ui5Odw8C/YPs81nuNLlg.');
+	('user1', 'https://evqrdlwphgtlcoafoaas.supabase.co/storage/v1/object/public/ewalletapp/profile-pictures/dummyPp.jpg', 'user1@mail.com', '$2a$12$2XvhkL9flrf8ZguSrHR8M.so6lgXrEz2YVPHh//49nf5KuWQcznI.'),
+	('yunus granger', '', 'yunus@mail.com', '$2a$12$WsyhnJ/lUSJRk.2N9lirl.EHQAHMxntdwVXPSq2e1A5rtpiq9XLpm'),
+	('rio deterjen', '', 'rio@mail.com', '$2a$12$8KH8Tkp2AStBP5UEcCDU4Oc6HURe.R6cXRJTGRRDNVUK5AHXPL5qy'),
+	('ino maheswara', '', 'ino@mail.com', '$2a$12$oQ/KSe8TTXKq1DYWOkbTgO7h68pfVgbtbRfTJBLe0DEArTR/zRhke'),
+	('bryan tikitaka', '', 'bryan@mail.com', '$2a$12$tM7H9/McRkxFo3DhwrzHsugzCtW5Day/Ui5Odw8C/YPs81nuNLlg.');
 	-- ('rian sigma', 'rian@mail.com', '$2a$12$hswbpIz0LBtrn7Q7bUKnkOjA0gcNmjDu9KgJ5uMUDsVJ43XhRNbKS');
 
 insert into prizes(prize_number, prize_amount)

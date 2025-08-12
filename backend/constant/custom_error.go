@@ -5,6 +5,7 @@ import "errors"
 var (
 	LoginError          = errors.New("invalid credentials")
 	RegisterError       = errors.New("already exists")
+	ShowUserDetailsError = errors.New("failed to show user details")
 	QueryError          = errors.New("failed to query data")
 	AccountAlreadyExist = errors.New("account already exist")
 	ScanError           = errors.New("failed to scan data from database")
@@ -34,6 +35,10 @@ func (d LoginErrorType) Error() string { return d.Msg }
 type RegisterErrorType struct{ Msg string }
 
 func (d RegisterErrorType) Error() string { return d.Msg }
+
+type ShowUserDetailError struct{ Msg string }
+
+func (d ShowUserDetailError) Error() string { return d.Msg }
 
 type DataNotFound struct{ Msg string }
 

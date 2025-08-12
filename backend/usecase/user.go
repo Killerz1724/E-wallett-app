@@ -14,6 +14,7 @@ import (
 type UserUsecaseItf interface {
 	UserLoginUsecase(context.Context, entity.LoginBody) (*entity.LoginResponse,error)
 	UsecaseRegister(context.Context, entity.RegisterBody) error
+	UserShowUserDetailsUsecase( context.Context,  string) (*entity.ShowUserProfileRes, error)
 }
 
 type UserUsecaseImpl struct {
@@ -75,4 +76,21 @@ func (uuc UserUsecaseImpl) UserLoginUsecase(c context.Context, req entity.LoginB
 	}
 
 	return res, nil
+}
+
+func (uuc UserUsecaseImpl) UserShowUserDetailsUsecase(c context.Context, sub string) (*entity.ShowUserProfileRes, error){
+
+	// sub, err := utils.ExtractTokenSubject(token)
+
+	// if err != nil {
+	// 	return nil, err
+	// }
+
+	user, err := uuc.ur.UserShowUserDetailsRepo(c, sub)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }
