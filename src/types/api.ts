@@ -4,6 +4,15 @@ export type UninterceptedApiError = {
   };
 };
 
+export type MessageResponse = {
+  message: string;
+};
+
+export type ApiResponse<T> = {
+  success: boolean;
+  data: T;
+};
+
 export type ApiError = {
   message: string;
 };

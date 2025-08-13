@@ -26,13 +26,14 @@ func main() {
 	r.ContextWithFallback = true
 	r.Use(middleware.Logger())
 	r.Use(middleware.ErrorMiddleware())
+	r.Use(middleware.CorsMiddleware())
 
 	ur := repository.NewUserRepo(db)
 	uuc := usecase.NewUserUsecase(ur)
 	uh := handler.NewUserHandler(uuc)
 
 	{
-		auth := r.Group("/auth")
+		auth := r.Group("/api/auth")
 		auth.POST("/login", uh.UserLoginHandler)
 		auth.POST("/register", uh.UserHandlerRegister)
 	}

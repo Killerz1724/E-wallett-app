@@ -6,7 +6,8 @@ import { DEFAULT_TOAST_MESSAGE } from "../constant/toast";
 import { toast } from "react-toastify";
 
 export default function useMutationToast<T, K>(
-  mutation: UseMutationResult<T, AxiosError<ApiError>, K>
+  mutation: UseMutationResult<T, AxiosError<ApiError>, K>,
+  customMessage?: { error?: string; success?: string }
 ) {
   const { isPending, isSuccess, isError, error } = mutation;
 
@@ -15,27 +16,34 @@ export default function useMutationToast<T, K>(
   useEffect(() => {
     const toastMessage = {
       ...DEFAULT_TOAST_MESSAGE,
+      ...customMessage,
     };
 
     if (isError) {
-      toast.error(
-        typeof toastMessage.error === "string"
-          ? toastMessage.error
-          : toastMessage.error(error),
-        {
-          toastId: toastId,
-        }
-      );
-    } else if (isPending) {
+      toast.update(toastId, {
+        render:
+          typeof toastMessage.error === "string"
+            ? toastMessage.error
+            : toastMessage.error(error),
+        type: "error",
+        autoClose: 2000,
+        isLoading: false,
+      });
+    }
+    if (isPending) {
       toast.loading(toastMessage.loading, {
         toastId: toastId,
       });
-    } else if (isSuccess) {
-      toast.success(toastMessage.success, {
-        toastId: toastId,
+    }
+    if (isSuccess) {
+      toast.update(toastId, {
+        type: "success",
+        render: toastMessage.success,
+        isLoading: false,
+        autoClose: 2000,
       });
     }
-  }, [isError, isPending, error, isSuccess, toastId]);
+  }, [isError, isPending, error, isSuccess, toastId, customMessage]);
 
   return { ...mutation };
 }

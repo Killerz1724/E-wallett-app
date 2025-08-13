@@ -2,7 +2,7 @@ import axios, { type AxiosError } from "axios";
 import type { UninterceptedApiError } from "../types/api";
 import { getToken } from "./cookies";
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: import.meta.env.VITE_PUBLIC_API_URL,
   headers: {
     "Content-Type": "application/json",
