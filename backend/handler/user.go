@@ -47,7 +47,7 @@ func (uh UserHandlerImpl) UserHandlerRegister(c *gin.Context) {
 
 	res := dto.Response{
 		Success: true,
-		Error:   "",
+		Error:   nil,
 	}
 
 	c.JSON(http.StatusCreated, res)
@@ -76,7 +76,7 @@ func (uh UserHandlerImpl) UserLoginHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, dto.Response{
 		Success: true,
-		Error:   "",
+		Error:   nil,
 		Data:    resBody,
 	})
 }
@@ -99,7 +99,7 @@ func (uh UserHandlerImpl) UserShowUserDetailsHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, dto.Response{
 		Success: true,
-		Error: "",
+		Error: nil,
 		Data: resBody,
 	})
 }
