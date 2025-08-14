@@ -28,11 +28,15 @@ func NewUserRepo(dbConn *sql.DB) UserRepoImpl {
 
 func (ur UserRepoImpl) UserRepoRegister(c context.Context, req entity.RegisterBody) error {
 
-	_, err := ur.db.ExecContext(c, `
+	row := ur.db.QueryRowContext(c, `
 	INSERT INTO users(username, profile_image, password, email)
 	VALUES
-		($1, '', $2, $3);
+		($1, '', $2, $3)
+	RETURNING id;
 	`, req.Username, req.Password, req.Email)
+
+	var userId int
+	err := row.Scan(&userId)
 
 	if err != nil {
 		var perr *pgconn.PgError
@@ -42,6 +46,19 @@ func (ur UserRepoImpl) UserRepoRegister(c context.Context, req entity.RegisterBo
 				Log: err,
 			}
 		}
+		return &entity.CustomError{
+			Msg: constant.CommonError,
+			Log: err,
+		}
+	}
+
+	_, err = ur.db.ExecContext(c, `
+	INSERT INTO wallets(user_id, balance)
+	VALUES
+	($1, 0);
+	`,  userId)
+
+	if err != nil {
 		return &entity.CustomError{
 			Msg: constant.CommonError,
 			Log: err,

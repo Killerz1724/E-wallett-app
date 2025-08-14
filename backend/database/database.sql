@@ -22,7 +22,7 @@ create table users(
 create table wallets(
 	id BIGSERIAL primary key,
 	user_id BIGINT not null,
-	balance numeric not null default 0,
+	balance numeric default 0,
 	wallet_number bigint default nextval('wallet_number_seq'),
 	created_at TIMESTAMPTZ default NOW(),
 	updated_at TIMESTAMPTZ default NOW(),
