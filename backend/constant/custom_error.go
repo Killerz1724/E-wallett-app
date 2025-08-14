@@ -25,6 +25,7 @@ var (
 	JwtTokenExpired     = errors.New("user token expired, please re-login")
 	JwtTokenSubject     = errors.New("user token subject is invalid")
 	TransactionFailed   = errors.New("transaction failed")
+	BalanceIsInufficient = errors.New("balance is insufficient")
 	JsonBad             = errors.New("invalid field or value input, check again")
 )
 

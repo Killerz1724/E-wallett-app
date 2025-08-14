@@ -66,13 +66,45 @@ func (th TransactionHandlerImpl) TopUpHandler(c *gin.Context) {
 	err := c.ShouldBindBodyWithJSON(&reqBody)
 
 	if err != nil {
-		c.Error(&entity.CustomError{Msg: constant.FailedJson{Msg: constant.JsonBad.Error()}, Log: err})
+		c.Error(&entity.CustomError{Msg: constant.FailedJson{Msg: constant.JsonBad.Error()}, Log: err}).SetType(gin.ErrorTypePublic)
 		return
 	}
 
 	req := entity.TopUpBody(reqBody)
 
 	customError := th.tu.TopUpUsecase(c, req, paramId.(string))
+
+	if customError != nil {
+		c.Error(customError)
+		return
+	}
+
+	res := dto.Response{
+		Success: true,
+		Error:   nil,
+		Data:    nil,
+	}
+
+	c.JSON(http.StatusOK, res)
+
+}
+
+func (th TransactionHandlerImpl) TransferHandler(c *gin.Context) {
+	paramId := c.Value("subject")
+
+	subject := paramId.(string)
+
+	var reqBody dto.TransferBody
+	err := c.ShouldBindBodyWithJSON(&reqBody)
+
+	if err != nil {
+		c.Error(&entity.CustomError{Msg: constant.FailedJson{Msg: constant.JsonBad.Error()}, Log: err}).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	req := entity.TransferBody(reqBody)
+
+	customError := th.tu.TransferUsecase(c, req, subject)
 
 	if customError != nil {
 		c.Error(customError)

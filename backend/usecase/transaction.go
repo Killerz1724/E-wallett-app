@@ -16,6 +16,7 @@ import (
 type TransactionUsecaseItf interface {
 	ListAllTransactionUsecase(context.Context, string, string, string, string, []string, []string, string, string) (*entity.ListTransactionResponse, error)
 	TopUpUsecase(context.Context, entity.TopUpBody, string) error
+	TransferUsecase(context.Context, entity.TransferBody, string) error
 }
 
 type TransactionUsecaseImpl struct {
@@ -106,6 +107,46 @@ func (tu TransactionUsecaseImpl) TopUpUsecase(c context.Context, req entity.TopU
 
 	txErr := tu.txr.WithTx(c, func(c context.Context) error {
 		if err = tu.tr.TopupTransactionRepo(c, req, sub); err != nil {
+			return err
+		}
+		return nil
+	})
+
+	if txErr != nil {
+		return txErr
+	}
+	return nil
+}
+
+func (tu TransactionUsecaseImpl) TransferUsecase(c context.Context, req entity.TransferBody, userToken string) error {
+	var err error
+
+	var min, max int64
+	min = 1000
+	max = 50000000
+	minValue := decimal.NewFromInt(min)
+	maxValue := decimal.NewFromInt(max)
+
+	if !req.Amount.GreaterThanOrEqual(minValue) {
+		e := fmt.Sprintf("minimal top up is %d", min)
+		return &entity.CustomError{
+			Msg: constant.FailedToTransfer{
+				Msg: errors.New(e).Error()}, 
+				Log: errors.New(e),
+			}
+	}
+
+	if !req.Amount.LessThanOrEqual(maxValue) {
+		e := fmt.Sprintf("maximum top up is %d", max)
+		return &entity.CustomError{
+			Msg: constant.FailedToTransfer{
+				Msg: errors.New(e).Error()}, 
+				Log: errors.New(e),
+			}
+	}
+
+	txErr := tu.txr.WithTx(c, func(c context.Context) error {
+		if err = tu.tr.TransferTransactionRepo(c, req, userToken); err != nil {
 			return err
 		}
 		return nil

@@ -53,6 +53,7 @@ func main() {
 		transaction.Use(middleware.AuthMiddleware())
 		transaction.GET("/transactions", th.ListAllTransactionHandler)
 		transaction.POST("/transactions/top-up", th.TopUpHandler)
+		transaction.POST("/transactions/transfer", th.TransferHandler)
 	}
 
 
