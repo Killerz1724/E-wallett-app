@@ -56,6 +56,16 @@ func ErrorMiddleware() gin.HandlerFunc {
 
 			c.Error(cerr.Log).SetType(gin.ErrorTypePrivate)
 			switch {
+			case	errors.As(cerr.Msg, &constant.FailedJson{}) :
+				c.JSON(http.StatusBadRequest, dto.Response{
+					Success: false,
+					Error:   &dto.ErrorResponse{
+						Message: cerr.Msg.Error(),
+					},
+					Data:    nil,
+				})
+				return
+			
 				case errors.As(cerr.Msg, &constant.LoginErrorType{}) :
 					c.JSON(http.StatusBadRequest, dto.Response{
 						Success: false,
@@ -83,6 +93,15 @@ func ErrorMiddleware() gin.HandlerFunc {
 						Data:    nil,
 					})
 					return
+				case errors.As(cerr.Msg, &constant.DataNotFound{}):
+					c.JSON(http.StatusNotFound, dto.Response{
+						Success: false,
+						Error:   &dto.ErrorResponse{
+							Message: cerr.Msg.Error(),
+						},
+						Data:    nil,
+					})
+					return
 				case	errors.As(cerr.Msg, &constant.TokenProblem{}) :
 					c.JSON(http.StatusUnauthorized, dto.Response{
 						Success: false,
@@ -92,6 +111,24 @@ func ErrorMiddleware() gin.HandlerFunc {
 						Data:    nil,
 					})
 					return 
+				case	errors.As(cerr.Msg, &constant.TransactionProblem{}) :
+					c.JSON(http.StatusInternalServerError, dto.Response{
+						Success: false,
+						Error:   &dto.ErrorResponse{
+							Message: cerr.Msg.Error(),
+						},
+						Data:    nil,
+					})
+					return
+				case	errors.As(cerr.Msg, &constant.TopUpProblem{}) :
+					c.JSON(http.StatusBadRequest, dto.Response{
+						Success: false,
+						Error:   &dto.ErrorResponse{
+							Message: cerr.Msg.Error(),
+						},
+						Data:    nil,
+					})
+					return
 				}
 		}
 

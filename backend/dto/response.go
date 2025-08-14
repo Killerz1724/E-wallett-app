@@ -1,7 +1,7 @@
 package dto
 
 type ErrorResponse struct {
-	Message string `json:"message"`
+	Message string `json:"message" binding:"omitempty"`
 }
 
 type Response struct {

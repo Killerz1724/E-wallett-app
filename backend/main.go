@@ -32,6 +32,12 @@ func main() {
 	uuc := usecase.NewUserUsecase(ur)
 	uh := handler.NewUserHandler(uuc)
 
+	txr := repository.NewRepoTx(db)
+
+	tr := repository.NewTransactionRepo(db)
+	tu := usecase.NewTransactionUsecase(tr, txr)
+	th := handler.NewTransactionHandler(tu)
+
 	{
 		auth := r.Group("/api/auth")
 		auth.POST("/login", uh.UserLoginHandler)
@@ -41,6 +47,12 @@ func main() {
 		profile := r.Group("/api/profile")
 		profile.Use(middleware.AuthMiddleware())
 		profile.GET("/me", uh.UserShowUserDetailsHandler)
+	}
+	{
+		transaction := r.Group("/api/users")
+		transaction.Use(middleware.AuthMiddleware())
+		transaction.GET("/transactions", th.ListAllTransactionHandler)
+		transaction.POST("/transactions/top-up", th.TopUpHandler)
 	}
 
 

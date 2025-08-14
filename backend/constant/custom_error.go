@@ -17,6 +17,7 @@ var (
 	DuplicateError      = errors.New("data already exist")
 	DuplicateErrorCode  = "23505"
 	DataEmptyError      = errors.New("data not found")
+	UserNotFound        = errors.New("user not found")
 	NullErrorPg         = errors.New("violate null constraint")
 	CRYPTCOST           = 12
 	JwtTokenError       = errors.New("user token error, please re-login")
@@ -63,5 +64,13 @@ func (d FailedJson) Error() string { return d.Msg }
 type TokenProblem struct{ Msg string }
 
 func (d TokenProblem) Error() string { return d.Msg }
+
+type TransactionProblem struct{ Msg string }
+
+func (d TransactionProblem) Error() string { return d.Msg }
+
+type TopUpProblem struct{ Msg string }
+
+func (d TopUpProblem) Error() string { return d.Msg }
 
 
