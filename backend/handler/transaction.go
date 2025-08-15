@@ -120,3 +120,34 @@ func (th TransactionHandlerImpl) TransferHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 
 }
+
+func (th TransactionHandlerImpl) ListAllUsersHandler(c *gin.Context){
+
+	subjectEmail := c.Value("subject").(string)
+	searchParam := c.Query("search")
+	pageQuery := c.Query("page")
+
+	res, err := th.tu.ListAllUsersUsecase(c, subjectEmail, searchParam, pageQuery)
+
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+	}
+	
+	var resBody  dto.ListAllUsersResponse
+
+	resBody.PageInfo = dto.PageInfo(res.PageInfo)
+
+	var dtoUsers []dto.Users
+	for _, dat := range res.Users {
+		dtoUsers = append(dtoUsers, dto.Users(dat))
+	}
+
+	resBody.Users = dtoUsers
+
+	resJson := dto.Response {
+		Success: true,
+		Data: resBody,
+	}
+
+	c.JSON(http.StatusOK, resJson)
+}

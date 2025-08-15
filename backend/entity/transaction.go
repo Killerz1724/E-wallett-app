@@ -39,3 +39,16 @@ type TransferBody struct {
 	Amount       decimal.Decimal
 	Description  string
 }
+
+type Users struct {
+	Id int
+	ImgUrl string
+	Username string
+}
+
+type ListAllUsersResponse struct {
+	Users []Users
+	PageInfo PageInfo
+}
+
+

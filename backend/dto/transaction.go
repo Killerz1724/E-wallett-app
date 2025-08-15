@@ -40,3 +40,15 @@ type TransferBody struct {
 	Amount       decimal.Decimal `form:"amount" json:"amount" binding:"required"`
 	Description  string          `form:"description" json:"description" binding:"max=35"`
 }
+
+type Users struct {
+	Id int `json:"id"`
+	ImgUrl string `json:"img_url"`
+	Username string `json:"username"`
+}
+
+type ListAllUsersResponse struct {
+	PageInfo PageInfo `json:"page_info"`
+	Users []Users `json:"users"`
+	
+}

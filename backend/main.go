@@ -51,9 +51,11 @@ func main() {
 	{
 		transaction := r.Group("/api/users")
 		transaction.Use(middleware.AuthMiddleware())
+		transaction.GET("", th.ListAllUsersHandler)
 		transaction.GET("/transactions", th.ListAllTransactionHandler)
 		transaction.POST("/transactions/top-up", th.TopUpHandler)
 		transaction.POST("/transactions/transfer", th.TransferHandler)
+	
 	}
 
 

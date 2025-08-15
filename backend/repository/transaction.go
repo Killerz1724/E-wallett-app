@@ -17,6 +17,7 @@ type TransactionRepoItf interface {
 	ListAllTransactionRepo(context.Context, string, time.Time, time.Time, string, []string, []string, int, int) (*entity.ListTransactionResponse, error)
 	TopupTransactionRepo(context.Context, entity.TopUpBody, string) error
 	TransferTransactionRepo(context.Context, entity.TransferBody, string) error
+	ListAllUsersRepo(context.Context, string, string, int) (*entity.ListAllUsersResponse, error)
 }
 
 type TransactionRepoImpl struct {
@@ -388,4 +389,65 @@ func (tr TransactionRepoImpl) TransferTransactionRepo(c context.Context, req ent
 	}
 
 	return nil
+}
+
+func (tr TransactionRepoImpl) ListAllUsersRepo(c context.Context, email string, search string, page int) (*entity.ListAllUsersResponse, error) {
+	
+	q := `
+	SELECT u.id, u.username, u.profile_image
+	FROM users u
+	WHERE u.email != $1
+	`	
+
+	params := []any{}
+	idx := 2
+	params = append(params, email)
+	//Setup search filter by username
+	if search != "" {
+		search = search + "%"
+		q += " " + "AND u.username ILIKE" + " " + fmt.Sprintf("$%d", idx)
+		idx += 1
+		params = append(params, search)
+	}
+
+
+	//Setup limit content per page
+	contentPerPage := 5
+	var orderQuery string
+	if page > 0 {
+		offsetPg := (contentPerPage * page) - contentPerPage
+		orderQuery += " " + fmt.Sprintf("LIMIT $%d OFFSET $%d", idx, idx+1)
+		idx += 2
+		params = append(params, contentPerPage, offsetPg)
+	}
+
+	q += orderQuery
+
+	rows, err := tr.db.QueryContext(c, q, params...)
+
+	if err!= nil {
+		return nil, &entity.CustomError{Msg: constant.CommonError, Log: err}
+	}
+
+	var users entity.ListAllUsersResponse
+
+	for rows.Next(){
+		var user entity.Users
+
+		err = rows.Scan(&user.Id, &user.Username, &user.ImgUrl)
+
+		if err != nil {
+			return nil, &entity.CustomError{Msg: constant.CommonError, Log: err}
+		}
+
+		users.Users = append(users.Users, user)
+	}
+
+	users.PageInfo.CurrentPage = page
+	users.PageInfo.LimitDataPerPage = contentPerPage
+	users.PageInfo.TotalData = len(users.Users)
+
+	return &users, nil
+	
+
 }
