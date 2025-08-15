@@ -27,6 +27,7 @@ var (
 	TransactionFailed   = errors.New("transaction failed")
 	BalanceIsInufficient = errors.New("balance is insufficient")
 	JsonBad             = errors.New("invalid field or value input, check again")
+	InvalidExchangeRate  = errors.New("invalid exchange rate")
 )
 
 
@@ -73,5 +74,9 @@ func (d TransactionProblem) Error() string { return d.Msg }
 type TopUpProblem struct{ Msg string }
 
 func (d TopUpProblem) Error() string { return d.Msg }
+
+type ExchangesRateProblem struct{ Msg string }
+
+func (d ExchangesRateProblem) Error() string { return d.Msg }
 
 

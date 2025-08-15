@@ -5,7 +5,9 @@ import (
 	"ewallet/handler"
 	"ewallet/middleware"
 	"ewallet/repository"
+	"ewallet/scheduler"
 	"ewallet/usecase"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -38,7 +40,22 @@ func main() {
 	tu := usecase.NewTransactionUsecase(tr, txr)
 	th := handler.NewTransactionHandler(tu)
 
-	eh := handler.NewExchangesHandler()
+	er := repository.NewExchangeRatesRepo(db)
+	eu := usecase.NewExchangeRatesUsecase(er)
+	eh := handler.NewExchangesHandler(eu)
+
+	schedulerRates := scheduler.NewScheduler()
+	schedulerRates.Register("0 0 * * *", func() {
+		_ =	eu.ExchangeRatesUseCase()
+	})
+	if exist, err :=eu.CheckRatesUseCase(); !exist {
+		fmt.Println("running rates seed")
+		if err != nil {
+			log.Fatalln(err)
+		}
+		_ = eu.ExchangeRatesUseCase()
+	}
+	schedulerRates.Start()
 
 	{
 		auth := r.Group("/api/auth")
@@ -61,6 +78,7 @@ func main() {
 	{
 		exchanges := r.Group("/api/exchanges-rates")
 		exchanges.GET("", eh.GetExchangeDataHandler)
+		exchanges.GET("/exchange", eh.ExchangeCurrenyRatesHandler)
 	}
 
 

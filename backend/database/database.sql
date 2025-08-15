@@ -5,6 +5,16 @@ create sequence wallet_number_seq
                  start     8000000000000;
 
 
+create table exchange_rates(
+	id BIGSERIAL primary key,
+	base_currency VARCHAR not null,
+	target_currency VARCHAR not null,
+	rate numeric not null,
+	rate_date DATE not null,
+	created_at TIMESTAMPTZ default NOW(),
+	updated_at TIMESTAMPTZ default NOW(),
+	deleted_at TIMESTAMPTZ
+);
 
 create table users(
 	id BIGSERIAL primary key,

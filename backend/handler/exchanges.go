@@ -1,64 +1,68 @@
 package handler
 
 import (
-	"encoding/json"
-	"errors"
 	"ewallet/constant"
 	"ewallet/dto"
 	"ewallet/entity"
-	"fmt"
-	"io"
+	"ewallet/usecase"
 	"net/http"
-	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
-type ExchangesHandlerImpl struct{}
+type ExchangesHandlerImpl struct{
+	eu usecase.ExchangeRatesUsecaseItf
+}
 
-func NewExchangesHandler() ExchangesHandlerImpl {
-	return ExchangesHandlerImpl{}
+func NewExchangesHandler(eu usecase.ExchangeRatesUsecaseItf) ExchangesHandlerImpl {
+	return ExchangesHandlerImpl{
+		eu: eu,
+	}
 }
 
 func (eh ExchangesHandlerImpl) GetExchangeDataHandler(c *gin.Context) {
 
-	ExchangeId := os.Getenv("EXCHANGE_RATES_API_ID")
-	url := fmt.Sprintf("https://openexchangerates.org/api/latest.json?app_id=%s", ExchangeId)
-	res, err := http.Get(url)
+	err := eh.eu.ExchangeRatesUseCase()
 
 	if err !=nil {
 		msg := &entity.CustomError{Msg: constant.CommonError, Log: err}
-		c.Error(msg).SetType(gin.ErrorTypePrivate)
-		return
-	}
-
-	defer res.Body.Close()
-
-	if res.StatusCode != http.StatusOK {
-		msg := &entity.CustomError{Msg: constant.CommonError, Log: errors.New("status code not ok")}
-		c.Error(msg).SetType(gin.ErrorTypePrivate)
-		return
-	}
-
-	//Read the response
-	body, err := io.ReadAll(res.Body)
-
-	if err !=nil {
-		msg := &entity.CustomError{Msg: constant.CommonError, Log: err}
-		c.Error(msg).SetType(gin.ErrorTypePrivate)
-		return
-	}
-
-	var resBody dto.ExchangeRatesRespon
-
-	if err := json.Unmarshal(body, &resBody); err !=nil {
-		msg := &entity.CustomError{Msg: constant.CommonError, Log: err}
-		c.Error(msg).SetType(gin.ErrorTypePrivate)
+		c.Error(msg).SetType(gin.ErrorTypePublic)
+		return 
 	}
 
 	resMsg := dto.Response{
 		Success: true,
-		Data: resBody,
+	
+	}
+
+	c.JSON(http.StatusOK, resMsg)
+}
+
+func (eh ExchangesHandlerImpl) ExchangeCurrenyRatesHandler(c *gin.Context) {
+
+	from := c.Query("from")
+	to := c.Query("to")
+	val := c.Query("value")
+
+	convertVal, err := strconv.ParseFloat(val, 64)
+
+	if err != nil {
+		msg := &entity.CustomError{Msg: constant.CommonError, Log: err}
+		c.Error(msg).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	res, err := eh.eu.ExchangeCurrenyRatesUsecase(c, from, to, convertVal)
+
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	resMsg := dto.Response{
+		Success: true,
+		Data: res,
 	}
 
 	c.JSON(http.StatusOK, resMsg)

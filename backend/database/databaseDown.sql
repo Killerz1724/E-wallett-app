@@ -7,3 +7,4 @@ drop table if exists source_funds cascade;
 drop table if exists prizes cascade;
 drop table if exists gacha_histories cascade;
 drop table if exists transaction_histories cascade;
+drop table if exists exchange_rates cascade;

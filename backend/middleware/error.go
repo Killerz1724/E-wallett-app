@@ -138,6 +138,17 @@ func ErrorMiddleware() gin.HandlerFunc {
 						Data:    nil,
 					})
 					return
+				case	errors.As(cerr.Msg, &constant.ExchangesRateProblem{}) :
+					c.JSON(http.StatusBadRequest, dto.Response{
+						Success: false,
+						Error:   &dto.ErrorResponse{
+							Message: cerr.Msg.Error(),
+						},
+						Data:    nil,
+					})
+					return
+					
+
 				}
 		}
 
