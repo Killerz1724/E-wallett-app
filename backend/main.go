@@ -7,7 +7,6 @@ import (
 	"ewallet/repository"
 	"ewallet/scheduler"
 	"ewallet/usecase"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -46,10 +45,11 @@ func main() {
 
 	schedulerRates := scheduler.NewScheduler()
 	schedulerRates.Register("0 0 * * *", func() {
+		log.Println("running rates seed from cron")
 		_ =	eu.ExchangeRatesUseCase()
 	})
 	if exist, err :=eu.CheckRatesUseCase(); !exist {
-		fmt.Println("running rates seed")
+		log.Println("running rates seed")
 		if err != nil {
 			log.Fatalln(err)
 		}
