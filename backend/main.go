@@ -38,6 +38,8 @@ func main() {
 	tu := usecase.NewTransactionUsecase(tr, txr)
 	th := handler.NewTransactionHandler(tu)
 
+	eh := handler.NewExchangesHandler()
+
 	{
 		auth := r.Group("/api/auth")
 		auth.POST("/login", uh.UserLoginHandler)
@@ -55,7 +57,10 @@ func main() {
 		transaction.GET("/transactions", th.ListAllTransactionHandler)
 		transaction.POST("/transactions/top-up", th.TopUpHandler)
 		transaction.POST("/transactions/transfer", th.TransferHandler)
-	
+	}
+	{
+		exchanges := r.Group("/api/exchanges-rates")
+		exchanges.GET("", eh.GetExchangeDataHandler)
 	}
 
 

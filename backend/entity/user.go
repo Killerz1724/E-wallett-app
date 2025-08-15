@@ -1,5 +1,7 @@
 package entity
 
+import "github.com/shopspring/decimal"
+
 type LoginBody struct {
 	Email    string
 	Password string
@@ -19,4 +21,5 @@ type ShowUserProfileRes struct {
 	ImgUrl   string
 	Username string
 	Email    string
+	Balance  decimal.Decimal
 }

@@ -166,24 +166,14 @@ func (tr TransactionRepoImpl) ListAllTransactionRepo(c context.Context, email st
 		if err != nil {
 			return nil, nil
 		}
-		// log.Println(transTime)
-		// parsed, err := time.Parse(time.RFC3339, transTime)
-		// log.Println(parsed)
-		// log.Println(parsed.Year())
-
-		// if err != nil {
-		// 	return nil, &entity.CustomError{
-		// 		Msg: err,
-		// 		Log: err,
-		// 	}
-		// }
+		
 
 		transactions = append(transactions, trans)
 	}
 
 	return &entity.ListTransactionResponse{PageInfo: entity.PageInfo{
 		CurrentPage: pg,
-		TotalData:   len(transactions),
+		TotalRows:   len(transactions),
 		LimitDataPerPage: contentPerPage,
 	}, Transactions: transactions}, nil
 }
@@ -445,7 +435,7 @@ func (tr TransactionRepoImpl) ListAllUsersRepo(c context.Context, email string, 
 
 	users.PageInfo.CurrentPage = page
 	users.PageInfo.LimitDataPerPage = contentPerPage
-	users.PageInfo.TotalData = len(users.Users)
+	users.PageInfo.TotalRows = len(users.Users)
 
 	return &users, nil
 	

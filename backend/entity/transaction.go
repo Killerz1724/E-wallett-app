@@ -17,7 +17,7 @@ type Transaction struct {
 
 type PageInfo struct {
 	CurrentPage int 
-	TotalData   int 
+	TotalRows   int 
 	LimitDataPerPage int 
 }
 

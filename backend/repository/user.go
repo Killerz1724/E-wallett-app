@@ -94,8 +94,10 @@ func (ur UserRepoImpl) UserLoginRepo(c context.Context, req entity.LoginBody) (s
 func (ur UserRepoImpl) UserShowUserDetailsRepo(c context.Context, sub string) (*entity.ShowUserProfileRes, error){
 
 	row := ur.db.QueryRowContext(c, `
-	SELECT username, email, profile_image
+	SELECT u.username, u.email, u.profile_image, w.balance
 	FROM users u
+	JOIN wallets w
+	ON u.id = w.user_id
 	WHERE u.email = $1;
 	`, sub)
 
@@ -105,6 +107,7 @@ func (ur UserRepoImpl) UserShowUserDetailsRepo(c context.Context, sub string) (*
 		&user.Username,
 		&user.Email,
 		&user.ImgUrl,
+		&user.Balance,
 	)
 
 	if err != nil {

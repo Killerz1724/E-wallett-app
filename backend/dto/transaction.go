@@ -17,7 +17,7 @@ type Transaction struct {
 
 type PageInfo struct {
 	CurrentPage int `json:"current_page"`
-	TotalData   int `json:"total_data"`
+	TotalRows   int `json:"total_rows"`
 	LimitDataPerPage int `json:"limit_data_per_page"`
 }
 

@@ -1,5 +1,7 @@
 package dto
 
+import "github.com/shopspring/decimal"
+
 type LoginBody struct {
 	Email    string `json:"email" binding:"required"`
 	Password string `json:"password" binding:"required"`
@@ -16,7 +18,8 @@ type LoginResponse struct {
 }
 
 type ShowUserProfileRes struct {
-	ImgUrl   string `json:"img_url"`
-	Username string `json:"username"`
-	Email    string `json:"email"`
+	ImgUrl   string          `json:"img_url"`
+	Username string          `json:"username"`
+	Email    string          `json:"email"`
+	Balance  decimal.Decimal `json:"balance"`
 }
