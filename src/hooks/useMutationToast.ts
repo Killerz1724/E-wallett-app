@@ -2,8 +2,9 @@ import type { UseMutationResult } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import type { ApiError } from "../types/api";
 import { useEffect } from "react";
-import { DEFAULT_TOAST_MESSAGE } from "../constant/toast";
+
 import { toast } from "react-toastify";
+import { DEFAULT_TOAST_MESSAGE } from "../constant/toast";
 
 export default function useMutationToast<T, K>(
   mutation: UseMutationResult<T, AxiosError<ApiError>, K>,
