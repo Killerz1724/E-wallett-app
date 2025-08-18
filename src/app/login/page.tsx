@@ -1,8 +1,6 @@
-import { mdiAppleIos, mdiFacebook, mdiGoogle } from "@mdi/js";
-import Icon from "@mdi/react";
-import LoginForm from "./components/LoginForm";
 import Image from "next/image";
 import { Suspense } from "react";
+import LoginForm from "./components/LoginForm";
 
 export interface loginDataType {
   email: string;
@@ -31,14 +29,6 @@ const Login = () => {
         </div>
         <div className="flex flex-col gap-[47px]">
           <LoginForm />
-          <div className="flex gap-4">
-            <p>or continue wth</p>
-            <div className="flex gap-4 items-center justify-center">
-              <Icon className="cursor-pointer" path={mdiFacebook} size={1} />
-              <Icon className="cursor-pointer" path={mdiAppleIos} size={1} />
-              <Icon className="cursor-pointer" path={mdiGoogle} size={1} />
-            </div>
-          </div>
         </div>
         <div className="absolute -z-10 left-[35%]">
           <Suspense fallback={<p>Loading..</p>}>

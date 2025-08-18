@@ -1,12 +1,11 @@
 "use client";
-import { mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
-import Icon from "@mdi/react";
 import clsxm from "@riverfl0w/clsxm";
 
+import { EyeClosed, EyeIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import { useLoginPost } from "../hooks/mutation";
 import type { loginDataType } from "../page";
-import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const [isHidden, setIsHidden] = useState(true);
@@ -100,11 +99,7 @@ export default function LoginForm() {
                   className="cursor-pointer"
                   onClick={() => setIsHidden(!isHidden)}
                 >
-                  {isHidden ? (
-                    <Icon path={mdiEyeOffOutline} size={1} />
-                  ) : (
-                    <Icon path={mdiEyeOutline} size={1} />
-                  )}
+                  {isHidden ? <EyeIcon /> : <EyeClosed />}
                 </span>
               </div>
             </div>
