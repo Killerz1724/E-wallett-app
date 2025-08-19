@@ -1,5 +1,65 @@
 {
-  "node": {},
+  "node": {
+    "6070a7fb8d19215724da9c336ed1d0226055fe00fa": {
+      "workers": {
+        "app/login/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22E%3A%5C%5CDocuments%5C%5CWebsite%20Project%5C%5CMini%20Project%5C%5Ce-wallett-app%5C%5Csrc%5C%5Clib%5C%5Ccookies.ts%22%2C%5B%7B%22id%22%3A%227f239a6b43335ecfeda7f6d9818057406d0cb2d274%22%2C%22exportedName%22%3A%22setToken%22%7D%2C%7B%22id%22%3A%227fb657c0c06ce79ea6f41569f6db6983a66aca1e4d%22%2C%22exportedName%22%3A%22removeToken%22%7D%2C%7B%22id%22%3A%227ff564f8aba847a28ca642d6dc954ac45134e62bed%22%2C%22exportedName%22%3A%22getToken%22%7D%5D%5D%2C%5B%22E%3A%5C%5CDocuments%5C%5CWebsite%20Project%5C%5CMini%20Project%5C%5Ce-wallett-app%5C%5Csrc%5C%5Capp%5C%5Clogin%5C%5Cactions%5C%5Caction.ts%22%2C%5B%7B%22id%22%3A%226070a7fb8d19215724da9c336ed1d0226055fe00fa%22%2C%22exportedName%22%3A%22Login%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/login/page": "action-browser"
+      }
+    },
+    "7f239a6b43335ecfeda7f6d9818057406d0cb2d274": {
+      "workers": {
+        "app/login/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22E%3A%5C%5CDocuments%5C%5CWebsite%20Project%5C%5CMini%20Project%5C%5Ce-wallett-app%5C%5Csrc%5C%5Clib%5C%5Ccookies.ts%22%2C%5B%7B%22id%22%3A%227f239a6b43335ecfeda7f6d9818057406d0cb2d274%22%2C%22exportedName%22%3A%22setToken%22%7D%2C%7B%22id%22%3A%227fb657c0c06ce79ea6f41569f6db6983a66aca1e4d%22%2C%22exportedName%22%3A%22removeToken%22%7D%2C%7B%22id%22%3A%227ff564f8aba847a28ca642d6dc954ac45134e62bed%22%2C%22exportedName%22%3A%22getToken%22%7D%5D%5D%2C%5B%22E%3A%5C%5CDocuments%5C%5CWebsite%20Project%5C%5CMini%20Project%5C%5Ce-wallett-app%5C%5Csrc%5C%5Capp%5C%5Clogin%5C%5Cactions%5C%5Caction.ts%22%2C%5B%7B%22id%22%3A%226070a7fb8d19215724da9c336ed1d0226055fe00fa%22%2C%22exportedName%22%3A%22Login%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/_not-found/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22E%3A%5C%5CDocuments%5C%5CWebsite%20Project%5C%5CMini%20Project%5C%5Ce-wallett-app%5C%5Csrc%5C%5Clib%5C%5Ccookies.ts%22%2C%5B%7B%22id%22%3A%227f239a6b43335ecfeda7f6d9818057406d0cb2d274%22%2C%22exportedName%22%3A%22setToken%22%7D%2C%7B%22id%22%3A%227fb657c0c06ce79ea6f41569f6db6983a66aca1e4d%22%2C%22exportedName%22%3A%22removeToken%22%7D%2C%7B%22id%22%3A%227ff564f8aba847a28ca642d6dc954ac45134e62bed%22%2C%22exportedName%22%3A%22getToken%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/login/page": "action-browser",
+        "app/_not-found/page": "action-browser"
+      }
+    },
+    "7fb657c0c06ce79ea6f41569f6db6983a66aca1e4d": {
+      "workers": {
+        "app/login/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22E%3A%5C%5CDocuments%5C%5CWebsite%20Project%5C%5CMini%20Project%5C%5Ce-wallett-app%5C%5Csrc%5C%5Clib%5C%5Ccookies.ts%22%2C%5B%7B%22id%22%3A%227f239a6b43335ecfeda7f6d9818057406d0cb2d274%22%2C%22exportedName%22%3A%22setToken%22%7D%2C%7B%22id%22%3A%227fb657c0c06ce79ea6f41569f6db6983a66aca1e4d%22%2C%22exportedName%22%3A%22removeToken%22%7D%2C%7B%22id%22%3A%227ff564f8aba847a28ca642d6dc954ac45134e62bed%22%2C%22exportedName%22%3A%22getToken%22%7D%5D%5D%2C%5B%22E%3A%5C%5CDocuments%5C%5CWebsite%20Project%5C%5CMini%20Project%5C%5Ce-wallett-app%5C%5Csrc%5C%5Capp%5C%5Clogin%5C%5Cactions%5C%5Caction.ts%22%2C%5B%7B%22id%22%3A%226070a7fb8d19215724da9c336ed1d0226055fe00fa%22%2C%22exportedName%22%3A%22Login%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/_not-found/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22E%3A%5C%5CDocuments%5C%5CWebsite%20Project%5C%5CMini%20Project%5C%5Ce-wallett-app%5C%5Csrc%5C%5Clib%5C%5Ccookies.ts%22%2C%5B%7B%22id%22%3A%227f239a6b43335ecfeda7f6d9818057406d0cb2d274%22%2C%22exportedName%22%3A%22setToken%22%7D%2C%7B%22id%22%3A%227fb657c0c06ce79ea6f41569f6db6983a66aca1e4d%22%2C%22exportedName%22%3A%22removeToken%22%7D%2C%7B%22id%22%3A%227ff564f8aba847a28ca642d6dc954ac45134e62bed%22%2C%22exportedName%22%3A%22getToken%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/login/page": "action-browser",
+        "app/_not-found/page": "action-browser"
+      }
+    },
+    "7ff564f8aba847a28ca642d6dc954ac45134e62bed": {
+      "workers": {
+        "app/login/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22E%3A%5C%5CDocuments%5C%5CWebsite%20Project%5C%5CMini%20Project%5C%5Ce-wallett-app%5C%5Csrc%5C%5Clib%5C%5Ccookies.ts%22%2C%5B%7B%22id%22%3A%227f239a6b43335ecfeda7f6d9818057406d0cb2d274%22%2C%22exportedName%22%3A%22setToken%22%7D%2C%7B%22id%22%3A%227fb657c0c06ce79ea6f41569f6db6983a66aca1e4d%22%2C%22exportedName%22%3A%22removeToken%22%7D%2C%7B%22id%22%3A%227ff564f8aba847a28ca642d6dc954ac45134e62bed%22%2C%22exportedName%22%3A%22getToken%22%7D%5D%5D%2C%5B%22E%3A%5C%5CDocuments%5C%5CWebsite%20Project%5C%5CMini%20Project%5C%5Ce-wallett-app%5C%5Csrc%5C%5Capp%5C%5Clogin%5C%5Cactions%5C%5Caction.ts%22%2C%5B%7B%22id%22%3A%226070a7fb8d19215724da9c336ed1d0226055fe00fa%22%2C%22exportedName%22%3A%22Login%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        },
+        "app/_not-found/page": {
+          "moduleId": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22E%3A%5C%5CDocuments%5C%5CWebsite%20Project%5C%5CMini%20Project%5C%5Ce-wallett-app%5C%5Csrc%5C%5Clib%5C%5Ccookies.ts%22%2C%5B%7B%22id%22%3A%227f239a6b43335ecfeda7f6d9818057406d0cb2d274%22%2C%22exportedName%22%3A%22setToken%22%7D%2C%7B%22id%22%3A%227fb657c0c06ce79ea6f41569f6db6983a66aca1e4d%22%2C%22exportedName%22%3A%22removeToken%22%7D%2C%7B%22id%22%3A%227ff564f8aba847a28ca642d6dc954ac45134e62bed%22%2C%22exportedName%22%3A%22getToken%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/login/page": "action-browser",
+        "app/_not-found/page": "action-browser"
+      }
+    }
+  },
   "edge": {},
   "encryptionKey": "7RJfFYLCuKYw9jXVJuScaHFOWbAhKia/9ooHjAz2cn0="
 }

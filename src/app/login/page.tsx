@@ -28,6 +28,9 @@ const Login = () => {
           </div>
         </div>
         <div className="flex flex-col gap-[47px]">
+          <div className="flex flex-col gap-[17px]">
+            <h3 className="text-orange-400 font-bold text-3xl">Sign In</h3>
+          </div>
           <LoginForm />
         </div>
         <div className="absolute -z-10 left-[35%]">
