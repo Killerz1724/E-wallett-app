@@ -2,6 +2,7 @@ import DashboardLayout from "components/DashboardLayout";
 import React from "react";
 import BalanceCard from "./components/BalanceCard";
 import IncomeCard from "./components/IncomeCard";
+import ExpenseCard from "./components/ExpenseCard";
 
 export default function page() {
   return (
@@ -10,7 +11,7 @@ export default function page() {
         <article className="flex gap-4 justify-between">
           <BalanceCard />
           <IncomeCard />
-          <BalanceCard />
+          <ExpenseCard />
         </article>
       </section>
     </DashboardLayout>
