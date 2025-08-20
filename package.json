@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@mdi/react": "^1.6.1",
+    "@radix-ui/react-select": "^2.2.6",
     "@riverfl0w/clsxm": "^0.1.2",
     "@tailwindcss/postcss": "^4.1.12",
     "@tailwindcss/vite": "^4.1.11",

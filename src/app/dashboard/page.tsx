@@ -3,6 +3,7 @@ import React from "react";
 import BalanceCard from "./components/BalanceCard";
 import IncomeCard from "./components/IncomeCard";
 import ExpenseCard from "./components/ExpenseCard";
+import ExchangeRatesComp from "./components/ExchangeRatesComp";
 
 export default function page() {
   return (
@@ -12,6 +13,10 @@ export default function page() {
           <BalanceCard />
           <IncomeCard />
           <ExpenseCard />
+        </article>
+        <article>
+          <h3 className="font-bold text-3xl mb-6">Exchange Rates</h3>
+          <ExchangeRatesComp />
         </article>
       </section>
     </DashboardLayout>
