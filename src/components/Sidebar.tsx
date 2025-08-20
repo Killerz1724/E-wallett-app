@@ -1,3 +1,5 @@
+"use client";
+import clsxm from "@riverfl0w/clsxm";
 import {
   ArrowLeftFromLine,
   BanknoteArrowDown,
@@ -7,7 +9,7 @@ import {
   NotebookText,
 } from "lucide-react";
 import Link from "next/link";
-import { ForwardRefExoticComponent, RefAttributes } from "react";
+import { ForwardRefExoticComponent, RefAttributes, useState } from "react";
 
 type navItemsProps = {
   name: string;
@@ -39,8 +41,15 @@ const navItems: navItemsProps[] = [
 ];
 
 export default function Sidebar() {
+  const [isCollapse, setIsCollapse] = useState(false);
   return (
-    <aside className="relative flex flex-col pr-16 pl-6 max-w-3xl h-screen items-center rounded-br-lg bg-orange-400 rounded-tr-lg justify-center">
+    <aside
+      className={clsxm(
+        `relative flex flex-col  w-54 h-screen items-center rounded-br-lg bg-orange-400 rounded-tr-lg justify-center`,
+        isCollapse && "w-20",
+        "transition-all duration-500 ease-in-out"
+      )}
+    >
       <ul className="flex flex-col gap-10">
         {navItems.map((val, i) => (
           <li key={i} className="text-white">
@@ -48,19 +57,26 @@ export default function Sidebar() {
               <Link href={val.path}>
                 <div className="flex items-center gap-4">
                   <val.icon />
-                  <p>{val.name}</p>
+                  {!isCollapse && <p>{val.name}</p>}
                 </div>
               </Link>
             ) : (
               <div className="flex items-center gap-4">
                 <val.icon />
-                <p>{val.name}</p>
+                {!isCollapse && <p>{val.name}</p>}
               </div>
             )}
           </li>
         ))}
       </ul>
-      <div className="absolute bottom-4 right-4 cursor-pointer text-white">
+      <div
+        onClick={() => setIsCollapse(!isCollapse)}
+        className={clsxm(
+          `absolute bottom-4 right-4 cursor-pointer text-white`,
+          "transition-all duration-500 ease-in-out",
+          isCollapse && "rotate-180 transition-all duration-500 ease-in-out"
+        )}
+      >
         <ArrowLeftFromLine />
       </div>
     </aside>
