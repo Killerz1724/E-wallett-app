@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
 import QueryProviders from "components/QueryProviders";
 import ToastProvider from "components/ToastProvider";
+import type { Metadata } from "next";
 import React from "react";
 import "./globals.css";
 
