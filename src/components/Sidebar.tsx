@@ -45,39 +45,50 @@ export default function Sidebar() {
   return (
     <aside
       className={clsxm(
-        `relative flex flex-col  w-54 h-screen items-center rounded-br-lg bg-orange-400 rounded-tr-lg justify-center`,
+        `relative flex flex-col  w-full h-full  items-center rounded-br-lg  rounded-tr-lg justify-center`,
+        `relative flex flex-col  w-54 h-screen rounded-br-lg bg-gradient-to-r bg-orange-600 to-orange-500 rounded-tr-lg  `,
         isCollapse && "w-20",
         "transition-all duration-500 ease-in-out"
       )}
     >
-      <ul className="flex flex-col gap-10">
-        {navItems.map((val, i) => (
-          <li key={i} className="text-white">
-            {val.path ? (
-              <Link href={val.path}>
-                <div className="flex items-center gap-4">
+      <div
+        className={clsxm(
+          `relative flex flex-col  w-full h-full  items-center rounded-br-lg  rounded-tr-lg justify-center`,
+          "bg-white/30  bg-clip-padding backdrop-filter backdrop-blur-2xl  border border-gray-100"
+        )}
+      >
+        <ul className="flex flex-col gap-5">
+          {navItems.map((val, i) => (
+            <li
+              key={i}
+              className="text-white hover:bg-white/40 p-2 rounded-md transition-all duration-500 ease-in-out"
+            >
+              {val.path ? (
+                <Link href={val.path}>
+                  <div className="flex items-center gap-4">
+                    <val.icon />
+                    {!isCollapse && <p>{val.name}</p>}
+                  </div>
+                </Link>
+              ) : (
+                <div className="flex items-center gap-4 cursor-pointer">
                   <val.icon />
                   {!isCollapse && <p>{val.name}</p>}
                 </div>
-              </Link>
-            ) : (
-              <div className="flex items-center gap-4">
-                <val.icon />
-                {!isCollapse && <p>{val.name}</p>}
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
-      <div
-        onClick={() => setIsCollapse(!isCollapse)}
-        className={clsxm(
-          `absolute bottom-4 right-4 cursor-pointer text-white`,
-          "transition-all duration-500 ease-in-out",
-          isCollapse && "rotate-180 transition-all duration-500 ease-in-out"
-        )}
-      >
-        <ArrowLeftFromLine />
+              )}
+            </li>
+          ))}
+        </ul>
+        <div
+          onClick={() => setIsCollapse(!isCollapse)}
+          className={clsxm(
+            `absolute bottom-4 right-4 cursor-pointer text-white`,
+            "transition-all duration-500 ease-in-out",
+            isCollapse && "rotate-180 transition-all duration-500 ease-in-out"
+          )}
+        >
+          <ArrowLeftFromLine />
+        </div>
       </div>
     </aside>
   );
