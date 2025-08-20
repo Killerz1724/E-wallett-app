@@ -4,7 +4,7 @@ import React from "react";
 export default function BalanceCard() {
   const balance = 500000;
   return (
-    <div className="w-full rounded-2xl bg-orange-500 to-orange-300 border border-orange-200/30 backdrop-blur-xl shadow-lg p-6 flex flex-col gap-3">
+    <div className="w-full rounded-2xl bg-gradient-to-br bg-orange-500 to-orange-400 border border-orange-200/30 backdrop-blur-xl shadow-lg p-6 flex flex-col gap-3">
       <div className="flex items-center gap-2">
         <Wallet className="h-5 w-5 text-white/90" />
         <span className="text-sm font-medium text-white/80">My Balance</span>
