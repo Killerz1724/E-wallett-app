@@ -60,21 +60,16 @@ export default function Sidebar() {
       >
         <ul className="flex flex-col gap-5">
           {navItems.map((val, i) => (
-            <li
-              key={i}
-              className="text-white hover:bg-white/40 p-2 rounded-md transition-all duration-500 ease-in-out"
-            >
+            <li key={i} className="text-white">
               {val.path ? (
                 <Link href={val.path}>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 cursor-pointer hover:bg-white/40 p-2 rounded-md transition-all duration-500 ease-in-out">
                     <val.icon />
                     {!isCollapse && <p>{val.name}</p>}
                   </div>
                 </Link>
               ) : (
-                <div className="flex items-center gap-4 cursor-pointer">
-                  {!isCollapse && <val.icon />}
-
+                <div>
                   {val.name === "Transfer" && (
                     <ModalTrigger iconMode={isCollapse} />
                   )}
