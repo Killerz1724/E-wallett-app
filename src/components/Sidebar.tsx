@@ -21,7 +21,7 @@ type navItemsProps = {
 
 const navItems: navItemsProps[] = [
   {
-    name: "Home",
+    name: "Dashboard",
     path: "/dashboard",
     icon: HouseIcon,
   },

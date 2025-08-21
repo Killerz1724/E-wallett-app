@@ -8,7 +8,7 @@ import ExchangeRatesComp from "./components/ExchangeRatesComp";
 export default function page() {
   return (
     <DashboardLayout>
-      <section className="flex flex-col gap-10">
+      <section className="flex flex-col gap-10 w-full">
         <article className="flex gap-4 justify-between">
           <BalanceCard />
           <IncomeCard />

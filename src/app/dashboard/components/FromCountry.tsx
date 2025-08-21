@@ -9,14 +9,17 @@ import React from "react";
 
 export default function FromCountry() {
   return (
-    <Select>
-      <SelectTrigger>
-        <SelectValue placeholder="From" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="IDR">IDR</SelectItem>
-        <SelectItem value="USD">USD</SelectItem>
-      </SelectContent>
-    </Select>
+    <div>
+      <label htmlFor="from">From</label>
+      <Select>
+        <SelectTrigger>
+          <SelectValue placeholder="From" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="IDR">IDR</SelectItem>
+          <SelectItem value="USD">USD</SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
   );
 }
