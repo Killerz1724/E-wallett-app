@@ -65,20 +65,4 @@ export const DummyTransactions: Transaction[] = [
     transaction_time: new Date("2025-08-08T07:50:00"),
     recipent: "Jane Doe",
   },
-  {
-    transaction_category: "Payment",
-    source_fund: "Wallet",
-    description: "Paid Spotify subscription",
-    amount: "54999",
-    transaction_time: new Date("2025-08-09T21:40:00"),
-    recipent: "Spotify",
-  },
-  {
-    transaction_category: "Payment",
-    source_fund: "Wallet",
-    description: "Grab ride to airport",
-    amount: "85000",
-    transaction_time: new Date("2025-08-10T10:05:00"),
-    recipent: "Grab",
-  },
 ];

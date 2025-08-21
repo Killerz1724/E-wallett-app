@@ -9,6 +9,7 @@ import {
 import React from "react";
 import { DummyTransactions } from "./dummyData";
 import FilterTable from "./FilterTable";
+import clsxm from "@riverfl0w/clsxm";
 
 export type TransactionDataType = {
   page_info: PageInfo;
@@ -63,6 +64,25 @@ export default function TransactionsTable() {
           ))}
         </TableBody>
       </Table>
+      <div className="w-full gap-3 flex items-center justify-end">
+        <button
+          className={clsxm(
+            "px-4 py-2 border bg-orange-400 text-white hover:cursor-pointer hover:bg-orange-300 border-gray-300 rounded-md",
+            "transition-all"
+          )}
+        >
+          Previous
+        </button>
+        <p className="text-lg font-semibold">1/1</p>
+        <button
+          className={clsxm(
+            "px-4 py-2 border bg-orange-400 text-white hover:cursor-pointer hover:bg-orange-300 border-gray-300 rounded-md",
+            "transition-all"
+          )}
+        >
+          Next
+        </button>
+      </div>
     </article>
   );
 }
