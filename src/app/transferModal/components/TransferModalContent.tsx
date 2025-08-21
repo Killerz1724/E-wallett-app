@@ -1,12 +1,5 @@
 import Button from "components/Button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "components/ui/Select";
-import React from "react";
+import SelectRecipient from "./SelectMethod";
 
 export default function TransferModalContent() {
   return (
@@ -17,15 +10,7 @@ export default function TransferModalContent() {
           <label htmlFor="source-fund" className="font-semibold text-sm">
             Select Recipient
           </label>
-          <Select>
-            <SelectTrigger>
-              <SelectValue placeholder="Select Recipient" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="80000002">Loki</SelectItem>
-              <SelectItem value="80000004">Thor</SelectItem>
-            </SelectContent>
-          </Select>
+          <SelectRecipient />
         </div>
         <div className="flex flex-col gap-2 w-full">
           <label htmlFor="source-fund" className="font-semibold text-sm">
