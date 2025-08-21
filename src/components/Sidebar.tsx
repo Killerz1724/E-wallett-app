@@ -54,7 +54,7 @@ export default function Sidebar() {
       <div
         className={clsxm(
           `relative flex flex-col  w-full h-full  items-center rounded-br-lg  rounded-tr-lg justify-center`,
-          "bg-white/30  bg-clip-padding backdrop-filter backdrop-blur-2xl  border border-gray-100"
+          "bg-white/30   backdrop-filter backdrop-blur-2xl  border border-gray-100"
         )}
       >
         <ul className="flex flex-col gap-5">
