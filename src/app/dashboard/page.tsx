@@ -5,7 +5,7 @@ import IncomeCard from "./components/IncomeCard";
 import ExpenseCard from "./components/ExpenseCard";
 import ExchangeRatesComp from "./components/ExchangeRatesComp";
 
-export default function page() {
+export default function Dashboardage() {
   return (
     <DashboardLayout>
       <section className="flex flex-col gap-10 w-full">
