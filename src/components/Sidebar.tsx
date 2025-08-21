@@ -10,15 +10,10 @@ import {
   NotebookText,
 } from "lucide-react";
 import Link from "next/link";
-import {
-  ForwardRefExoticComponent,
-  ReactNode,
-  RefAttributes,
-  useState,
-} from "react";
+import { ForwardRefExoticComponent, RefAttributes, useState } from "react";
 
 type navItemsProps = {
-  name: string | ReactNode;
+  name: string;
   path?: string;
   icon: ForwardRefExoticComponent<
     Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
@@ -37,7 +32,7 @@ const navItems: navItemsProps[] = [
     icon: NotebookText,
   },
   {
-    name: <ModalTrigger />,
+    name: "Transfer",
     icon: BanknoteArrowDown,
   },
   {
@@ -78,8 +73,11 @@ export default function Sidebar() {
                 </Link>
               ) : (
                 <div className="flex items-center gap-4 cursor-pointer">
-                  <val.icon />
-                  {!isCollapse && <>{val.name}</>}
+                  {!isCollapse && <val.icon />}
+
+                  {val.name === "Transfer" && (
+                    <ModalTrigger iconMode={isCollapse} />
+                  )}
                 </div>
               )}
             </li>
