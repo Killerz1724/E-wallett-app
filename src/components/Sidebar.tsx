@@ -1,5 +1,6 @@
 "use client";
 import clsxm from "@riverfl0w/clsxm";
+import TopupModalTrigger from "app/topupModal/components/ModalTrigger";
 import ModalTrigger from "app/transferModal/components/ModalTrigger";
 import {
   ArrowLeftFromLine,
@@ -72,6 +73,9 @@ export default function Sidebar() {
                 <div>
                   {val.name === "Transfer" && (
                     <ModalTrigger iconMode={isCollapse} />
+                  )}
+                  {val.name === "TopUp" && (
+                    <TopupModalTrigger iconMode={isCollapse} />
                   )}
                 </div>
               )}

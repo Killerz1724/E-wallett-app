@@ -1,4 +1,5 @@
 "use client";
+import TopupModalContent from "app/topupModal/components/TopupModalContent";
 import TransferModalContent from "app/transferModal/components/TransferModalContent";
 import { X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,6 +24,7 @@ export default function Modal() {
           </div>
         </div>
         {content === "TRANSFER" && <TransferModalContent />}
+        {content === "TOPUP" && <TopupModalContent />}
       </article>
     </section>
   );
