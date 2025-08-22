@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import { closeModal } from "store/modalStore";
+import ProfileModalContent from "./profile/ProfileModalContent";
 
 export default function Modal() {
   const { isOpen, content } = useSelector((state: RootState) => state.modal);
@@ -25,6 +26,7 @@ export default function Modal() {
         </div>
         {content === "TRANSFER" && <TransferModalContent />}
         {content === "TOPUP" && <TopupModalContent />}
+        {content === "PROFILE" && <ProfileModalContent />}
       </article>
     </section>
   );

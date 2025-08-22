@@ -1,13 +1,18 @@
+"use client";
 import Image from "next/image";
 import React, { Suspense } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/Popover";
 import ProfileOptions from "./ProfileOptions";
 
 export default function ProfileHeaderIcon() {
+  const [open, setOpen] = React.useState(false);
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <div className="flex items-center gap-4 cursor-pointer">
+        <div
+          className="flex items-center gap-4 cursor-pointer"
+          onClick={() => setOpen(!open)}
+        >
           <div className="rounded-full border-1">
             <Suspense fallback={<p>Loading..</p>}>
               <Image
@@ -23,7 +28,7 @@ export default function ProfileHeaderIcon() {
         </div>
       </PopoverTrigger>
       <PopoverContent align="center">
-        <ProfileOptions />
+        <ProfileOptions handleCloseAction={() => setOpen(false)} />
       </PopoverContent>
     </Popover>
   );
