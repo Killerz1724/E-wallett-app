@@ -1,9 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import useMutationToast from "../../../hooks/useMutationToast";
-import type { loginDataType } from "../page";
-import type { ApiError, ApiResponse } from "../../../types/api";
 import { api } from "../../../lib/axios";
+import type { ApiError, ApiResponse } from "../../../types/api";
+import { UserResponses } from "../actions/action";
+import type { loginDataType } from "../page";
+import { useDispatch } from "react-redux";
+import { setUser } from "store/userStore";
 
 type LoginResponse = {
   access_token: string;
@@ -24,6 +27,19 @@ export function useLoginPost() {
       success: "Succesfully login",
     }
   );
+
+  return res;
+}
+
+export function useUserDataGet() {
+  const dispatch = useDispatch();
+  const res = useMutation<UserResponses, AxiosError<ApiError>>({
+    mutationFn: async () => {
+      const res = await api.get<ApiResponse<UserResponses>>("/profile/me");
+      dispatch(setUser(res.data.data));
+      return res.data.data;
+    },
+  });
 
   return res;
 }

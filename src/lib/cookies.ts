@@ -3,7 +3,8 @@ import { cookies } from "next/headers";
 import { JWT_TOKEN_KEY } from "../constant/common";
 
 export const getToken = async () => {
-  return (await cookies()).get(JWT_TOKEN_KEY);
+  const cookieStore = await cookies();
+  return cookieStore.get(JWT_TOKEN_KEY)?.value;
 };
 
 export const setToken = async (token: string) => {

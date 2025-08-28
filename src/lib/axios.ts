@@ -2,6 +2,10 @@ import axios, { type AxiosError } from "axios";
 import type { UninterceptedApiError } from "../types/api";
 import { getToken } from "./cookies";
 
+function isServer() {
+  return typeof window === "undefined";
+}
+
 export const api = axios.create({
   baseURL: "http://localhost:8000/api",
   headers: {
@@ -10,8 +14,8 @@ export const api = axios.create({
   withCredentials: false,
 });
 
-api.interceptors.request.use((config) => {
-  const token = getToken();
+api.interceptors.request.use(async (config) => {
+  const token = isServer ? await getToken() : "";
   if (config.headers) {
     config.headers.Authorization = token ? `Bearer ${token}` : "";
   }

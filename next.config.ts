@@ -5,15 +5,25 @@ const nextConfig: NextConfig = {
   experimental: {
     externalDir: false,
   },
-  async redirects() {
-    return [
+
+  images: {
+    remotePatterns: [
       {
-        source: "/",
-        destination: "/dashboard",
-        permanent: true,
+        protocol: "https",
+        hostname: "evqrdlwphgtlcoafoaas.supabase.co",
       },
-    ];
+    ],
   },
+
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: "/",
+  //       destination: "/dashboard",
+  //       permanent: true,
+  //     },
+  //   ];
+  // },
 };
 
 export default nextConfig;

@@ -2,6 +2,8 @@
 import clsxm from "@riverfl0w/clsxm";
 import { Eye, EyeClosed } from "lucide-react";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 
 export default function BalanceComp({
   style = "white",
@@ -9,7 +11,7 @@ export default function BalanceComp({
   style?: "black" | "white";
 }) {
   const [showBalance, setShowBalance] = useState(false);
-  const balance = 500000;
+  const userBalance = useSelector((state: RootState) => state.user.balance);
   return (
     <div className="flex items-center gap-2">
       <p
@@ -19,7 +21,11 @@ export default function BalanceComp({
           style === "white" && "text-white"
         )}
       >
-        {showBalance ? <>Rp {balance.toLocaleString("id-ID")}</> : "**********"}
+        {showBalance ? (
+          <>Rp {userBalance.toLocaleString("id-ID")}</>
+        ) : (
+          "**********"
+        )}
       </p>
       {showBalance ? (
         <Eye

@@ -3,9 +3,13 @@ import Image from "next/image";
 import React, { Suspense } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/Popover";
 import ProfileOptions from "./ProfileOptions";
+import { useSelector } from "react-redux";
+import { RootState } from "store";
 
 export default function ProfileHeaderIcon() {
   const [open, setOpen] = React.useState(false);
+  const userData = useSelector((state: RootState) => state.user);
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -16,7 +20,9 @@ export default function ProfileHeaderIcon() {
           <div className="rounded-full border-1">
             <Suspense fallback={<p>Loading..</p>}>
               <Image
-                src={"/dummy-profile.jpg"}
+                src={
+                  userData.profilPic ? userData.profilPic : "/dummy-profile.jpg"
+                }
                 alt="profile icon"
                 width={30}
                 height={30}
@@ -24,7 +30,7 @@ export default function ProfileHeaderIcon() {
               />
             </Suspense>
           </div>
-          <p className="text-lg font-semibold">Jokowewe</p>
+          <p className="text-lg font-semibold">{userData.username}</p>
         </div>
       </PopoverTrigger>
       <PopoverContent align="center">

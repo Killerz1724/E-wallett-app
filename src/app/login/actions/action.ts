@@ -1,5 +1,6 @@
 "use server";
 
+import { COMMON_ERROR } from "constant/common";
 import { api } from "lib/axios";
 import { setToken } from "lib/cookies";
 import { ApiResponse } from "types/api";
@@ -7,6 +8,14 @@ import { ApiResponse } from "types/api";
 type LoginResponse = {
   access_token: string;
 };
+
+export type UserResponses = {
+  img_url: string;
+  username: string;
+  email: string;
+  balance: number;
+};
+
 export async function Login(
   _: { success: boolean; message: string },
   formData: FormData
@@ -24,7 +33,7 @@ export async function Login(
     return { success: true, message: "success" };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
-    const message = error.response.data.message;
+    const message = error.response ? error.response.data.message : COMMON_ERROR;
     return { success: false, message: message };
   }
 }
