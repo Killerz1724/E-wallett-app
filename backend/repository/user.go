@@ -8,12 +8,14 @@ import (
 	"ewallet/entity"
 
 	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/shopspring/decimal"
 )
 
 type UserRepoItf interface {
 	UserLoginRepo( context.Context,  entity.LoginBody) (string, error) 
 	UserRepoRegister( context.Context,  entity.RegisterBody) error
 	UserShowUserDetailsRepo( context.Context,  string) (*entity.ShowUserProfileRes, error)
+	UserIncomeRepo(context.Context, string ) (*entity.UserIncomeRes,error) 
 }
 
 type UserRepoImpl struct {
@@ -119,3 +121,46 @@ func (ur UserRepoImpl) UserShowUserDetailsRepo(c context.Context, sub string) (*
 
 	return &user, nil
 }
+
+func (ur UserRepoImpl) UserIncomeRepo(c context.Context, email string ) (*entity.UserIncomeRes,error){
+
+	q := `
+	SELECT id 
+	FROM users u
+	WHERE u.email = $1;
+	`
+	var userId int
+	row := ur.db.QueryRowContext(c, q, email)
+	
+	err := row.Scan(&userId)
+
+	if err != nil {
+		return nil, &entity.CustomError{
+			Msg: constant.ShowUserDetailError{Msg: constant.ShowUserDetailsError.Error()},
+			Log: err,
+		}
+	}
+
+	q = `
+	SELECT COALESCE(SUM(amount), 0) AS total_amount 
+	FROM transaction_histories th
+	WHERE th.user_id = $1 
+		AND th.source_fund_id <> 1 
+		AND th.transaction_time >= date_trunc('month', CURRENT_DATE) 
+		AND th.transaction_time < (date_trunc('month', CURRENT_DATE) + interval '1 month');
+	`
+
+	var totalAmount decimal.Decimal
+	
+	rows := ur.db.QueryRowContext(c, q, userId)
+	err = rows.Scan(&totalAmount)
+
+	if err != nil {
+		return nil, &entity.CustomError{
+			Msg: constant.CommonError,
+			Log: err,
+		}
+	}
+
+	return &entity.UserIncomeRes{TotalIncome: totalAmount}, nil
+} 

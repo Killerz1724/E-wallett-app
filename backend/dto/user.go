@@ -23,3 +23,7 @@ type ShowUserProfileRes struct {
 	Email    string          `json:"email"`
 	Balance  decimal.Decimal `json:"balance"`
 }
+
+type UserIncomeRes struct {
+	TotalIncome decimal.Decimal `json:"total_income"`
+}

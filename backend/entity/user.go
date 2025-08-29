@@ -23,3 +23,7 @@ type ShowUserProfileRes struct {
 	Email    string
 	Balance  decimal.Decimal
 }
+
+type UserIncomeRes struct {
+	TotalIncome decimal.Decimal
+}

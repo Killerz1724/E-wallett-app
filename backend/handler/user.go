@@ -85,7 +85,11 @@ func (uh UserHandlerImpl) UserShowUserDetailsHandler(c *gin.Context) {
 	token, exist := c.Get("subject")
 
 	if !exist {
-		c.Error(&entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: constant.JwtTokenInvalid}).SetType(gin.ErrorTypePublic)
+		c.Error(
+			&entity.CustomError{
+				Msg: constant.TokenProblem{
+					Msg: constant.JwtTokenInvalid.Error()}, 
+				Log: constant.JwtTokenInvalid}).SetType(gin.ErrorTypePublic)
 		return
 	}
 	res, err := uh.uuc.UserShowUserDetailsUsecase(c, token.(string))
@@ -102,4 +106,23 @@ func (uh UserHandlerImpl) UserShowUserDetailsHandler(c *gin.Context) {
 		Error: nil,
 		Data: resBody,
 	})
+}
+
+func (uh UserHandlerImpl)UserIncomeHandler(c *gin.Context) {
+	token, _ := c.Get("subject")
+
+	res, err := uh.uuc.UserIncomeUsecase(c, token.(string))
+
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+	}
+
+	resBody := dto.UserIncomeRes(*res)
+
+	c.JSON(http.StatusOK, dto.Response{
+		Success: true,
+		Error: nil,
+		Data: resBody,
+	})
+	
 }
