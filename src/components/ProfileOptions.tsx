@@ -3,6 +3,7 @@ import clsxm from "@riverfl0w/clsxm";
 import { removeToken } from "lib/cookies";
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { persistor } from "store";
 import ProfileTrigger from "./profile/ProfileTrigger";
 
 export default function ProfileOptions({
@@ -13,7 +14,8 @@ export default function ProfileOptions({
   const router = useRouter();
   async function handleLogout() {
     await removeToken();
-    router.push("/login");
+    persistor.purge();
+    router.push("/");
   }
   return (
     <div className="flex flex-col gap-4" onClick={handleCloseAction}>
