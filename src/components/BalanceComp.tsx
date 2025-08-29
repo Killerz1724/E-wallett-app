@@ -22,7 +22,7 @@ export default function BalanceComp({
         )}
       >
         {showBalance ? (
-          <>Rp {userBalance.toLocaleString("id-ID")}</>
+          <>Rp {Number(userBalance).toLocaleString("id-ID")}</>
         ) : (
           "**********"
         )}
