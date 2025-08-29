@@ -67,6 +67,7 @@ func main() {
 		profile.Use(middleware.AuthMiddleware())
 		profile.GET("/me", uh.UserShowUserDetailsHandler)
 		profile.GET("/income", uh.UserIncomeHandler)
+		profile.GET("/expense", uh.UserExpenseHandler)
 	}
 	{
 		transaction := r.Group("/api/users")

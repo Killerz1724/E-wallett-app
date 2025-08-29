@@ -126,3 +126,22 @@ func (uh UserHandlerImpl)UserIncomeHandler(c *gin.Context) {
 	})
 	
 }
+
+func (uh UserHandlerImpl) UserExpenseHandler(c *gin.Context ) {
+
+	token, _ := c.Get("subject")
+
+	res, err := uh.uuc.UserExpenseUsecase(c, token.(string))
+
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+	}
+
+	resBody := dto.UserExpenseRes(*res)
+
+	c.JSON(http.StatusOK, dto.Response{
+		Success: true,
+		Error: nil,
+		Data: resBody,
+	})
+}

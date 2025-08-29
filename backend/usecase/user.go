@@ -16,6 +16,7 @@ type UserUsecaseItf interface {
 	UsecaseRegister(context.Context, entity.RegisterBody) error
 	UserShowUserDetailsUsecase( context.Context,  string) (*entity.ShowUserProfileRes, error)
 	UserIncomeUsecase(context.Context, string ) (*entity.UserIncomeRes,error)
+	UserExpenseUsecase(context.Context, string ) (*entity.UserExpenseRes,error)  
 }
 
 type UserUsecaseImpl struct {
@@ -106,4 +107,14 @@ func (uuc UserUsecaseImpl) UserIncomeUsecase(c context.Context, email string ) (
 
 	return res, nil
 
+}
+
+func (uuc UserUsecaseImpl) UserExpenseUsecase(c context.Context, email string ) (*entity.UserExpenseRes,error) {
+	res, err := uuc.ur.UserExpenseRepo(c, email)
+
+	if err !=nil {
+		return  nil, err
+	}
+
+	return res, nil
 }

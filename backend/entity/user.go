@@ -27,3 +27,7 @@ type ShowUserProfileRes struct {
 type UserIncomeRes struct {
 	TotalIncome decimal.Decimal
 }
+
+type UserExpenseRes struct {
+	TotalExpense decimal.Decimal
+}
