@@ -9,7 +9,7 @@ export default function SkeletonLoading({ className }: SkeletonLoadingProps) {
   return (
     <div
       className={clsxm(
-        "animate-pulse  p-4 max-w-sm w-full mx-auto rounded-md",
+        "animate-pulse bg-gray-300  p-4 max-w-sm w-full mx-auto rounded-md",
         className
       )}
     ></div>
