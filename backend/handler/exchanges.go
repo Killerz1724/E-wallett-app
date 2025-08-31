@@ -67,3 +67,52 @@ func (eh ExchangesHandlerImpl) ExchangeCurrenyRatesHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, resMsg)
 }
+
+func (eh ExchangesHandlerImpl)RatesHandler(c *gin.Context){
+	countryCode := c.Query("country_code")
+
+	res, err := eh.eu.RatesUsecase(c, countryCode)
+
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	var resBody dto.RatesResponse
+	for _,val := range res.Rates  {
+		resBody.Rates = append(resBody.Rates, dto.CountryInfo(val))
+	}
+
+	
+
+	resMsg := dto.Response{
+		Success: true,
+		Data: resBody,
+	}
+
+	c.JSON(http.StatusOK, resMsg)
+}
+
+func (eh ExchangesHandlerImpl)CountryListHandler(c *gin.Context){
+
+	res, err := eh.eu.CountryListUsecase(c)
+
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	var resBody dto.CountryListResponse
+	for _,val := range res.Countries  {
+		resBody.Countries = append(resBody.Countries, dto.CountryInfoCode{CountryCode: val.CountryCode})
+	}
+
+	
+
+	resMsg := dto.Response{
+		Success: true,
+		Data: resBody,
+	}
+
+	c.JSON(http.StatusOK, resMsg)
+}

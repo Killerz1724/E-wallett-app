@@ -13,6 +13,8 @@ type ExchangeRatesRepoItf interface {
 	ExchangeRatesRepo(entity.ExchangeRatesResponse) error
 	CheckRatesRepo() (int, error)
 	ExchangeCurrenyRatesRepo(context.Context, string, string) (*entity.ExchangeCurrencyResponse, error)
+	RatesRepo(context.Context, string) (*entity.RatesResponse, error)
+	CountryListRepo(context.Context) (*entity.CountryListResponse, error)
 }
 
 type ExchangeRatesRepoImpl struct {
@@ -122,4 +124,77 @@ func (er ExchangeRatesRepoImpl) ExchangeCurrenyRatesRepo(c context.Context,from 
 		From:  USDFromCountry,
 		To: USDtoCountry,
 	}, nil
+}
+
+func (er ExchangeRatesRepoImpl)RatesRepo(c context.Context, countryCode string) (*entity.RatesResponse, error) {
+
+	var USDFromCountry entity.CountryInfo
+	fromRows := er.db.QueryRowContext(c, `
+		SELECT target_currency, rate
+		FROM exchange_rates
+		WHERE target_currency = $1
+	` , countryCode)
+
+	err := fromRows.Scan(&USDFromCountry.CountryCode, &USDFromCountry.Rates)
+
+	if err != nil {
+		return  nil, &entity.CustomError{
+			Msg: 
+			constant.ExchangesRateProblem{
+			Msg: constant.InvalidExchangeRate.Error(),
+		}, Log: err}
+	}
+
+	q := `
+	SELECT target_currency, rate
+	FROM exchange_rates
+	`
+
+	rows, err := er.db.QueryContext(c, q)
+	if err != nil {
+		return nil, &entity.CustomError{Msg: constant.CommonError, Log: err}
+	}
+
+	var rates entity.RatesResponse
+
+	for rows.Next() {
+		var rate entity.CountryInfo
+		err := rows.Scan(&rate.CountryCode, &rate.Rates)
+
+		if err !=nil {
+			return nil, &entity.CustomError{Msg: constant.CommonError, Log: err}
+		}
+
+		rates.Rates = append(rates.Rates, rate)
+		}
+		rates.RatesFrom = USDFromCountry.Rates
+		return &rates, nil
+}
+
+func (er ExchangeRatesRepoImpl)CountryListRepo(c context.Context) (*entity.CountryListResponse, error) {
+
+	q := `
+	SELECT target_currency 
+	FROM exchange_rates;
+	`
+
+	rows, err := er.db.QueryContext(c, q)
+
+	if err != nil {
+		return nil, &entity.CustomError{Msg: constant.CommonError, Log: err}
+	}
+
+	var countries entity.CountryListResponse
+	for rows.Next() {
+		var country entity.CountryInfoCode
+		err := rows.Scan(&country.CountryCode)
+
+		if err !=nil {
+			return nil, &entity.CustomError{Msg: constant.CommonError, Log: err}
+		}
+
+		countries.Countries = append(countries.Countries, country)
+	}
+
+	return &countries, nil
 }

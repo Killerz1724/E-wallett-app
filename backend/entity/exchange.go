@@ -13,6 +13,19 @@ type CountryInfo struct {
 	Rates       float64
 }
 
+type RatesResponse struct {
+	RatesFrom float64
+	Rates     []CountryInfo
+}
+
+type CountryInfoCode struct {
+	CountryCode string
+}
+
+type CountryListResponse struct {
+	Countries []CountryInfoCode
+}
+
 type ExchangeCurrencyResponse struct {
 	From   CountryInfo
 	To     CountryInfo

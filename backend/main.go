@@ -81,6 +81,8 @@ func main() {
 		exchanges := r.Group("/api/exchanges-rates")
 		exchanges.GET("", eh.GetExchangeDataHandler)
 		exchanges.GET("/exchange", eh.ExchangeCurrenyRatesHandler)
+		exchanges.GET("/countries", eh.CountryListHandler)
+		exchanges.GET("/rates", eh.RatesHandler)
 	}
 
 

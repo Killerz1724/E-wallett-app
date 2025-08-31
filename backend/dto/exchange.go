@@ -8,9 +8,21 @@ type ExchangeRatesResponse struct {
 	Rates      map[string]float64 `json:"rates"`
 }
 
+type RatesResponse struct {
+	Rates []CountryInfo `json:"rates"`
+}
+
 type CountryInfo struct {
 	CountryCode string  `json:"country_code"`
 	Rates       float64 `json:"rates"`
+}
+
+type CountryInfoCode struct {
+	CountryCode string `json:"country_code"`
+}
+
+type CountryListResponse struct {
+	Countries []CountryInfoCode `json:"countries"`
 }
 
 type ExchangeCurrencyResponse struct {
