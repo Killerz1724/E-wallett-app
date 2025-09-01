@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type { AxiosError } from "axios";
 import useMutationToast from "../../../hooks/useMutationToast";
 import { api } from "../../../lib/axios";
@@ -33,8 +33,16 @@ export function useLoginPost() {
 
 export function useUserDataGet() {
   const dispatch = useDispatch();
-  const res = useMutation<UserResponses, AxiosError<ApiError>>({
-    mutationFn: async () => {
+  // const res = useMutation<UserResponses, AxiosError<ApiError>>({
+  //   mutationFn: async () => {
+  //     const res = await api.get<ApiResponse<UserResponses>>("/profile/me");
+  //     dispatch(setUser(res.data.data));
+  //     return res.data.data;
+  //   },
+  // });
+  const res = useQuery<UserResponses, AxiosError<ApiError>>({
+    queryKey: ["user-data"],
+    queryFn: async () => {
       const res = await api.get<ApiResponse<UserResponses>>("/profile/me");
       dispatch(setUser(res.data.data));
       return res.data.data;

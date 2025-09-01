@@ -6,13 +6,12 @@ import { useRouter } from "next/navigation";
 import { useActionState, useEffect, useState, type ChangeEvent } from "react";
 import { toast } from "react-toastify";
 import { Login } from "../actions/action";
-import { useUserDataGet } from "../hooks/mutation";
 import type { loginDataType } from "../page";
 
 export default function LoginForm() {
   const router = useRouter();
   const [isHidden, setIsHidden] = useState(true);
-  const { mutateAsync: getUserData } = useUserDataGet();
+
   const [state, dispatchLogin] = useActionState(Login, {
     success: false,
     message: "",
@@ -67,14 +66,13 @@ export default function LoginForm() {
     if (state.message) {
       if (state.success) {
         toast.success(state.message);
-        getUserData();
 
         router.push("/");
       } else {
         toast.error(state.message);
       }
     }
-  }, [state, router, getUserData]);
+  }, [state, router]);
 
   return (
     <form action={dispatchLogin} className="flex flex-col gap-4">

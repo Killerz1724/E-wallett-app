@@ -28,6 +28,10 @@ api.interceptors.response.use(
     return config;
   },
   (error: AxiosError<UninterceptedApiError>) => {
+    if (error.response.status === 401) {
+      window.location.href = "/login";
+    }
+
     if (error.response?.data.error) {
       return Promise.reject({
         ...error,
