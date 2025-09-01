@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+.no-arrows::-webkit-outer-spin-button,
+.no-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0; /* Important to remove extra space */
+}
+
+.no-arrows {
+  -moz-appearance: textfield; /* For Firefox */
+}
+
 /* HTML: <div class="loader"></div> */
 .loader {
   width: 50px;
