@@ -175,7 +175,8 @@ func (er ExchangeRatesRepoImpl)CountryListRepo(c context.Context) (*entity.Count
 
 	q := `
 	SELECT target_currency 
-	FROM exchange_rates;
+	FROM exchange_rates
+	ORDER BY target_currency ASC;
 	`
 
 	rows, err := er.db.QueryContext(c, q)
