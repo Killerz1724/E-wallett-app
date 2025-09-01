@@ -46,8 +46,9 @@ export function useConvertGet() {
 
   const res = useMutation<ConvertResults, AxiosError<ApiError>>({
     mutationFn: async () => {
+      const amountQ = amount ? amount : 0;
       const res = await api.get<ApiResponse<ConvertResults>>(
-        `/exchanges-rates/exchange?from=${from}&to=${to}&value=${amount}`
+        `/exchanges-rates/exchange?from=${from}&to=${to}&value=${amountQ}`
       );
 
       return res.data.data;

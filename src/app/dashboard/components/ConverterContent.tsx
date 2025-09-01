@@ -1,7 +1,9 @@
 import SkeletonLoading from "components/SkeletonLoading";
 import { COMMON_ERROR } from "constant/common";
+import { useDebounce } from "hooks/useDebounce";
 import { ArrowLeftRight } from "lucide-react";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import CurrencyInput from "react-currency-input-field";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import {
@@ -12,7 +14,6 @@ import {
 import { useConvertGet } from "../hooks/exchangeRatesMutation";
 import FromCountry from "./FromCountry";
 import ToCountry from "./ToCountry";
-import { useDebounce } from "hooks/useDebounce";
 
 export default function ConverterContent() {
   const { mutateAsync: convert, data, isPending, isError } = useConvertGet();
@@ -20,11 +21,15 @@ export default function ConverterContent() {
   const { from, amount, to } = useSelector(
     (state: RootState) => state.user.userExchangeRate
   );
-  const [amountVal, setAmountVal] = useState<number>(amount);
+  const [amountVal, setAmountVal] = useState<string>(
+    String(amount ? amount : 0)
+  );
   const dispatch = useDispatch();
   const debounceValue = useDebounce(amountVal, 500);
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
-    setAmountVal(Number(e.target.value));
+  function handleChange(value: string | undefined) {
+    const val = value;
+
+    setAmountVal(val);
   }
 
   function handleSwitch() {
@@ -33,7 +38,7 @@ export default function ConverterContent() {
   }
 
   useEffect(() => {
-    dispatch(setUserExchangeAmount(debounceValue));
+    dispatch(setUserExchangeAmount(Number(debounceValue)));
     convert();
   }, [from, to, amount, convert, debounceValue, dispatch]);
 
@@ -44,13 +49,15 @@ export default function ConverterContent() {
           <div className="flex gap-3 items-center">
             <div className="w-1/2">
               <h3 className="font-semibold text-lg">Input Currency Amount</h3>
-              <input
+              <CurrencyInput
                 className="px-4 py-2 w-full  border-1 border-gray-300 rounded-md max-w-lg no-arrows"
-                type="number"
-                step={0.01}
                 placeholder="0.00"
                 value={amountVal || ""}
-                onChange={handleChange}
+                onValueChange={handleChange}
+                allowNegativeValue={false}
+                allowDecimals={false}
+                decimalSeparator=","
+                groupSeparator="."
               />
             </div>
             <div className="flex items-center gap-4">
