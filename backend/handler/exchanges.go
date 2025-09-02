@@ -70,8 +70,15 @@ func (eh ExchangesHandlerImpl) ExchangeCurrenyRatesHandler(c *gin.Context) {
 
 func (eh ExchangesHandlerImpl)RatesHandler(c *gin.Context){
 	countryCode := c.Query("country_code")
+	page, err := strconv.Atoi(c.Query("page"))
 
-	res, err := eh.eu.RatesUsecase(c, countryCode)
+	if err != nil {
+		msg := &entity.CustomError{Msg: constant.CommonError, Log: err}
+		c.Error(msg).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	res, err := eh.eu.RatesUsecase(c, countryCode, page)
 
 	if err != nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
@@ -83,7 +90,7 @@ func (eh ExchangesHandlerImpl)RatesHandler(c *gin.Context){
 		resBody.Rates = append(resBody.Rates, dto.CountryInfo(val))
 	}
 
-	
+	resBody.PageInfo = dto.PageInfo(res.PageInfo)
 
 	resMsg := dto.Response{
 		Success: true,

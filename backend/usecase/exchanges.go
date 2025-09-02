@@ -17,7 +17,7 @@ type ExchangeRatesUsecaseItf interface {
 	ExchangeRatesUseCase() error
 	CheckRatesUseCase() (bool, error)
 	ExchangeCurrenyRatesUsecase(context.Context, string, string, float64) (*entity.ExchangeCurrencyResponse, error)
-	RatesUsecase(context.Context, string) (*entity.RatesResponse, error)
+	RatesUsecase(context.Context, string, int) (*entity.RatesResponse, error)
 	CountryListUsecase(context.Context) (*entity.CountryListResponse, error)
 
 }
@@ -104,9 +104,12 @@ func (eu ExchangeRatesUsecaseImpl) ExchangeCurrenyRatesUsecase(c context.Context
 	return updatedRes, nil
 }
 
-func (eu ExchangeRatesUsecaseImpl)RatesUsecase(c context.Context, countryCode string) (*entity.RatesResponse, error){
+func (eu ExchangeRatesUsecaseImpl)RatesUsecase(c context.Context, countryCode string, page int) (*entity.RatesResponse, error){
 	var updatedRes entity.RatesResponse
-	res, err := eu.er.RatesRepo(c, countryCode)
+	if (page < 1) {
+		page = 1
+	}
+	res, err := eu.er.RatesRepo(c, countryCode, page)
 
 	if err !=nil {
 		return nil, err
@@ -123,6 +126,7 @@ func (eu ExchangeRatesUsecaseImpl)RatesUsecase(c context.Context, countryCode st
 
 	}
 
+	updatedRes.PageInfo = res.PageInfo
 	return &updatedRes, nil
 }
 

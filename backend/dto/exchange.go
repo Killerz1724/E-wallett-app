@@ -9,7 +9,8 @@ type ExchangeRatesResponse struct {
 }
 
 type RatesResponse struct {
-	Rates []CountryInfo `json:"rates"`
+	PageInfo PageInfo      `json:"page_info"`
+	Rates    []CountryInfo `json:"rates"`
 }
 
 type CountryInfo struct {

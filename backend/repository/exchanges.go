@@ -13,7 +13,7 @@ type ExchangeRatesRepoItf interface {
 	ExchangeRatesRepo(entity.ExchangeRatesResponse) error
 	CheckRatesRepo() (int, error)
 	ExchangeCurrenyRatesRepo(context.Context, string, string) (*entity.ExchangeCurrencyResponse, error)
-	RatesRepo(context.Context, string) (*entity.RatesResponse, error)
+	RatesRepo(context.Context, string, int) (*entity.RatesResponse, error)
 	CountryListRepo(context.Context) (*entity.CountryListResponse, error)
 }
 
@@ -126,13 +126,13 @@ func (er ExchangeRatesRepoImpl) ExchangeCurrenyRatesRepo(c context.Context,from 
 	}, nil
 }
 
-func (er ExchangeRatesRepoImpl)RatesRepo(c context.Context, countryCode string) (*entity.RatesResponse, error) {
-
+func (er ExchangeRatesRepoImpl)RatesRepo(c context.Context, countryCode string, page int) (*entity.RatesResponse, error) {
+	
 	var USDFromCountry entity.CountryInfo
 	fromRows := er.db.QueryRowContext(c, `
 		SELECT target_currency, rate
 		FROM exchange_rates
-		WHERE target_currency = $1
+		WHERE target_currency = $1;
 	` , countryCode)
 
 	err := fromRows.Scan(&USDFromCountry.CountryCode, &USDFromCountry.Rates)
@@ -145,12 +145,17 @@ func (er ExchangeRatesRepoImpl)RatesRepo(c context.Context, countryCode string) 
 		}, Log: err}
 	}
 
+	limit := 8
+	offset := (page - 1) * limit
 	q := `
 	SELECT target_currency, rate
 	FROM exchange_rates
+	WHERE id > $1
+	ORDER BY  id ASC
+	LIMIT $2;
 	`
 
-	rows, err := er.db.QueryContext(c, q)
+	rows, err := er.db.QueryContext(c, q,  offset, limit,)
 	if err != nil {
 		return nil, &entity.CustomError{Msg: constant.CommonError, Log: err}
 	}
@@ -168,6 +173,12 @@ func (er ExchangeRatesRepoImpl)RatesRepo(c context.Context, countryCode string) 
 		rates.Rates = append(rates.Rates, rate)
 		}
 		rates.RatesFrom = USDFromCountry.Rates
+		pageInfo := entity.PageInfo{
+			CurrentPage: page,
+			TotalRows:   len(rates.Rates),
+			LimitDataPerPage: limit,
+		}
+		rates.PageInfo = pageInfo
 		return &rates, nil
 }
 

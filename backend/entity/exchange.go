@@ -14,6 +14,7 @@ type CountryInfo struct {
 }
 
 type RatesResponse struct {
+	PageInfo  PageInfo
 	RatesFrom float64
 	Rates     []CountryInfo
 }

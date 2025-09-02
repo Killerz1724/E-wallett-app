@@ -1,6 +1,7 @@
 import axios, { type AxiosError } from "axios";
 import type { UninterceptedApiError } from "../types/api";
-import { getToken } from "./cookies";
+import { getToken, removeToken } from "./cookies";
+import { persistor } from "store";
 
 function isServer() {
   return typeof window === "undefined";
@@ -27,8 +28,10 @@ api.interceptors.response.use(
   (config) => {
     return config;
   },
-  (error: AxiosError<UninterceptedApiError>) => {
+  async (error: AxiosError<UninterceptedApiError>) => {
     if (error.response.status === 401) {
+      await persistor.purge();
+      await removeToken();
       window.location.href = "/login";
     }
 

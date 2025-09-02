@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { PageInfo } from "app/transactions/components/TransactionsTable";
 import { AxiosError } from "axios";
 import { api } from "lib/axios";
 import { useSelector } from "react-redux";
@@ -13,16 +14,24 @@ type CountriesProps = {
   ];
 };
 
-export interface ConvertResults {
+export type ConvertResults = {
   From: CountryInfo;
   To: CountryInfo;
   Result: number;
-}
+};
 
-export interface CountryInfo {
+export type CountryInfo = {
   CountryCode: string;
   Rates: number;
-}
+};
+
+export type RatesResponse = {
+  page_info: PageInfo;
+  rates: {
+    country_code: string;
+    rates: number;
+  }[];
+};
 
 export function useCountriesGet() {
   const res = useQuery<CountriesProps, AxiosError<ApiError>>({
@@ -55,5 +64,24 @@ export function useConvertGet() {
     },
   });
 
+  return res;
+}
+
+export function useRatesGet() {
+  const { rates_query: ratesQ, page_rates } = useSelector(
+    (state: RootState) => state.user.userExchangeRate
+  );
+
+  const pageQ = page_rates ? page_rates : 1;
+  const res = useQuery<RatesResponse, AxiosError<ApiError>>({
+    queryKey: ["rates"],
+    queryFn: async () => {
+      const res = await api.get<ApiResponse<RatesResponse>>(
+        `/exchanges-rates/rates?country_code=${ratesQ}&page=${pageQ}`
+      );
+
+      return res.data.data;
+    },
+  });
   return res;
 }

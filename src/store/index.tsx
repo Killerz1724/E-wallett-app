@@ -1,8 +1,8 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { createPersistStorage } from "lib/storage";
+import { persistReducer, persistStore } from "redux-persist";
 import modalReducer from "./modalStore";
 import userReducer from "./userStore";
-import { persistReducer, persistStore } from "redux-persist";
-import { createPersistStorage } from "lib/storage";
 
 const userPersistConfig = {
   key: "user",

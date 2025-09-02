@@ -103,12 +103,6 @@ export default function ConverterContent() {
             </span>
           </div>
         )}
-
-        <p className="text-sm text-gray-400 max-w-lg text-justify">
-          We use the mid-market rate for our Converter. This is for
-          informational purposes only. You won’t receive this rate when sending
-          money.
-        </p>
       </div>
     </>
   );

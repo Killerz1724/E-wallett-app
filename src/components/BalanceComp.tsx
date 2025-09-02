@@ -11,7 +11,9 @@ export default function BalanceComp({
   style?: "black" | "white";
 }) {
   const [showBalance, setShowBalance] = useState(false);
-  const userBalance = useSelector((state: RootState) => state.user.balance);
+  const userBalance = useSelector(
+    (state: RootState) => state.user.userData.balance
+  );
   return (
     <div className="flex items-center gap-2">
       <p

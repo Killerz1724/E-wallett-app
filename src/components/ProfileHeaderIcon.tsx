@@ -21,7 +21,9 @@ export default function ProfileHeaderIcon() {
             <Suspense fallback={<p>Loading..</p>}>
               <Image
                 src={
-                  userData.profilPic ? userData.profilPic : "/dummy-profile.jpg"
+                  userData.userData.profilPic
+                    ? userData.userData.profilPic
+                    : "/dummy-profile.jpg"
                 }
                 alt="profile icon"
                 width={30}
@@ -30,7 +32,7 @@ export default function ProfileHeaderIcon() {
               />
             </Suspense>
           </div>
-          <p className="text-lg font-semibold">{userData.username}</p>
+          <p className="text-lg font-semibold">{userData.userData.username}</p>
         </div>
       </PopoverTrigger>
       <PopoverContent align="center">

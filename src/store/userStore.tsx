@@ -18,6 +18,8 @@ type userExchangeRate = {
   amount: number;
   result: number;
   rates: number;
+  rates_query: string;
+  page_rates: number;
 };
 
 type UserState = {
@@ -35,6 +37,8 @@ const UserInitalState: UserState = {
     amount: null,
     rates: 0,
     result: null,
+    rates_query: "USD",
+    page_rates: 1,
   },
 };
 
@@ -57,6 +61,12 @@ const UserSlice = createSlice({
     setUserExchangeAmount: (state, action: PayloadAction<number>) => {
       state.userExchangeRate.amount = action.payload;
     },
+    setUserRatesQuery: (state, action: PayloadAction<string>) => {
+      state.userExchangeRate.rates_query = action.payload;
+    },
+    setUserRatesPage: (state, action: PayloadAction<number>) => {
+      state.userExchangeRate.page_rates = action.payload;
+    },
   },
 });
 
@@ -65,5 +75,7 @@ export const {
   setUserExchangeFrom,
   setUserExchangeTo,
   setUserExchangeAmount,
+  setUserRatesQuery,
+  setUserRatesPage,
 } = UserSlice.actions;
 export default UserSlice.reducer;
