@@ -52,6 +52,9 @@ const UserSlice = createSlice({
       state.userData.email = action.payload.email;
       state.userData.balance = action.payload.balance;
     },
+    setUserSeeBalance: (state) => {
+      state.userBehaviour.seeBalance = !state.userBehaviour.seeBalance;
+    },
     setUserExchangeFrom: (state, action: PayloadAction<string>) => {
       state.userExchangeRate.from = action.payload;
     },
@@ -72,6 +75,7 @@ const UserSlice = createSlice({
 
 export const {
   setUser,
+  setUserSeeBalance,
   setUserExchangeFrom,
   setUserExchangeTo,
   setUserExchangeAmount,

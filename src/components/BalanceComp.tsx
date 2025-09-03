@@ -1,16 +1,19 @@
 "use client";
 import clsxm from "@riverfl0w/clsxm";
 import { Eye, EyeClosed } from "lucide-react";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
+import { setUserSeeBalance } from "store/userStore";
 
 export default function BalanceComp({
   style = "white",
 }: {
   style?: "black" | "white";
 }) {
-  const [showBalance, setShowBalance] = useState(false);
+  const isOpen = useSelector(
+    (state: RootState) => state.user.userBehaviour.seeBalance
+  );
+  const dispatch = useDispatch();
   const userBalance = useSelector(
     (state: RootState) => state.user.userData.balance
   );
@@ -23,20 +26,20 @@ export default function BalanceComp({
           style === "white" && "text-white"
         )}
       >
-        {showBalance ? (
+        {isOpen ? (
           <>Rp {Number(userBalance).toLocaleString("id-ID")}</>
         ) : (
           "**********"
         )}
       </p>
-      {showBalance ? (
+      {isOpen ? (
         <Eye
           className={clsxm(
             "h-7 w-7  cursor-pointer",
             style === "black" && "text-black",
             style === "white" && "text-white"
           )}
-          onClick={() => setShowBalance((prev) => !prev)}
+          onClick={() => dispatch(setUserSeeBalance())}
         />
       ) : (
         <EyeClosed
@@ -45,7 +48,7 @@ export default function BalanceComp({
             style === "black" && "text-black",
             style === "white" && "text-white"
           )}
-          onClick={() => setShowBalance((prev) => !prev)}
+          onClick={() => dispatch(setUserSeeBalance())}
         />
       )}
     </div>
