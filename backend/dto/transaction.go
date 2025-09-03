@@ -42,7 +42,7 @@ type TransferBody struct {
 }
 
 type Users struct {
-	Id int `json:"id"`
+	WalletId int `json:"wallet_id"`
 	ImgUrl string `json:"img_url"`
 	Username string `json:"username"`
 }

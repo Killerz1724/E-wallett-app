@@ -142,8 +142,14 @@ func (th TransactionHandlerImpl) ListAllUsersHandler(c *gin.Context){
 		dtoUsers = append(dtoUsers, dto.Users(dat))
 	}
 
-	resBody.Users = dtoUsers
+	if len(dtoUsers) == 0 {
+		resBody.Users = []dto.Users{}
+	} else {
+		resBody.Users = dtoUsers
+	}
+	
 
+	
 	resJson := dto.Response {
 		Success: true,
 		Data: resBody,

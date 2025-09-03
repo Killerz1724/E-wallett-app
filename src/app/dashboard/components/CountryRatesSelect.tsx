@@ -1,7 +1,4 @@
-import React from "react";
-import { useCountriesGet } from "../hooks/exchangeRatesMutation";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "store";
+import MultipleSkeletonLoading from "components/MultipleSkeletonLoading";
 import {
   Select,
   SelectContent,
@@ -9,9 +6,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "components/ui/Select";
-import { setUserRatesQuery } from "store/userStore";
-import MultipleSkeletonLoading from "components/MultipleSkeletonLoading";
 import { COMMON_ERROR } from "constant/common";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "store";
+import { setUserRatesQuery } from "store/userStore";
+import { useCountriesGet } from "../hooks/exchangeRatesMutation";
 
 export default function CountryRatesSelect() {
   const { data, isPending, isError } = useCountriesGet();
@@ -19,6 +19,10 @@ export default function CountryRatesSelect() {
     (state: RootState) => state.user.userExchangeRate.rates_query
   );
   const dispatch = useDispatch();
+  const MultipleSkeletonLoad = MultipleSkeletonLoading({
+    server: false,
+    length: 5,
+  }) as React.JSX.Element;
   return (
     <div>
       <label htmlFor="rates-select">From</label>
@@ -35,7 +39,7 @@ export default function CountryRatesSelect() {
         </SelectTrigger>
         <SelectContent align="start" position="popper" className="max-h-48">
           {isPending ? (
-            <MultipleSkeletonLoading length={5} />
+            MultipleSkeletonLoad
           ) : isError ? (
             <p>{COMMON_ERROR}</p>
           ) : (

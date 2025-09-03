@@ -41,7 +41,7 @@ type TransferBody struct {
 }
 
 type Users struct {
-	Id int
+	WalletId int
 	ImgUrl string
 	Username string
 }

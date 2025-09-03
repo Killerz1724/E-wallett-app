@@ -1,6 +1,5 @@
 import Button from "components/Button";
-import SelectServer from "components/SelectServer";
-import React from "react";
+import SelectLocal from "components/ui/SelectLocal";
 
 const dummyOption = [
   {
@@ -20,7 +19,7 @@ export default function FormTopup() {
         <label htmlFor="source-fund" className="font-semibold text-sm ">
           Select Method
         </label>
-        <SelectServer options={dummyOption} />
+        <SelectLocal options={dummyOption} placeholder="Select Method" />
       </div>
       <div className="flex flex-col gap-2 w-full">
         <label htmlFor="source-fund" className="font-semibold text-sm">

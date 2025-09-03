@@ -384,8 +384,10 @@ func (tr TransactionRepoImpl) TransferTransactionRepo(c context.Context, req ent
 func (tr TransactionRepoImpl) ListAllUsersRepo(c context.Context, email string, search string, page int) (*entity.ListAllUsersResponse, error) {
 	
 	q := `
-	SELECT u.id, u.username, u.profile_image
+	SELECT w.wallet_number, u.username, u.profile_image
 	FROM users u
+	JOIN wallets w
+	ON u.id = w.user_id
 	WHERE u.email != $1
 	`	
 
@@ -424,7 +426,7 @@ func (tr TransactionRepoImpl) ListAllUsersRepo(c context.Context, email string, 
 	for rows.Next(){
 		var user entity.Users
 
-		err = rows.Scan(&user.Id, &user.Username, &user.ImgUrl)
+		err = rows.Scan(&user.WalletId, &user.Username, &user.ImgUrl)
 
 		if err != nil {
 			return nil, &entity.CustomError{Msg: constant.CommonError, Log: err}

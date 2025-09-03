@@ -14,6 +14,10 @@ import { setUserExchangeTo } from "store/userStore";
 
 export default function ToCountry() {
   const { data, isPending, isError } = useCountriesGet();
+  const MultipleSkeletonLoad = MultipleSkeletonLoading({
+    server: false,
+    length: 5,
+  }) as React.JSX.Element;
   const toDefaultVal = useSelector(
     (state: RootState) => state.user.userExchangeRate.to
   );
@@ -32,7 +36,7 @@ export default function ToCountry() {
         </SelectTrigger>
         <SelectContent align="start" position="popper" className="max-h-48">
           {isPending ? (
-            <MultipleSkeletonLoading length={5} />
+            MultipleSkeletonLoad
           ) : isError ? (
             <p>{COMMON_ERROR}</p>
           ) : (

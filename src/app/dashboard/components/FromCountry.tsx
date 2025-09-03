@@ -14,6 +14,10 @@ import { RootState } from "store";
 
 export default function FromCountry() {
   const { data, isPending, isError } = useCountriesGet();
+  const MultipleSkeletonLoad = MultipleSkeletonLoading({
+    server: false,
+    length: 5,
+  }) as React.JSX.Element;
   const fromDefaultVal = useSelector(
     (state: RootState) => state.user.userExchangeRate.from
   );
@@ -34,7 +38,7 @@ export default function FromCountry() {
         </SelectTrigger>
         <SelectContent align="start" position="popper" className="max-h-48">
           {isPending ? (
-            <MultipleSkeletonLoading length={5} />
+            MultipleSkeletonLoad
           ) : isError ? (
             <p>{COMMON_ERROR}</p>
           ) : (

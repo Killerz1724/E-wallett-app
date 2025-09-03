@@ -1,5 +1,6 @@
 import Button from "components/Button";
 import SelectRecipient from "./SelectMethod";
+import CurrencyInput from "react-currency-input-field";
 
 export default function TransferModalContent() {
   return (
@@ -16,11 +17,13 @@ export default function TransferModalContent() {
           <label htmlFor="source-fund" className="font-semibold text-sm">
             Amount
           </label>
-          <input
-            type="number"
-            placeholder="ex: 10000"
-            step={0.01}
-            className="w-full border-1 border-gray-300 rounded-md p-2"
+          <CurrencyInput
+            className="px-4 py-2 w-full  border-1 border-gray-300 rounded-md max-w-lg no-arrows"
+            placeholder="ex: 10.000"
+            allowNegativeValue={false}
+            allowDecimals={false}
+            decimalSeparator=","
+            groupSeparator="."
           />
         </div>
 
