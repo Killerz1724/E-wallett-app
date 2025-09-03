@@ -1,3 +1,5 @@
+"use client";
+import SkeletonLoading from "components/SkeletonLoading";
 import {
   Table,
   TableBody,
@@ -6,83 +8,108 @@ import {
   TableHeader,
   TableRow,
 } from "components/ui/Table";
-import React from "react";
-import { DummyTransactions } from "./dummyData";
+import { COMMON_ERROR } from "constant/common";
+import { useTransactionsGet } from "../hooks/mutation";
 import FilterTable from "./FilterTable";
-import clsxm from "@riverfl0w/clsxm";
-
-export type TransactionDataType = {
-  page_info: PageInfo;
-  transactions: Transaction[];
-};
-
-export type PageInfo = {
-  current_page: number;
-  total_rows: number;
-  limit_data_per_page: number;
-};
-
-export type Transaction = {
-  transaction_category: string;
-  source_fund: string;
-  description: string;
-  amount: string;
-  transaction_time: Date;
-  recipent: string;
-};
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "store";
+import { useEffect } from "react";
+import { formatDate } from "utils/formatDate";
+import Pagination from "components/ui/Pagination";
+import { setUserTransactionsPage } from "store/userStore";
 
 export default function TransactionsTable() {
+  const transactionStates = useSelector(
+    (state: RootState) => state.user.userTransactions
+  );
+  const { data, isPending, isError, refetch } = useTransactionsGet();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    refetch();
+  }, [
+    transactionStates.order,
+    transactionStates.page,
+    transactionStates.sort,
+    refetch,
+  ]);
   return (
     <article className="space-y-4">
       <div className="flex justify-between items-center">
         <h3 className="font-bold text-2xl">Transactions History</h3>
         <FilterTable />
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Recipient</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Method</TableHead>
-            <TableHead>Amount</TableHead>
-            <TableHead>Transaction Time</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {DummyTransactions.map((transaction, i) => (
-            <TableRow key={i}>
-              <TableCell>{transaction.recipent}</TableCell>
-              <TableCell>{transaction.transaction_category}</TableCell>
-              <TableCell>{transaction.description}</TableCell>
-              <TableCell>{transaction.source_fund}</TableCell>
-              <TableCell>{transaction.amount}</TableCell>
-              <TableCell>
-                {transaction.transaction_time.toISOString()}
-              </TableCell>
+      {isError ? (
+        <p>{COMMON_ERROR}</p>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {isPending
+                ? Array.from({ length: 6 }).map((_, i) => (
+                    <TableHead key={i}>
+                      <SkeletonLoading />
+                    </TableHead>
+                  ))
+                : !isError && (
+                    <>
+                      <TableHead>Recipient</TableHead>
+                      <TableHead>Category</TableHead>
+                      <TableHead>Description</TableHead>
+                      <TableHead>Method</TableHead>
+                      <TableHead>Amount</TableHead>
+                      <TableHead>Transaction Time</TableHead>
+                    </>
+                  )}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <div className="w-full gap-3 flex items-center justify-end">
-        <button
-          className={clsxm(
-            "px-4 py-2 border bg-orange-400 text-white hover:cursor-pointer hover:bg-orange-300 border-gray-300 rounded-md",
-            "transition-all"
-          )}
-        >
-          Previous
-        </button>
-        <p className="text-lg font-semibold">1/1</p>
-        <button
-          className={clsxm(
-            "px-4 py-2 border bg-orange-400 text-white hover:cursor-pointer hover:bg-orange-300 border-gray-300 rounded-md",
-            "transition-all"
-          )}
-        >
-          Next
-        </button>
-      </div>
+          </TableHeader>
+          <TableBody>
+            <>
+              {isPending ? (
+                Array.from({ length: 6 }).map((_, i) => {
+                  <TableRow key={i}>
+                    {Array.from({ length: 6 }).map((_, i) => (
+                      <TableCell>
+                        <SkeletonLoading key={i} />
+                      </TableCell>
+                    ))}
+                  </TableRow>;
+                })
+              ) : isError ? (
+                <p>{COMMON_ERROR}</p>
+              ) : (
+                data &&
+                data.transactions.map((transaction, i) => (
+                  <TableRow key={i}>
+                    <TableCell>{transaction.recipent}</TableCell>
+                    <TableCell>{transaction.transaction_category}</TableCell>
+                    <TableCell>{transaction.description}</TableCell>
+                    <TableCell>{transaction.source_fund}</TableCell>
+                    <TableCell>
+                      {Number(transaction.amount).toLocaleString("id-ID")}
+                    </TableCell>
+                    <TableCell>
+                      {formatDate(transaction.transaction_time)}
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </>
+          </TableBody>
+        </Table>
+      )}
+      {data && (
+        <Pagination
+          limit={data.page_info.limit_data_per_page}
+          page={data.page_info.current_page}
+          total={data.page_info.total_rows}
+          next={() =>
+            dispatch(setUserTransactionsPage(data.page_info.current_page + 1))
+          }
+          previous={() =>
+            dispatch(setUserTransactionsPage(data.page_info.current_page - 1))
+          }
+        />
+      )}
     </article>
   );
 }

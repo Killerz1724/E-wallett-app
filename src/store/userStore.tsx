@@ -22,10 +22,17 @@ type userExchangeRate = {
   page_rates: number;
 };
 
+type userTransactions = {
+  order: string;
+  page: number;
+  sort: string;
+};
+
 type UserState = {
   userData: UserData;
   userBehaviour: userBehaviour;
   userExchangeRate: userExchangeRate;
+  userTransactions: userTransactions;
 };
 
 const UserInitalState: UserState = {
@@ -39,6 +46,11 @@ const UserInitalState: UserState = {
     result: null,
     rates_query: "USD",
     page_rates: 1,
+  },
+  userTransactions: {
+    order: "asc",
+    page: 1,
+    sort: "recipient",
   },
 };
 
@@ -70,6 +82,15 @@ const UserSlice = createSlice({
     setUserRatesPage: (state, action: PayloadAction<number>) => {
       state.userExchangeRate.page_rates = action.payload;
     },
+    setUserTransactionsSort: (state, action: PayloadAction<string>) => {
+      state.userTransactions.sort = action.payload;
+    },
+    setUserTransactionsOrder: (state, action: PayloadAction<string>) => {
+      state.userTransactions.order = action.payload;
+    },
+    setUserTransactionsPage: (state, action: PayloadAction<number>) => {
+      state.userTransactions.page = action.payload;
+    },
   },
 });
 
@@ -81,5 +102,8 @@ export const {
   setUserExchangeAmount,
   setUserRatesQuery,
   setUserRatesPage,
+  setUserTransactionsOrder,
+  setUserTransactionsSort,
+  setUserTransactionsPage,
 } = UserSlice.actions;
 export default UserSlice.reducer;
