@@ -8,7 +8,7 @@ import {
 } from "./Select";
 import { SelectProps } from "@radix-ui/react-select";
 
-type SelectLocalProps = {
+export type SelectLocalProps = {
   placeholder: string;
   options: { label: string; value: string }[];
 } & React.ComponentProps<React.FC<SelectProps>>;
