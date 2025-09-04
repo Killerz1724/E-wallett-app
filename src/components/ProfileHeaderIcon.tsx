@@ -17,7 +17,7 @@ export default function ProfileHeaderIcon() {
           className="flex items-center gap-4 cursor-pointer"
           onClick={() => setOpen(!open)}
         >
-          <div className="rounded-full w-12 h-12 border-1 relative">
+          <div className="rounded-full w-8 h-8 border-1 relative">
             <Suspense fallback={<p>Loading..</p>}>
               <Image
                 src={
