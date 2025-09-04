@@ -23,6 +23,7 @@ export default function TransferModalContent() {
   >({
     amount: false,
     to: false,
+    description: false,
   });
   const [displayCurrency, setDisplayCurrency] = useState<string>("");
   const [errors, setErrors] = useState<
@@ -105,14 +106,27 @@ export default function TransferModalContent() {
             allowDecimals={false}
             decimalSeparator=","
             groupSeparator="."
-            onValueChange={(value, e, values) => {
+            onValueChange={(__, _, values) => {
               setDisplayCurrency(values.value);
               handleChange("amount", values.float);
             }}
           />
           {errors.amount && <p className="text-red-500">{errors.amount}</p>}
         </div>
-
+        <div className="flex flex-col gap-2 w-full">
+          <label htmlFor="description" className="font-semibold text-sm">
+            Description (Optional)
+          </label>
+          <textarea
+            name="description"
+            placeholder="ex: Thank you for your support"
+            className="px-4 py-2 w-full  border-1 border-gray-300 rounded-md max-w-lg no-arrows"
+            onChange={(e) => handleChange("description", e.target.value)}
+          />
+          {errors.description && (
+            <p className="text-red-500">{errors.description}</p>
+          )}
+        </div>
         <Button
           className="py-2"
           disabled={

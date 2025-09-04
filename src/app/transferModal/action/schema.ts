@@ -13,6 +13,10 @@ export const transferFormSchema = z.object({
     },
     "Recipient Required"
   ),
+  description: z
+    .string()
+    .max(35, "Maximum description length is 35 characters")
+    .optional(),
 });
 
 export type FormTransferValues = z.infer<typeof transferFormSchema>;

@@ -65,19 +65,18 @@ export default function TransactionsTable() {
           <TableBody>
             <>
               {isPending ? (
-                Array.from({ length: 6 }).map((_, i) => {
-                  <TableRow key={i}>
-                    {Array.from({ length: 6 }).map((_, i) => (
-                      <TableCell>
-                        <SkeletonLoading key={i} />
+                Array.from({ length: 6 }).map((_, i) => (
+                  <TableRow key={i + "Tr"}>
+                    {Array.from({ length: 6 }).map((_, j) => (
+                      <TableCell key={j}>
+                        <SkeletonLoading />
                       </TableCell>
                     ))}
-                  </TableRow>;
-                })
+                  </TableRow>
+                ))
               ) : isError ? (
                 <p>{COMMON_ERROR}</p>
-              ) : (
-                data &&
+              ) : data.page_info.total_rows > 0 ? (
                 data.transactions.map((transaction, i) => (
                   <TableRow key={i}>
                     <TableCell>{transaction.recipent}</TableCell>
@@ -92,6 +91,10 @@ export default function TransactionsTable() {
                     </TableCell>
                   </TableRow>
                 ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={6}>No Data</TableCell>
+                </TableRow>
               )}
             </>
           </TableBody>

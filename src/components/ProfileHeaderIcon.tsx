@@ -17,7 +17,7 @@ export default function ProfileHeaderIcon() {
           className="flex items-center gap-4 cursor-pointer"
           onClick={() => setOpen(!open)}
         >
-          <div className="rounded-full border-1">
+          <div className="rounded-full w-12 h-12 border-1 relative">
             <Suspense fallback={<p>Loading..</p>}>
               <Image
                 src={
@@ -26,9 +26,8 @@ export default function ProfileHeaderIcon() {
                     : "/dummy-profile.jpg"
                 }
                 alt="profile icon"
-                width={30}
-                height={30}
-                className="rounded-full"
+                fill
+                className="rounded-full object-contain"
               />
             </Suspense>
           </div>

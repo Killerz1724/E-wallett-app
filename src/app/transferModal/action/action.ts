@@ -11,6 +11,7 @@ export async function Transfer(
   const reqBody = {
     amount: ConvertCurrencytoNumeric(formData.get("amount") as string),
     to: Number(formData.get("to")),
+    description: formData.get("description"),
   };
 
   try {
