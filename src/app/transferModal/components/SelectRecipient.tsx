@@ -1,23 +1,24 @@
 "use client";
 
 import SelectServer from "components/ui/SelectServer";
+import { useDebounce } from "hooks/useDebounce";
 import Image from "next/image";
 import { Suspense, useEffect, useState } from "react";
+import { Props } from "react-select";
 import { useUserListGet } from "./hooks/mutation";
-import { useDebounce } from "hooks/useDebounce";
 
-type UserOptions = {
+export type UserOptions = {
   value: number;
   label: string;
   img_url: string;
 };
 
-export default function SelectRecipient() {
+export default function SelectRecipient({ ...props }: Omit<Props, "options">) {
   const { mutateAsync: getUsers, data, isPending, isError } = useUserListGet();
   const [recipient, setRecipient] = useState("");
 
   const debounceVal = useDebounce(recipient, 500);
-  function handleChange(newValue: string) {
+  function handleSearch(newValue: string) {
     setRecipient(newValue);
   }
 
@@ -56,11 +57,13 @@ export default function SelectRecipient() {
   return (
     <SelectServer
       options={dataAsOption}
+      value={recipient}
       placeholder="Type username..."
       isPending={isPending}
       isError={isError}
-      onInputChange={handleChange}
+      onInputChange={handleSearch}
       formatOptionLabel={formatOption}
+      {...props}
     />
   );
 }

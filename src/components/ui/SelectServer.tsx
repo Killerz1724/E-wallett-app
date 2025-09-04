@@ -41,7 +41,7 @@ type Option = {
   label: string;
 };
 
-type SelectServerProps = {
+export type SelectServerProps = {
   options: OptionsOrGroups<Option, GroupBase<Option>>;
   isPending: boolean;
   isError: boolean;
