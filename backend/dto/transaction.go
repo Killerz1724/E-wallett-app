@@ -52,3 +52,8 @@ type ListAllUsersResponse struct {
 	Users []Users `json:"users"`
 	
 }
+
+type SourceOfFundResponse struct {
+	Id int `json:"id"`
+	Name string `json:"name"`
+}

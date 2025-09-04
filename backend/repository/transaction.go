@@ -18,6 +18,7 @@ type TransactionRepoItf interface {
 	TopupTransactionRepo(context.Context, entity.TopUpBody, string) error
 	TransferTransactionRepo(context.Context, entity.TransferBody, string) error
 	ListAllUsersRepo(context.Context, string, string, int) (*entity.ListAllUsersResponse, error)
+	SourceOfFundsRepo(context.Context) ([]*entity.SourceOfFundResponse, error)
 }
 
 type TransactionRepoImpl struct {
@@ -442,4 +443,33 @@ func (tr TransactionRepoImpl) ListAllUsersRepo(c context.Context, email string, 
 	return &users, nil
 	
 
+}
+
+func (tr TransactionRepoImpl) SourceOfFundsRepo(c context.Context) ([]*entity.SourceOfFundResponse, error){
+	q := `
+	SELECT id, name
+	FROM source_funds
+	WHERE name <> 'e-wallet' AND name <> 'reward'
+	`
+
+	rows,err := tr.db.QueryContext(c, q)
+
+	if err != nil {
+		return nil, &entity.CustomError{Msg: constant.CommonError, Log: err}
+	}
+
+	var sofs []*entity.SourceOfFundResponse
+
+	for rows.Next(){
+		var sof entity.SourceOfFundResponse
+		err = rows.Scan(&sof.Id, &sof.Name)
+
+		if err !=nil {
+			return nil, &entity.CustomError{Msg: constant.CommonError, Log: err}
+		}
+
+		sofs = append(sofs, &sof)
+	}	
+
+	return sofs, nil
 }

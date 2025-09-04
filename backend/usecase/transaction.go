@@ -18,6 +18,7 @@ type TransactionUsecaseItf interface {
 	TopUpUsecase(context.Context, entity.TopUpBody, string) error
 	TransferUsecase(context.Context, entity.TransferBody, string) error
 	ListAllUsersUsecase(context.Context,  string, string,  string) (*entity.ListAllUsersResponse, error)
+	SourceOfFundsUsecase(context.Context) ([]*entity.SourceOfFundResponse, error)
 }
 
 type TransactionUsecaseImpl struct {
@@ -173,6 +174,17 @@ func (tu TransactionUsecaseImpl) ListAllUsersUsecase(c context.Context, email st
 	}
 
 	res, err := tu.tr.ListAllUsersRepo(c, email, search, pg)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return res, nil
+}
+
+func (tu TransactionUsecaseImpl) SourceOfFundsUsecase(c context.Context) ([]*entity.SourceOfFundResponse, error) {
+
+	res, err := tu.tr.SourceOfFundsRepo(c)
 
 	if err != nil {
 		return nil, err

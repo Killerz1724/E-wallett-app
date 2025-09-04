@@ -51,4 +51,9 @@ type ListAllUsersResponse struct {
 	PageInfo PageInfo
 }
 
+type SourceOfFundResponse struct {
+	Id int
+	Name string
+}
+
 

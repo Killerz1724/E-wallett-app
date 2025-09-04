@@ -157,3 +157,25 @@ func (th TransactionHandlerImpl) ListAllUsersHandler(c *gin.Context){
 
 	c.JSON(http.StatusOK, resJson)
 }
+
+func (th TransactionHandlerImpl) SourceOfFundsHandler(c *gin.Context) {
+
+	res, err := th.tu.SourceOfFundsUsecase(c)
+
+	if err !=nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+	}
+
+	var resBody []dto.SourceOfFundResponse
+
+	for _,val := range res {
+		resBody = append(resBody, dto.SourceOfFundResponse(*val))
+	}
+
+	resJson := dto.Response {
+		Success: true,
+		Data: resBody,
+	}
+
+	c.JSON(http.StatusOK, resJson)
+}
