@@ -28,6 +28,8 @@ var (
 	BalanceIsInufficient = errors.New("balance is insufficient")
 	JsonBad             = errors.New("invalid field or value input, check again")
 	InvalidExchangeRate  = errors.New("invalid exchange rate")
+	InvalidImageSize    = errors.New("invalid image size")
+	InvalidImageType    = errors.New("invalid image type")
 )
 
 
@@ -78,5 +80,9 @@ func (d TopUpProblem) Error() string { return d.Msg }
 type ExchangesRateProblem struct{ Msg string }
 
 func (d ExchangesRateProblem) Error() string { return d.Msg }
+
+type ChangeProfilePictureProblem struct{ Msg string }
+
+func (d ChangeProfilePictureProblem) Error() string { return d.Msg }
 
 

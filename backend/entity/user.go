@@ -1,6 +1,10 @@
 package entity
 
-import "github.com/shopspring/decimal"
+import (
+	"io"
+
+	"github.com/shopspring/decimal"
+)
 
 type LoginBody struct {
 	Email    string
@@ -30,4 +34,10 @@ type UserIncomeRes struct {
 
 type UserExpenseRes struct {
 	TotalExpense decimal.Decimal
+}
+
+type ChangeProfilePictureBody struct {
+	ImgFile io.Reader
+	ContentType string
+	UserId string
 }

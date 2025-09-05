@@ -5,6 +5,7 @@ import (
 	"ewallet/dto"
 	"ewallet/entity"
 	"ewallet/usecase"
+	"io"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -143,5 +144,64 @@ func (uh UserHandlerImpl) UserExpenseHandler(c *gin.Context ) {
 		Success: true,
 		Error: nil,
 		Data: resBody,
+	})
+}
+
+func (uh UserHandlerImpl) UserChangeProfilePicHandler(c *gin.Context) {
+	email, _ := c.Get("subject")
+
+	req, err := c.FormFile("profile_pic")
+
+	if err != nil {
+		msg := &entity.CustomError{Msg: constant.ChangeProfilePictureProblem{Msg: constant.JsonBad.Error()}, Log: err}
+		c.Error(msg).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	if req.Size > int64(constant.ProfileImageSize) {
+		msg := &entity.CustomError{Msg: constant.ChangeProfilePictureProblem{Msg: constant.InvalidImageSize.Error()}, Log: constant.InvalidImageSize}
+		c.Error(msg).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	file, err := req.Open()
+	
+	if err != nil {
+		msg := &entity.CustomError{Msg: constant.ChangeProfilePictureProblem{Msg: constant.JsonBad.Error()}, Log: err}
+		c.Error(msg).SetType(gin.ErrorTypePublic)
+		return
+	}
+	defer file.Close()
+
+	buff := make([]byte, 512)
+
+	 _, err = file.Read(buff)
+
+	if err != nil {
+		msg := &entity.CustomError{Msg: constant.CommonError, Log: err}
+		c.Error(msg).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	file.Seek(0, io.SeekStart)
+	fileType := http.DetectContentType(buff)
+
+	reqBody := entity.ChangeProfilePictureBody{
+		ImgFile:  file,
+		ContentType: fileType,
+		UserId: email.(string),
+	}
+
+	err = uh.uuc.UserChangeProfilePicUsecase(c, reqBody)
+
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	c.JSON(http.StatusOK, dto.Response{
+		Success: true,
+		Error: nil,
+		Data: nil,
 	})
 }

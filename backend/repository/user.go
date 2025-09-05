@@ -6,6 +6,9 @@ import (
 	"errors"
 	"ewallet/constant"
 	"ewallet/entity"
+	"fmt"
+	"os"
+	"strings"
 
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/shopspring/decimal"
@@ -16,16 +19,20 @@ type UserRepoItf interface {
 	UserRepoRegister( context.Context,  entity.RegisterBody) error
 	UserShowUserDetailsRepo( context.Context,  string) (*entity.ShowUserProfileRes, error)
 	UserIncomeRepo(context.Context, string ) (*entity.UserIncomeRes,error)
-	UserExpenseRepo(context.Context, string ) (*entity.UserExpenseRes,error)  
+	UserExpenseRepo(context.Context, string ) (*entity.UserExpenseRes,error)
+	UserChangeProfilePicRepo(context.Context, entity.ChangeProfilePictureBody) error
+	GetUsernameByEmail(context.Context, string) (*string, error) 
 }
 
 type UserRepoImpl struct {
+	sc *SupabaseClientImpl
 	db *sql.DB
 }
 
-func NewUserRepo(dbConn *sql.DB) UserRepoImpl {
+func NewUserRepo(dbConn *sql.DB, sc *SupabaseClientImpl) UserRepoImpl {
 	return UserRepoImpl{
 		db: dbConn,
+		sc: sc,
 	}
 }
 
@@ -208,3 +215,74 @@ func (ur UserRepoImpl) UserExpenseRepo(c context.Context, email string ) (*entit
 
 	return &entity.UserExpenseRes{TotalExpense: totalAmount}, nil
 } 
+
+func (ur UserRepoImpl) GetUsernameByEmail(c context.Context, email string) (*string, error) {
+
+	q := `
+	SELECT username
+	FROM users
+	WHERE email = $1
+	`
+	row := ur.db.QueryRowContext(c, q, email)
+
+	var username string
+
+	err := row.Scan(&username)
+
+	if err != nil {
+		return nil, &entity.CustomError{
+			Msg: constant.ShowUserDetailError{Msg: constant.ShowUserDetailsError.Error()},
+			Log: err,
+		}
+	}
+
+	return &username, nil
+}
+
+func (ur UserRepoImpl) UserChangeProfilePicRepo(c context.Context, req entity.ChangeProfilePictureBody) error {
+
+	username, err := ur.GetUsernameByEmail(c, req.UserId)
+
+	if err != nil {
+		return err
+	}
+
+	profileBucket := os.Getenv("EWALLET_BUCKET")
+	filePath := fmt.Sprintf("profile-pictures/%s/avatar.%s", *username, strings.Split(req.ContentType, "/")[1])
+	err = ur.sc.UploadFile(profileBucket, filePath, &req.ContentType, req.ImgFile)
+
+	if err != nil {
+		return &entity.CustomError{
+			Msg: constant.CommonError,
+			Log: err,
+		}
+	}
+
+	newImgUrl := new(string)
+	ur.sc.GetPublicFileURL(profileBucket, filePath, newImgUrl)
+
+	if newImgUrl == nil {
+		return &entity.CustomError{
+			Msg: constant.CommonError,
+			Log: err,
+		}
+	}
+
+	q := `
+	UPDATE users
+	SET profile_image = $1
+	WHERE email = $2;
+	`
+
+	_, err = ur.db.ExecContext(c, q, *newImgUrl, req.UserId)
+
+	if err != nil {
+		return &entity.CustomError{
+			Msg: constant.CommonError,
+			Log: err,
+		}
+	}
+
+	return nil
+	
+}

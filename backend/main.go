@@ -17,6 +17,7 @@ import (
 func main() {
 
 	db, err := database.InitializeDatabase()
+	
 
 	if err != nil {
 		log.Fatalln(err)
@@ -29,7 +30,8 @@ func main() {
 	r.Use(middleware.ErrorMiddleware())
 	r.Use(middleware.CorsMiddleware())
 
-	ur := repository.NewUserRepo(db)
+	sb := repository.NewSupabaseClient()
+	ur := repository.NewUserRepo(db, sb)
 	uuc := usecase.NewUserUsecase(ur)
 	uh := handler.NewUserHandler(uuc)
 
@@ -68,6 +70,7 @@ func main() {
 		profile.GET("/me", uh.UserShowUserDetailsHandler)
 		profile.GET("/income", uh.UserIncomeHandler)
 		profile.GET("/expense", uh.UserExpenseHandler)
+		profile.PATCH("/profile-picture", uh.UserChangeProfilePicHandler)
 	}
 	{
 		transaction := r.Group("/api/users")
