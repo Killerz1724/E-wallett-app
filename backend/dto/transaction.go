@@ -13,7 +13,8 @@ type Transaction struct {
 	Description         string          `json:"description"`
 	Amount              decimal.Decimal `json:"amount"`
 	TransactionTime     time.Time       `json:"transaction_time"`
-	Recpient            string          `json:"recipent"`
+	Sender string          `json:"sender"`
+	Recipient            string          `json:"recipent"`
 }
 
 type PageInfo struct {

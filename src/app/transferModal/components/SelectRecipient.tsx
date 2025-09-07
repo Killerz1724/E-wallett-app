@@ -30,16 +30,17 @@ export default function SelectRecipient({ ...props }: Omit<Props, "options">) {
 
   const formatOption = (options: UserOptions) => {
     return (
-      <div className="flex items-center gap-2">
-        <Suspense fallback={""}>
-          <Image
-            src={options.img_url ? options.img_url : "/dummy-profile.jpg"}
-            alt={`${options.label} profile icon`}
-            width={20}
-            height={20}
-            className="rounded-full"
-          />
-        </Suspense>
+      <div className="flex items-center gap-2 ">
+        <div className="relative w-8 h-8">
+          <Suspense fallback={""}>
+            <Image
+              src={options.img_url ? options.img_url : "/dummy-profile.jpg"}
+              alt={`${options.label} profile icon`}
+              fill
+              className="rounded-full object-cover"
+            />
+          </Suspense>
+        </div>
         <span>{options.label}</span>
       </div>
     );

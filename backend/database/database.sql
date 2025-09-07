@@ -104,11 +104,12 @@ create table transaction_histories(
 	description text,
 	amount numeric not null,
 	transaction_time TIMESTAMPTZ default NOW(),
-	recipient VARCHAR not null,
+	recipient_id BIGINT not null,
 	created_at TIMESTAMPTZ default NOW(),
 	updated_at TIMESTAMPTZ default NOW(),
 	deleted_at TIMESTAMPTZ,
 	foreign key (user_id) references users(id),
+	foreign key (recipient_id) references users(id),
 	foreign key (transaction_category_id) references transaction_categories(id),
 	foreign key (source_fund_id) references source_funds(id)
 );
@@ -158,28 +159,28 @@ values
 
 
 
-insert into transaction_histories(user_id ,transaction_category_id ,source_fund_id,invoice_number,description ,amount ,recipient ,transaction_time , created_at ,updated_at )
+insert into transaction_histories(user_id ,transaction_category_id ,source_fund_id,invoice_number,description ,amount ,recipient_id ,transaction_time , created_at ,updated_at )
 values
-(1, 1, 1,'INV-a7Xf91Qz', 'transfer', 10000, (select users.username  from  users where id = 2), NOW()-interval '15 months', NOW()-interval '15 months', NOW()-interval '15 months'),
-(1, 1, 1, 'INV-Kd9wL8sP','transfer', 10000, (select users.username  from  users where id = 3), NOW()-interval '12 months', NOW()-interval '12 months', NOW()-interval '12 months'),
-(1, 2, 2,'INV-p0QrXz2J', 'top-up from bank x', 10000, (select users.username  from  users where id = 1), NOW()-interval '9 months', NOW()-interval '9 months', NOW()-interval '9 months'),
-(1, 2, 3,'INV-91nUbW5m', 'top-up from visa x', 10000, (select users.username  from  users where id = 1), NOW()-interval '6 months', NOW()-interval '6 months', NOW()-interval '6 months'),
-(2, 1, 1,'INV-Wk7XcH2d', 'transfer', 20000, (select users.username  from  users where id = 4), NOW()-interval '15 months', NOW()-interval '15 months', NOW()-interval '15 months'),
-(2, 1, 1,'INV-Zr9bN8jL', 'transfer', 20000, (select users.username  from  users where id = 5), NOW()-interval '12 months', NOW()-interval '12 months', NOW()-interval '12 months'),
-(2, 2, 4,'INV-3yLf8QkP', 'top-up from cash', 20000, (select users.username  from  users where id = 2), NOW()-interval '9 months', NOW()-interval '9 months', NOW()-interval '9 months'),
-(2, 2, 5,'INV-mN5x9cLQ', 'top-up from reward', 20000, (select users.username  from  users where id = 2), NOW()-interval '6 months', NOW()-interval '6 months', NOW()-interval '6 months'),
-(3, 1, 1,'INV-Yu2R8dXk', 'transfer', 30000, (select users.username  from  users where id = 1), NOW()-interval '15 months', NOW()-interval '15 months', NOW()-interval '15 months'),
-(3, 1, 1,'INV-7PjK2nDx', 'transfer', 30000, (select users.username  from  users where id = 2), NOW()-interval '12 months', NOW()-interval '12 months', NOW()-interval '12 months'),
-(3, 2, 2,'INV-Qz1x8NwM', 'top-up from bank y', 30000, (select users.username  from  users where id = 3), NOW()-interval '9 months', NOW()-interval '9 months', NOW()-interval '9 months'),
-(3, 2, 3,'INV-Vr4h6bUy', 'top-up from visa y', 30000, (select users.username  from  users where id = 3), NOW()-interval '6 months', NOW()-interval '6 months', NOW()-interval '6 months'),
-(4, 1, 1,'INV-gH9c7PzQ', 'transfer', 40000, (select users.username  from  users where id = 2), NOW()-interval '15 months', NOW()-interval '15 months', NOW()-interval '15 months'),
-(4, 1, 1,'INV-Jm2n5QkW', 'transfer', 40000, (select users.username  from  users where id = 3), NOW()-interval '12 months', NOW()-interval '12 months', NOW()-interval '12 months'),
-(4, 2, 4,'INV-bX3h8NzY', 'top-up from cash', 40000, (select users.username  from  users where id = 4), NOW()-interval '9 months', NOW()-interval '9 months', NOW()-interval '9 months'),
-(4, 2, 5,'INV-Pk7m2dHw', 'top-up from reward', 40000, (select users.username  from  users where id = 4), NOW()-interval '6 months', NOW()-interval '6 months', NOW()-interval '6 months'),
-(5, 1, 1,'INV-Tz4n9bXj', 'transfer', 50000, (select users.username  from  users where id = 3), NOW()-interval '15 months', NOW()-interval '15 months', NOW()-interval '15 months'),
-(5, 1, 1,'INV-wQ8p2LkZ', 'transfer', 50000, (select users.username  from  users where id = 4), NOW()-interval '12 months', NOW()-interval '12 months', NOW()-interval '12 months'),
-(5, 2, 2,'INV-Rn5x6cVq', 'top-up from bank z', 50000, (select users.username  from  users where id = 5), NOW()-interval '9 months', NOW()-interval '9 months', NOW()-interval '9 months'),
-(5, 2, 3,'INV-Fj1k8zLm', 'top-up from visa y', 50000, (select users.username  from  users where id = 5), NOW()-interval '6 months', NOW()-interval '6 months', NOW()-interval '6 months');
+(1, 1, 1,'INV-a7Xf91Qz', 'transfer', 10000, (select users.id  from  users where id = 2), NOW()-interval '15 months', NOW()-interval '15 months', NOW()-interval '15 months'),
+(1, 1, 1, 'INV-Kd9wL8sP','transfer', 10000, (select users.id  from  users where id = 3), NOW()-interval '12 months', NOW()-interval '12 months', NOW()-interval '12 months'),
+(1, 2, 2,'INV-p0QrXz2J', 'top-up from bank x', 10000, (select users.id  from  users where id = 1), NOW()-interval '9 months', NOW()-interval '9 months', NOW()-interval '9 months'),
+(1, 2, 3,'INV-91nUbW5m', 'top-up from visa x', 10000, (select users.id  from  users where id = 1), NOW()-interval '6 months', NOW()-interval '6 months', NOW()-interval '6 months'),
+(2, 1, 1,'INV-Wk7XcH2d', 'transfer', 20000, (select users.id  from  users where id = 4), NOW()-interval '15 months', NOW()-interval '15 months', NOW()-interval '15 months'),
+(2, 1, 1,'INV-Zr9bN8jL', 'transfer', 20000, (select users.id  from  users where id = 5), NOW()-interval '12 months', NOW()-interval '12 months', NOW()-interval '12 months'),
+(2, 2, 4,'INV-3yLf8QkP', 'top-up from cash', 20000, (select users.id  from  users where id = 2), NOW()-interval '9 months', NOW()-interval '9 months', NOW()-interval '9 months'),
+(2, 2, 5,'INV-mN5x9cLQ', 'top-up from reward', 20000, (select users.id  from  users where id = 2), NOW()-interval '6 months', NOW()-interval '6 months', NOW()-interval '6 months'),
+(3, 1, 1,'INV-Yu2R8dXk', 'transfer', 30000, (select users.id  from  users where id = 1), NOW()-interval '15 months', NOW()-interval '15 months', NOW()-interval '15 months'),
+(3, 1, 1,'INV-7PjK2nDx', 'transfer', 30000, (select users.id  from  users where id = 2), NOW()-interval '12 months', NOW()-interval '12 months', NOW()-interval '12 months'),
+(3, 2, 2,'INV-Qz1x8NwM', 'top-up from bank y', 30000, (select users.id  from  users where id = 3), NOW()-interval '9 months', NOW()-interval '9 months', NOW()-interval '9 months'),
+(3, 2, 3,'INV-Vr4h6bUy', 'top-up from visa y', 30000, (select users.id  from  users where id = 3), NOW()-interval '6 months', NOW()-interval '6 months', NOW()-interval '6 months'),
+(4, 1, 1,'INV-gH9c7PzQ', 'transfer', 40000, (select users.id  from  users where id = 2), NOW()-interval '15 months', NOW()-interval '15 months', NOW()-interval '15 months'),
+(4, 1, 1,'INV-Jm2n5QkW', 'transfer', 40000, (select users.id  from  users where id = 3), NOW()-interval '12 months', NOW()-interval '12 months', NOW()-interval '12 months'),
+(4, 2, 4,'INV-bX3h8NzY', 'top-up from cash', 40000, (select users.id  from  users where id = 4), NOW()-interval '9 months', NOW()-interval '9 months', NOW()-interval '9 months'),
+(4, 2, 5,'INV-Pk7m2dHw', 'top-up from reward', 40000, (select users.id  from  users where id = 4), NOW()-interval '6 months', NOW()-interval '6 months', NOW()-interval '6 months'),
+(5, 1, 1,'INV-Tz4n9bXj', 'transfer', 50000, (select users.id  from  users where id = 3), NOW()-interval '15 months', NOW()-interval '15 months', NOW()-interval '15 months'),
+(5, 1, 1,'INV-wQ8p2LkZ', 'transfer', 50000, (select users.id  from  users where id = 4), NOW()-interval '12 months', NOW()-interval '12 months', NOW()-interval '12 months'),
+(5, 2, 2,'INV-Rn5x6cVq', 'top-up from bank z', 50000, (select users.id  from  users where id = 5), NOW()-interval '9 months', NOW()-interval '9 months', NOW()-interval '9 months'),
+(5, 2, 3,'INV-Fj1k8zLm', 'top-up from visa y', 50000, (select users.id  from  users where id = 5), NOW()-interval '6 months', NOW()-interval '6 months', NOW()-interval '6 months');
 
 
 

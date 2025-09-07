@@ -13,7 +13,8 @@ type Transaction struct {
 	Description         string
 	Amount              decimal.Decimal
 	TransactionTime     time.Time
-	Recpient            string
+	Sender string
+	Recipient            string	
 }
 
 type PageInfo struct {

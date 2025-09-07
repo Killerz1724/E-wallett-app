@@ -56,13 +56,25 @@ func (tr TransactionRepoImpl) ListAllTransactionRepo(c context.Context, email st
 	}
 
 	q := `
-	SELECT th.invoice_number, tc.name, sf.name, th.description, th.amount, th.transaction_time, th.recipient
+	SELECT 
+  th.invoice_number,
+  tc.name AS category_name,
+  sf.name AS source_fund_name,
+  th.description,
+  th.amount,
+  th.transaction_time,
+  sender.username AS sender_username,
+  recipient.username AS recipient_username
 	FROM transaction_histories th
-	JOIN transaction_categories tc
-	ON tc.id = th.transaction_category_id
-	JOIN source_funds sf
-	ON sf.id = th.source_fund_id
-	WHERE th.user_id = $1
+	JOIN transaction_categories tc 
+  ON tc.id = th.transaction_category_id
+	JOIN source_funds sf 
+  ON sf.id = th.source_fund_id
+	JOIN users sender 
+  ON sender.id = th.user_id
+	JOIN users recipient 
+  ON recipient.id = th.recipient_id
+WHERE th.recipient_id = $1 OR th.user_id = $1
 	`
 	zeroTime := time.Time{}
 
@@ -99,7 +111,7 @@ func (tr TransactionRepoImpl) ListAllTransactionRepo(c context.Context, email st
 				sortType = "th.amount"
 				orderByCount += 1
 			case "recipient":
-				sortType = "th.recipient"
+				sortType = "recipient.username"
 				orderByCount += 1
 			}
 
@@ -162,7 +174,8 @@ func (tr TransactionRepoImpl) ListAllTransactionRepo(c context.Context, email st
 			&trans.Description,
 			&trans.Amount,
 			&trans.TransactionTime,
-			&trans.Recpient,
+			&trans.Sender,
+			&trans.Recipient,
 		)
 
 		if err != nil {
@@ -233,10 +246,10 @@ func (tr TransactionRepoImpl) TopupTransactionRepo(c context.Context, req entity
 	description := fmt.Sprintf("top up from %s", getSourceFund)
 	//Add to transaction histories
 	_, err = exTx.ExecContext(c, `
-	INSERT INTO transaction_histories(invoice_number, user_id, transaction_category_id, source_fund_id, description, recipient, amount) 
+	INSERT INTO transaction_histories(invoice_number, user_id, transaction_category_id, source_fund_id, description, recipient_id, amount) 
 	VALUES
 		($1, $2, 2,  $3, $4, $5, $6);
-	`,req.InvoiceNumber, getUserId, req.SourceOfFund, description, getUserName, req.Amount)
+	`,req.InvoiceNumber, getUserId, req.SourceOfFund, description, getUserId, req.Amount)
 
 	if err != nil {
 		return &entity.CustomError{Msg: constant.CommonError, Log: err}
@@ -371,10 +384,10 @@ func (tr TransactionRepoImpl) TransferTransactionRepo(c context.Context, req ent
 
 	//Add to transaction histories
 	_, err = exTx.ExecContext(c, `
-	INSERT INTO transaction_histories(invoice_number, user_id, transaction_category_id, source_fund_id, description, recipient, amount) 
+	INSERT INTO transaction_histories(invoice_number, user_id, transaction_category_id, source_fund_id, description, recipient_id, amount) 
 	VALUES
 		($1, $2, 1, $3, $4, $5, $6);
-	`, req.InvoiceNumber,getUserId, constant.EWALLET_SOURCEOFFUND, description, getTargetName, req.Amount)
+	`, req.InvoiceNumber,getUserId, constant.EWALLET_SOURCEOFFUND, description, getTargetId, req.Amount)
 
 	if err != nil {
 		return &entity.CustomError{Msg: constant.CommonError, Log: err}

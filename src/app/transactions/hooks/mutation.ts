@@ -24,6 +24,7 @@ export type Transaction = {
   description: string;
   amount: number;
   transaction_time: string;
+  sender: string;
   recipent: string;
 };
 
