@@ -70,12 +70,16 @@ func (th TransactionHandlerImpl) TopUpHandler(c *gin.Context) {
 		return
 	}
 
-	req := entity.TopUpBody(reqBody)
+	req := entity.TopUpBody{
+		InvoiceNumber: "",
+		Amount:        reqBody.Amount,
+		SourceOfFund:  reqBody.SourceOfFund,
+	}
 
 	customError := th.tu.TopUpUsecase(c, req, paramId.(string))
 
 	if customError != nil {
-		c.Error(customError)
+		c.Error(customError).SetType(gin.ErrorTypePublic)
 		return
 	}
 
@@ -102,12 +106,17 @@ func (th TransactionHandlerImpl) TransferHandler(c *gin.Context) {
 		return
 	}
 
-	req := entity.TransferBody(reqBody)
+	req := entity.TransferBody{
+		InvoiceNumber: "",
+		Amount:        reqBody.Amount,
+		TargetWallet:  reqBody.TargetWallet,
+		Description:   reqBody.Description,
+	}
 
 	customError := th.tu.TransferUsecase(c, req, subject)
 
 	if customError != nil {
-		c.Error(customError)
+		c.Error(customError).SetType(gin.ErrorTypePublic)
 		return
 	}
 

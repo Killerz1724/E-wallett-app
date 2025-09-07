@@ -6,6 +6,7 @@ import (
 	"ewallet/constant"
 	"ewallet/entity"
 	"ewallet/repository"
+	"ewallet/utils"
 	"fmt"
 	"strconv"
 	"time"
@@ -103,11 +104,14 @@ func (tu TransactionUsecaseImpl) TopUpUsecase(c context.Context, req entity.TopU
 	}
 
 
-	if err != nil {
-		return err
-	}
 
 	txErr := tu.txr.WithTx(c, func(c context.Context) error {
+		req.InvoiceNumber, err = utils.GenerateInvNumber()
+
+		if err != nil {
+			return err
+		}
+
 		if err = tu.tr.TopupTransactionRepo(c, req, sub); err != nil {
 			return err
 		}
@@ -148,6 +152,12 @@ func (tu TransactionUsecaseImpl) TransferUsecase(c context.Context, req entity.T
 	}
 
 	txErr := tu.txr.WithTx(c, func(c context.Context) error {
+		req.InvoiceNumber, err = utils.GenerateInvNumber()
+
+		if err != nil {
+			return err
+		}
+
 		if err = tu.tr.TransferTransactionRepo(c, req, userToken); err != nil {
 			return err
 		}

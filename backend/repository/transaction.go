@@ -56,7 +56,7 @@ func (tr TransactionRepoImpl) ListAllTransactionRepo(c context.Context, email st
 	}
 
 	q := `
-	SELECT tc.name, sf.name, th.description, th.amount, th.transaction_time, th.recipient
+	SELECT th.invoice_number, tc.name, sf.name, th.description, th.amount, th.transaction_time, th.recipient
 	FROM transaction_histories th
 	JOIN transaction_categories tc
 	ON tc.id = th.transaction_category_id
@@ -156,6 +156,7 @@ func (tr TransactionRepoImpl) ListAllTransactionRepo(c context.Context, email st
 		var trans entity.Transaction
 		// var transTime string
 		err = rows.Scan(
+			&trans.InvoiceNumber,
 			&trans.TransactionCategory,
 			&trans.SourceFund,
 			&trans.Description,
@@ -232,10 +233,10 @@ func (tr TransactionRepoImpl) TopupTransactionRepo(c context.Context, req entity
 	description := fmt.Sprintf("top up from %s", getSourceFund)
 	//Add to transaction histories
 	_, err = exTx.ExecContext(c, `
-	INSERT INTO transaction_histories(user_id, transaction_category_id, source_fund_id, description, recipient, amount) 
+	INSERT INTO transaction_histories(invoice_number, user_id, transaction_category_id, source_fund_id, description, recipient, amount) 
 	VALUES
-		($1, 2, $2, $3, $4, $5);
-	`, getUserId, req.SourceOfFund, description, getUserName, req.Amount)
+		($1, $2, 2,  $3, $4, $5, $6);
+	`,req.InvoiceNumber, getUserId, req.SourceOfFund, description, getUserName, req.Amount)
 
 	if err != nil {
 		return &entity.CustomError{Msg: constant.CommonError, Log: err}
@@ -370,10 +371,10 @@ func (tr TransactionRepoImpl) TransferTransactionRepo(c context.Context, req ent
 
 	//Add to transaction histories
 	_, err = exTx.ExecContext(c, `
-	INSERT INTO transaction_histories(user_id, transaction_category_id, source_fund_id, description, recipient, amount) 
+	INSERT INTO transaction_histories(invoice_number, user_id, transaction_category_id, source_fund_id, description, recipient, amount) 
 	VALUES
-		($1, 1, $2, $3, $4, $5);
-	`, getUserId, 1, description, getTargetName, req.Amount)
+		($1, $2, 1, $3, $4, $5, $6);
+	`, req.InvoiceNumber,getUserId, constant.EWALLET_SOURCEOFFUND, description, getTargetName, req.Amount)
 
 	if err != nil {
 		return &entity.CustomError{Msg: constant.CommonError, Log: err}

@@ -52,6 +52,7 @@ export default function TransactionsTable() {
                   ))
                 : !isError && (
                     <>
+                      <TableHead>Invoice No</TableHead>
                       <TableHead>Recipient</TableHead>
                       <TableHead>Category</TableHead>
                       <TableHead>Description</TableHead>
@@ -79,6 +80,7 @@ export default function TransactionsTable() {
               ) : data.page_info.total_rows > 0 ? (
                 data.transactions.map((transaction, i) => (
                   <TableRow key={i}>
+                    <TableCell>{transaction.invoice_number}</TableCell>
                     <TableCell>{transaction.recipent}</TableCell>
                     <TableCell>{transaction.transaction_category}</TableCell>
                     <TableCell>{transaction.description}</TableCell>

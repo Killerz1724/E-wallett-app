@@ -7,6 +7,7 @@ import (
 )
 
 type Transaction struct {
+	InvoiceNumber string          `json:"invoice_number"`
 	TransactionCategory string          `json:"transaction_category"`
 	SourceFund          string          `json:"source_fund"`
 	Description         string          `json:"description"`

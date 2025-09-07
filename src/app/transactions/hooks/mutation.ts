@@ -18,6 +18,7 @@ export type PageInfo = {
 };
 
 export type Transaction = {
+  invoice_number: string;
   transaction_category: string;
   source_fund: string;
   description: string;

@@ -7,6 +7,7 @@ import (
 )
 
 type Transaction struct {
+	InvoiceNumber string
 	TransactionCategory string
 	SourceFund          string
 	Description         string
@@ -30,11 +31,13 @@ type ListTransactionBody struct {
 	UserId int
 }
 type TopUpBody struct {
+	InvoiceNumber string
 	Amount       decimal.Decimal
 	SourceOfFund int
 }
 
 type TransferBody struct {
+	InvoiceNumber string
 	TargetWallet int
 	Amount       decimal.Decimal
 	Description  string
