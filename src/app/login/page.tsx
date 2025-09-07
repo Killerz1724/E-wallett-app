@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Suspense } from "react";
 import LoginForm from "./components/LoginForm";
+import Link from "next/link";
 
 export interface loginDataType {
   email: string;
@@ -22,7 +23,7 @@ const Login = () => {
             <p>
               You can{" "}
               <span className="hover:cursor-pointer underline">
-                Register here !
+                <Link href="/register">Register here !</Link>
               </span>
             </p>
           </div>
