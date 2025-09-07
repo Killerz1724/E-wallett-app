@@ -64,6 +64,9 @@ const UserSlice = createSlice({
       state.userData.email = action.payload.email;
       state.userData.balance = action.payload.balance;
     },
+    setProfileImage: (state, action: PayloadAction<string>) => {
+      state.userData.profilPic = action.payload;
+    },
     setUserSeeBalance: (state) => {
       state.userBehaviour.seeBalance = !state.userBehaviour.seeBalance;
     },
@@ -96,6 +99,7 @@ const UserSlice = createSlice({
 
 export const {
   setUser,
+  setProfileImage,
   setUserSeeBalance,
   setUserExchangeFrom,
   setUserExchangeTo,

@@ -30,7 +30,7 @@ func NewSupabaseClient() *SupabaseClientImpl {
 func (s *SupabaseClientImpl) UploadFile(bucket string, filepath string, contentType *string, data io.Reader) error {
 	upsertOpt := new(bool)
 	*upsertOpt = true
-	cacheControl := "0"
+	cacheControl := "no-cache"
 
 	_, err := s.sc.Storage.UploadFile(bucket, filepath, data, storage_go.FileOptions{
 		Upsert:       upsertOpt,

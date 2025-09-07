@@ -10,6 +10,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/shopspring/decimal"
 )
@@ -20,7 +21,7 @@ type UserRepoItf interface {
 	UserShowUserDetailsRepo( context.Context,  string) (*entity.ShowUserProfileRes, error)
 	UserIncomeRepo(context.Context, string ) (*entity.UserIncomeRes,error)
 	UserExpenseRepo(context.Context, string ) (*entity.UserExpenseRes,error)
-	UserChangeProfilePicRepo(context.Context, entity.ChangeProfilePictureBody) error
+	UserChangeProfilePicRepo(context.Context, entity.ChangeProfilePictureBody) (*entity.ChangeProfilePictureRes, error)
 	GetUsernameByEmail(context.Context, string) (*string, error) 
 }
 
@@ -239,20 +240,20 @@ func (ur UserRepoImpl) GetUsernameByEmail(c context.Context, email string) (*str
 	return &username, nil
 }
 
-func (ur UserRepoImpl) UserChangeProfilePicRepo(c context.Context, req entity.ChangeProfilePictureBody) error {
+func (ur UserRepoImpl) UserChangeProfilePicRepo(c context.Context, req entity.ChangeProfilePictureBody) (*entity.ChangeProfilePictureRes,error) {
 
 	username, err := ur.GetUsernameByEmail(c, req.UserId)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	profileBucket := os.Getenv("EWALLET_BUCKET")
-	filePath := fmt.Sprintf("profile-pictures/%s/avatar.%s", *username, strings.Split(req.ContentType, "/")[1])
+	filePath := fmt.Sprintf("profile-pictures/%s/avatar-%s.%s", *username, uuid.New().String(),strings.Split(req.ContentType, "/")[1])
 	err = ur.sc.UploadFile(profileBucket, filePath, &req.ContentType, req.ImgFile)
 
 	if err != nil {
-		return &entity.CustomError{
+		return nil, &entity.CustomError{
 			Msg: constant.CommonError,
 			Log: err,
 		}
@@ -262,7 +263,7 @@ func (ur UserRepoImpl) UserChangeProfilePicRepo(c context.Context, req entity.Ch
 	ur.sc.GetPublicFileURL(profileBucket, filePath, newImgUrl)
 
 	if newImgUrl == nil {
-		return &entity.CustomError{
+		return nil, &entity.CustomError{
 			Msg: constant.CommonError,
 			Log: err,
 		}
@@ -271,18 +272,22 @@ func (ur UserRepoImpl) UserChangeProfilePicRepo(c context.Context, req entity.Ch
 	q := `
 	UPDATE users
 	SET profile_image = $1
-	WHERE email = $2;
+	WHERE email = $2
+	RETURNING profile_image;
 	`
 
-	_, err = ur.db.ExecContext(c, q, *newImgUrl, req.UserId)
+	 row := ur.db.QueryRowContext(c, q, *newImgUrl, req.UserId)
 
+	var res entity.ChangeProfilePictureRes
+
+	err = row.Scan(&res.ImgUrl)
 	if err != nil {
-		return &entity.CustomError{
+		return nil, &entity.CustomError{
 			Msg: constant.CommonError,
 			Log: err,
 		}
 	}
 
-	return nil
+	return &res, nil 
 	
 }

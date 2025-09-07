@@ -17,7 +17,7 @@ type UserUsecaseItf interface {
 	UserShowUserDetailsUsecase( context.Context,  string) (*entity.ShowUserProfileRes, error)
 	UserIncomeUsecase(context.Context, string ) (*entity.UserIncomeRes,error)
 	UserExpenseUsecase(context.Context, string ) (*entity.UserExpenseRes,error)
-	UserChangeProfilePicUsecase(context.Context, entity.ChangeProfilePictureBody) error  
+	UserChangeProfilePicUsecase(context.Context, entity.ChangeProfilePictureBody) (*entity.ChangeProfilePictureRes,error)  
 }
 
 type UserUsecaseImpl struct {
@@ -120,17 +120,17 @@ func (uuc UserUsecaseImpl) UserExpenseUsecase(c context.Context, email string ) 
 	return res, nil
 }
 
-func (uuc UserUsecaseImpl) UserChangeProfilePicUsecase(c context.Context,req entity.ChangeProfilePictureBody) error{
+func (uuc UserUsecaseImpl) UserChangeProfilePicUsecase(c context.Context,req entity.ChangeProfilePictureBody) (*entity.ChangeProfilePictureRes, error){
 
 	if req.ContentType != constant.ImagePNG && req.ContentType != constant.ImageJPG {
-		return &entity.CustomError{Msg: constant.ChangeProfilePictureProblem{Msg: constant.InvalidImageType.Error()}, Log: constant.InvalidImageType}
+		return nil, &entity.CustomError{Msg: constant.ChangeProfilePictureProblem{Msg: constant.InvalidImageType.Error()}, Log: constant.InvalidImageType}
 	}
 
-	err := uuc.ur.UserChangeProfilePicRepo(c, req)
+	res, err := uuc.ur.UserChangeProfilePicRepo(c, req)
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return res, nil
 }

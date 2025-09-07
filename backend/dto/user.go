@@ -31,3 +31,7 @@ type UserIncomeRes struct {
 type UserExpenseRes struct {
 	TotalExpense decimal.Decimal `json:"total_expense"`
 }
+
+type ChangeProfilePictureRes struct {
+	ImgUrl string `json:"img_url"`
+}

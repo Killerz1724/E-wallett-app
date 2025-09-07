@@ -192,8 +192,9 @@ func (uh UserHandlerImpl) UserChangeProfilePicHandler(c *gin.Context) {
 		UserId: email.(string),
 	}
 
-	err = uh.uuc.UserChangeProfilePicUsecase(c, reqBody)
+	res, err := uh.uuc.UserChangeProfilePicUsecase(c, reqBody)
 
+	resBody := dto.ChangeProfilePictureRes(*res)
 	if err != nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
 		return
@@ -202,6 +203,6 @@ func (uh UserHandlerImpl) UserChangeProfilePicHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, dto.Response{
 		Success: true,
 		Error: nil,
-		Data: nil,
+		Data: resBody,
 	})
 }

@@ -41,3 +41,7 @@ type ChangeProfilePictureBody struct {
 	ContentType string
 	UserId string
 }
+
+type ChangeProfilePictureRes struct {
+	ImgUrl string
+}
