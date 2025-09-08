@@ -91,10 +91,7 @@ export default function LoginForm() {
         </div>
         <div className="flex flex-col gap-1">
           <div className="flex flex-col justify-between focus-within:outline-2 gap-4 items-center bg-[#F2F2F2] px-6 py-4 rounded-lg">
-            <div
-              tabIndex={0}
-              className="flex justify-between outline-none  w-full"
-            >
+            <div className="flex justify-between outline-none  w-full">
               <input
                 value={data.password}
                 onChange={handleChange}

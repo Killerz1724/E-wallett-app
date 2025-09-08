@@ -3,11 +3,12 @@ import clsxm from "@riverfl0w/clsxm";
 import React from "react";
 import ConverterContent from "./ConverterContent";
 import RatesContent from "./RatesContent";
+import Link from "next/link";
 
 export default function ExchangeRatesComp() {
   const [tabActive, setTabActive] = React.useState(0);
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mb-10">
       <div className="flex border-gray-300 border-1 rounded-tl-2xl rounded-tr-2xl w-fit">
         <span
           className={clsxm(
@@ -34,9 +35,15 @@ export default function ExchangeRatesComp() {
         {tabActive === 0 && <ConverterContent />}
         {tabActive === 1 && <RatesContent />}
         <p className="text-sm text-gray-400 max-w-lg text-justify">
-          We use the mid-market rate for our Converter. This is for
-          informational purposes only. You won’t receive this rate when sending
-          money.
+          We use{" "}
+          <Link
+            className="underline text-gray-600 font-bold "
+            href="https://openexchangerates.org/"
+            target="_blank"
+          >
+            Openexchangesrates
+          </Link>{" "}
+          for our Converter. This is for practice purposes only.
         </p>
       </div>
     </div>
