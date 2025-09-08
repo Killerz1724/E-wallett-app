@@ -17,8 +17,7 @@ export async function RequestReset(_: reqResetRes, formData: FormData) {
     );
 
     return res.data.data;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (err) {
+  } catch {
     return { token: "" };
   }
 }
@@ -38,7 +37,8 @@ export async function ResetPassword(
     );
 
     return { state: true, message: "Success" };
-  } catch (err) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (err: any) {
     const msg = err.response ? err.response.data.message : COMMON_ERROR;
     return { state: false, message: msg };
   }

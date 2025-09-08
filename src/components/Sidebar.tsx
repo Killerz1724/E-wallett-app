@@ -7,11 +7,18 @@ import {
   BanknoteArrowDown,
   BanknoteArrowUp,
   HouseIcon,
+  Info,
   LucideProps,
   NotebookText,
 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
-import { ForwardRefExoticComponent, RefAttributes, useState } from "react";
+import {
+  ForwardRefExoticComponent,
+  RefAttributes,
+  Suspense,
+  useState,
+} from "react";
 
 type navItemsProps = {
   name: string;
@@ -40,6 +47,11 @@ const navItems: navItemsProps[] = [
     name: "TopUp",
     icon: BanknoteArrowUp,
   },
+  {
+    name: "About",
+    path: "/about",
+    icon: Info,
+  },
 ];
 
 export default function Sidebar() {
@@ -59,6 +71,16 @@ export default function Sidebar() {
           "bg-white/30   backdrop-filter backdrop-blur-2xl  border border-gray-100"
         )}
       >
+        <div className="absolute top-5 left-3">
+          <Suspense fallback={<p>Loading..</p>}>
+            <Image
+              src={"/tejoflowLogo-White.png"}
+              alt="tejoflowLogo-White"
+              width={150}
+              height={100}
+            />
+          </Suspense>
+        </div>
         <ul className="flex flex-col gap-5">
           {navItems.map((val, i) => (
             <li key={i} className="text-white">
