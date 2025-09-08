@@ -15,7 +15,7 @@ export default function Modal() {
   return (
     <section className="fixed top-0 h-screen w-screen flex items-center z-20 justify-center">
       <div className="absolute w-full h-full bg-black/50 z-20" />
-      <article className="absolute pt-4 pb-10 px-8 min-w-md min-h-64 z-40 bg-white rounded-xl">
+      <article className="absolute pt-4 pb-10 px-8 w-sm lg:min-w-md min-h-64 z-40 bg-white rounded-xl">
         <div
           className="flex w-full justify-end"
           onClick={() => dispatch(closeModal())}

@@ -6,7 +6,7 @@ import MarkString from "./components/MarkString";
 export default function AboutPage() {
   return (
     <DashboardLayout>
-      <section className="space-y-12 max-w-3xl">
+      <section className="space-y-12 max-w-3xl pb-20">
         <div className="space-y-4">
           <Logo />
           <p className="text-lg text-justify">
@@ -19,7 +19,9 @@ export default function AboutPage() {
           </p>
         </div>
         <div className="space-y-4">
-          <h4 className="text-2xl font-semibold">Check out my Portfolio!</h4>
+          <h4 className="text-lg lg:text-2xl font-semibold">
+            Check out my Portfolio!
+          </h4>
           <ul>
             <li className="text-lg underline text-orange-400 list-disc list-inside">
               <Link href={"https://tejofolio.xyz"} target="_blank">
@@ -29,14 +31,16 @@ export default function AboutPage() {
           </ul>
         </div>
         <div className="space-y-4">
-          <h4 className="text-2xl font-semibold">External sites that i used</h4>
+          <h4 className="text-lg lg:text-2xl font-semibold">
+            External sites that i used
+          </h4>
           <ul>
-            <li className="text-lg underline text-orange-400 list-disc list-inside">
+            <li className="text-base lg:text-lg underline text-orange-400 list-disc list-inside">
               <Link href={"https://openexchangerates.org/"} target="_blank">
                 Open Exchanges rates
               </Link>
             </li>
-            <li className="text-lg underline text-orange-400 list-disc list-inside">
+            <li className="text-base lg:text-lg underline text-orange-400 list-disc list-inside">
               <Link href={"https://supabase.com/"} target="_blank">
                 Supabase
               </Link>

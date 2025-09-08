@@ -11,11 +11,11 @@ export default function TopupModalTrigger({
   const dispatch = useDispatch();
   return (
     <div
-      className="flex items-center gap-4 cursor-pointer hover:bg-white/40 p-2 rounded-md transition-all duration-500 ease-in-out"
+      className="flex items-center text-sm lg:text-base gap-4 cursor-pointer hover:bg-white/40 p-2 rounded-md transition-all duration-500 ease-in-out"
       onClick={() => dispatch(openModal("TOPUP"))}
     >
       {!iconMode && <BanknoteArrowUp />}
-      {iconMode ? <BanknoteArrowUp /> : "Top Up"}
+      {iconMode ? <BanknoteArrowUp className="size-[20px]" /> : "Top Up"}
     </div>
   );
 }

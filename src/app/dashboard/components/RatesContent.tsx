@@ -30,7 +30,7 @@ export default function RatesContent() {
     refetch();
   }, [refetch, ratesQ, pageQ]);
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <div className="flex flex-col gap-4 max-w-[20rem] lg:w-full md:max-w-full">
       <div className="flex w-full justify-end">
         <CountryRatesSelect />
       </div>

@@ -46,8 +46,8 @@ export default function ConverterContent() {
     <>
       <div className="flex flex-col gap-8 ">
         <div className="space-y-4 w-full">
-          <div className="flex gap-3 items-center">
-            <div className="w-1/2">
+          <div className="flex flex-col lg:flex-row gap-3 items-center">
+            <div className="lg:w-1/2">
               <h3 className="font-semibold text-lg">Input Currency Amount</h3>
               <CurrencyInput
                 className="px-4 py-2 w-full  border-1 border-gray-300 rounded-md max-w-lg no-arrows"
@@ -83,7 +83,7 @@ export default function ConverterContent() {
             ) : (
               data && (
                 <>
-                  <p className="text-4xl font-bold">
+                  <p className="text-2xl lg:text-4xl font-bold">
                     {data.Result.toLocaleString("id-ID")} {to}{" "}
                   </p>
                 </>

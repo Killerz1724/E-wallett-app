@@ -9,7 +9,7 @@ export default function ExpenseCard() {
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2">
           <ChartNoAxesCombined className="h-5 w-5 text-white/90" />
-          <span className="text-sm font-medium text-white/80">
+          <span className="text-xs lg:text-sm font-medium text-white/80">
             My Expense ({getCurrentMonth()})
           </span>
         </div>
@@ -19,7 +19,7 @@ export default function ExpenseCard() {
         </span>
       </div>
       <div>
-        <TrendingDown className="h-20 w-20 text-white/90" />
+        <TrendingDown className="w-16 h-16 lg:h-20 lg:w-20 text-white/90" />
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ export default function ExpenseBalance() {
       ) : isError ? (
         <p>{COMMON_ERROR}</p>
       ) : (
-        <p className="text-4xl font-bold tracking-tight text-white">
+        <p className="text-2xl lg:text-4xl font-bold tracking-tight text-white">
           Rp {totalExpense}
         </p>
       )}

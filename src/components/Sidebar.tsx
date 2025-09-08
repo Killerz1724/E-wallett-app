@@ -75,8 +75,10 @@ export default function Sidebar() {
               {val.path ? (
                 <Link href={val.path}>
                   <div className="flex items-center gap-4 cursor-pointer hover:bg-white/40 p-2 rounded-md transition-all duration-500 ease-in-out">
-                    <val.icon />
-                    {!isCollapse && <p>{val.name}</p>}
+                    <val.icon className="size-[20px]" />
+                    {!isCollapse && (
+                      <p className="text-sm lg:text-base">{val.name}</p>
+                    )}
                   </div>
                 </Link>
               ) : (

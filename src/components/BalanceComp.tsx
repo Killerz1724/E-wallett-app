@@ -27,7 +27,7 @@ export default function BalanceComp({
       ) : (
         <p
           className={clsxm(
-            `text-4xl font-bold tracking-tight`,
+            `text-2xl lg:text-4xl font-bold tracking-tight`,
             style === "black" && "text-black",
             style === "white" && "text-white"
           )}

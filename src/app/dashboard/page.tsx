@@ -9,12 +9,12 @@ export default function Dashboardage() {
   return (
     <DashboardLayout>
       <section className="flex flex-col gap-10 w-full">
-        <article className="flex gap-4 justify-between">
+        <article className="flex flex-col lg:flex-row gap-4 justify-between">
           <BalanceCard />
           <IncomeCard />
           <ExpenseCard />
         </article>
-        <article>
+        <article className="min-w-[20rem] lg:w-full">
           <h3 className="font-bold text-3xl mb-6">Exchange Rates</h3>
           <ExchangeRatesComp />
         </article>

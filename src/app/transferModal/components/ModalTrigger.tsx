@@ -10,8 +10,8 @@ export default function ModalTrigger({ iconMode }: { iconMode?: boolean }) {
       className="flex items-center gap-4 cursor-pointer hover:bg-white/40 p-2 rounded-md transition-all duration-500 ease-in-out"
       onClick={() => dispatch(openModal("TRANSFER"))}
     >
-      {!iconMode && <BanknoteArrowDown />}
-      {iconMode ? <BanknoteArrowDown /> : "Transfer"}
+      {!iconMode && <BanknoteArrowDown className="size-[20px]" />}
+      {iconMode ? <BanknoteArrowDown className="size-[20px]" /> : "Transfer"}
     </div>
   );
 }

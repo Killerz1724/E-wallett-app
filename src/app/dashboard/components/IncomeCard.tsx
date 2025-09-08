@@ -8,7 +8,7 @@ export default function IncomeCard() {
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2">
           <ChartNoAxesCombined className="h-5 w-5 text-white/90" />
-          <span className="text-sm font-medium text-white/80">
+          <span className="text-xs lg:text-sm font-medium text-white/80">
             My Income ({getCurrentMonth()})
           </span>
         </div>
@@ -18,7 +18,7 @@ export default function IncomeCard() {
         </span>
       </div>
       <div>
-        <TrendingUp className="h-20 w-20 text-white/90" />
+        <TrendingUp className="h-16 w-16 lg:h-20 lg:w-20 text-white/90" />
       </div>
     </div>
   );

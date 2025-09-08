@@ -33,76 +33,78 @@ export default function TransactionsTable() {
     refetch,
   ]);
   return (
-    <article className="space-y-4">
-      <div className="flex justify-between items-center">
+    <article className="flex flex-col gap-4 items-center lg:items-baseline w-full">
+      <div className="flex w-full flex-col gap-4 lg:flex-row justify-between lg:items-center">
         <h3 className="font-bold text-2xl">Transactions History</h3>
         <FilterTable />
       </div>
       {isError ? (
         <p>{COMMON_ERROR}</p>
       ) : (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              {isPending
-                ? Array.from({ length: 6 }).map((_, i) => (
-                    <TableHead key={i}>
-                      <SkeletonLoading />
-                    </TableHead>
-                  ))
-                : !isError && (
-                    <>
-                      <TableHead>Invoice No</TableHead>
-                      <TableHead>Sender</TableHead>
-                      <TableHead>Recipient</TableHead>
-                      <TableHead>Category</TableHead>
-                      <TableHead>Description</TableHead>
-                      <TableHead>Method</TableHead>
-                      <TableHead>Amount</TableHead>
-                      <TableHead>Transaction Time</TableHead>
-                    </>
-                  )}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            <>
-              {isPending ? (
-                Array.from({ length: 6 }).map((_, i) => (
-                  <TableRow key={i + "Tr"}>
-                    {Array.from({ length: 6 }).map((_, j) => (
-                      <TableCell key={j}>
+        <div className="max-w-[21rem] md:max-w-full md:w-full">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                {isPending
+                  ? Array.from({ length: 6 }).map((_, i) => (
+                      <TableHead key={i}>
                         <SkeletonLoading />
+                      </TableHead>
+                    ))
+                  : !isError && (
+                      <>
+                        <TableHead>Invoice No</TableHead>
+                        <TableHead>Sender</TableHead>
+                        <TableHead>Recipient</TableHead>
+                        <TableHead>Category</TableHead>
+                        <TableHead>Description</TableHead>
+                        <TableHead>Method</TableHead>
+                        <TableHead>Amount</TableHead>
+                        <TableHead>Transaction Time</TableHead>
+                      </>
+                    )}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              <>
+                {isPending ? (
+                  Array.from({ length: 6 }).map((_, i) => (
+                    <TableRow key={i + "Tr"}>
+                      {Array.from({ length: 6 }).map((_, j) => (
+                        <TableCell key={j}>
+                          <SkeletonLoading />
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : isError ? (
+                  <p>{COMMON_ERROR}</p>
+                ) : data.page_info.total_rows > 0 ? (
+                  data.transactions.map((transaction, i) => (
+                    <TableRow key={i}>
+                      <TableCell>{transaction.invoice_number}</TableCell>
+                      <TableCell>{transaction.sender}</TableCell>
+                      <TableCell>{transaction.recipent}</TableCell>
+                      <TableCell>{transaction.transaction_category}</TableCell>
+                      <TableCell>{transaction.description}</TableCell>
+                      <TableCell>{transaction.source_fund}</TableCell>
+                      <TableCell>
+                        {Number(transaction.amount).toLocaleString("id-ID")}
                       </TableCell>
-                    ))}
+                      <TableCell>
+                        {formatDate(transaction.transaction_time)}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={6}>No Data</TableCell>
                   </TableRow>
-                ))
-              ) : isError ? (
-                <p>{COMMON_ERROR}</p>
-              ) : data.page_info.total_rows > 0 ? (
-                data.transactions.map((transaction, i) => (
-                  <TableRow key={i}>
-                    <TableCell>{transaction.invoice_number}</TableCell>
-                    <TableCell>{transaction.sender}</TableCell>
-                    <TableCell>{transaction.recipent}</TableCell>
-                    <TableCell>{transaction.transaction_category}</TableCell>
-                    <TableCell>{transaction.description}</TableCell>
-                    <TableCell>{transaction.source_fund}</TableCell>
-                    <TableCell>
-                      {Number(transaction.amount).toLocaleString("id-ID")}
-                    </TableCell>
-                    <TableCell>
-                      {formatDate(transaction.transaction_time)}
-                    </TableCell>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={6}>No Data</TableCell>
-                </TableRow>
-              )}
-            </>
-          </TableBody>
-        </Table>
+                )}
+              </>
+            </TableBody>
+          </Table>
+        </div>
       )}
       {data && (
         <Pagination

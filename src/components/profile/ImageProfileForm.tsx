@@ -35,7 +35,7 @@ export default function ImageProfileForm({
             alt="profile icon"
             width={100}
             height={100}
-            className="rounded-full w-[200px] h-[200px] object-cover"
+            className="rounded-full w-[150px] h-[150px] lg:w-[200px] lg:h-[200px] object-cover"
           />
         </Suspense>
       </div>
