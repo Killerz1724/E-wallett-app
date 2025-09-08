@@ -138,7 +138,10 @@ func (ur UserRepoImpl) UserReqResetPassRepo(c context.Context, req entity.ResetR
 			deleted_at = NOW()
 		WHERE id = (select distinct on (user_id) id
 		from password_tokens
-		order by user_id, created_at desc);
+		order by user_id, created_at desc 
+			OFFSET 1 LIMIT 1
+			);
+	
 		`)
 		if err != nil {
 			return nil, &entity.CustomError{Msg: constant.CommonError, Log: err}
@@ -181,7 +184,7 @@ func (ur UserRepoImpl) UserUpdatePassRepo(c context.Context, req entity.ResetPas
 	err := tokenExist.Scan(&check)
 
 	if errors.Is(err, sql.ErrNoRows) {
-		return &entity.CustomError{Msg: constant.QueryErrorType{Msg: constant.NotFound.Error()}, Log: err}
+		return &entity.CustomError{Msg: constant.QueryErrorType{Msg: constant.InvalidToken.Error()}, Log: err}
 
 	}
 

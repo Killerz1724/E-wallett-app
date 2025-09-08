@@ -30,6 +30,7 @@ var (
 	InvalidExchangeRate  = errors.New("invalid exchange rate")
 	InvalidImageSize    = errors.New("invalid image size")
 	InvalidImageType    = errors.New("invalid image type")
+	InvalidToken        = errors.New("invalid token")
 )
 
 

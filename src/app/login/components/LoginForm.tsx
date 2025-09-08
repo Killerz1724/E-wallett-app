@@ -7,6 +7,7 @@ import { useActionState, useEffect, useState, type ChangeEvent } from "react";
 import { toast } from "react-toastify";
 import { Login } from "../actions/action";
 import type { loginDataType } from "../page";
+import Link from "next/link";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -111,7 +112,12 @@ export default function LoginForm() {
           </div>
           {errors.password && <p className="text-red-400">{errors.password}</p>}
         </div>
-        <p className="cursor-pointer text-orange-400">Forgot Password</p>
+        <Link
+          href="/forgot-password"
+          className="cursor-pointer text-orange-400"
+        >
+          Forgot Password
+        </Link>
       </div>
       <Button disabled={!isFormValid} type="submit">
         Login

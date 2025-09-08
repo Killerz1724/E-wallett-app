@@ -28,7 +28,6 @@ export function useProfileImgPatch() {
           toastId,
         });
       },
-
       onSuccess: async (data) => {
         const newUrl = data.img_url.split("-")[1];
         dispatch(setProfileImage(`${data.img_url}?v=${newUrl}`));

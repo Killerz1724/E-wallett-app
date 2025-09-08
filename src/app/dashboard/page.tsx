@@ -14,7 +14,7 @@ export default function Dashboardage() {
           <IncomeCard />
           <ExpenseCard />
         </article>
-        <article className="mb-5">
+        <article>
           <h3 className="font-bold text-3xl mb-6">Exchange Rates</h3>
           <ExchangeRatesComp />
         </article>
