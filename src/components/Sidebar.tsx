@@ -71,7 +71,7 @@ export default function Sidebar() {
           "bg-white/30   backdrop-filter backdrop-blur-2xl  border border-gray-100"
         )}
       >
-        <div className="absolute top-5 left-3">
+        <div className="absolute top-3 left-3">
           <Suspense fallback={<p>Loading..</p>}>
             <Image
               src={"/tejoflowLogo-White.png"}
