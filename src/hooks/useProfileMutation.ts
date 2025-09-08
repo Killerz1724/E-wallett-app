@@ -5,6 +5,7 @@ import { ApiError, ApiResponse } from "types/api";
 import useMutationToast from "./useMutationToast";
 import { useDispatch } from "react-redux";
 import { setProfileImage } from "store/userStore";
+import { toast } from "react-toastify";
 
 type UpdateProfileImgRes = {
   img_url: string;
@@ -12,6 +13,7 @@ type UpdateProfileImgRes = {
 
 export function useProfileImgPatch() {
   const dispatch = useDispatch();
+  const toastId = "mutation-toast-id";
   const res = useMutationToast(
     useMutation<UpdateProfileImgRes, AxiosError<ApiError>, FormData>({
       mutationFn: async (payload) => {
@@ -21,7 +23,13 @@ export function useProfileImgPatch() {
         );
         return res.data.data;
       },
-      onSuccess: (data) => {
+      onMutate: async () => {
+        toast.loading("Uploading profile picture...", {
+          toastId,
+        });
+      },
+
+      onSuccess: async (data) => {
         const newUrl = data.img_url.split("-")[1];
         dispatch(setProfileImage(`${data.img_url}?v=${newUrl}`));
       },

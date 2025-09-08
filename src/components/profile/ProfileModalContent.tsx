@@ -13,14 +13,32 @@ export default function ProfileModalContent() {
   const profile = useSelector((state: RootState) => state.user.userData);
   const [imageUrl, setImageUrl] = useState(profile.profilPic);
   const [imageFile, setImageFile] = useState<File>();
-  const { mutateAsync: updateProfile, isPending } = useProfileImgPatch();
+  const [error, setError] = useState("");
+  const {
+    mutateAsync: updateProfile,
+    isPending,
+    isSuccess,
+  } = useProfileImgPatch();
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const val = e.currentTarget.files![0];
+
+    if (val.size > 500 * 1024) {
+      setError("Image size should be less than 500 KB");
+      return;
+    }
+
+    if (val.type !== "image/jpeg" && val.type !== "image/png") {
+      setError("Image type should be png or jpeg");
+      return;
+    }
+
     const newUrl = URL.createObjectURL(val);
+
     isSetDirty(true);
     setImageUrl(newUrl);
     setImageFile(val);
+    setError("");
   }
 
   function handleSave() {
@@ -28,6 +46,10 @@ export default function ProfileModalContent() {
     formVal.append("profile_pic", imageFile);
 
     updateProfile(formVal);
+
+    if (isSuccess) {
+      setEditMode(false);
+    }
   }
 
   return (
@@ -46,13 +68,19 @@ export default function ProfileModalContent() {
       </div>
       {editMode ? (
         <div className="w-full space-y-2">
-          <Button
-            disabled={isPending || !isDirty}
-            onClick={handleSave}
-            className={clsxm("p-2 w-full", !isDirty && "hover:cursor-pointer")}
-          >
-            Save Changes
-          </Button>
+          <div className="space-y-1">
+            <Button
+              disabled={isPending || !isDirty}
+              onClick={handleSave}
+              className={clsxm(
+                "p-2 w-full",
+                !isDirty && "hover:cursor-pointer"
+              )}
+            >
+              Save Changes
+            </Button>
+            {error && <p className="text-red-500 text-center">{error}</p>}
+          </div>
           <Button
             variant="secondary"
             onClick={() => setEditMode(!editMode)}
