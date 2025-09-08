@@ -1,22 +1,14 @@
 import DashboardLayout from "components/DashboardLayout";
-import Image from "next/image";
-import { Suspense } from "react";
-import MarkString from "./components/MarkString";
+import Logo from "components/Logo";
 import Link from "next/link";
+import MarkString from "./components/MarkString";
 
 export default function AboutPage() {
   return (
     <DashboardLayout>
       <section className="space-y-12 max-w-3xl">
         <div className="space-y-4">
-          <Suspense fallback={<p>Loading..</p>}>
-            <Image
-              src={"/tejoflowLogo-Orange.png"}
-              alt="tejoflowLogo-Orange"
-              width={200}
-              height={100}
-            />
-          </Suspense>
+          <Logo />
           <p className="text-lg text-justify">
             <MarkString>Tejoflow</MarkString> is the smart, modern{" "}
             <MarkString>e-wallet</MarkString> designed to keep your{" "}

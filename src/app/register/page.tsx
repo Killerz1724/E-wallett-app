@@ -2,6 +2,9 @@ import Image from "next/image";
 import { Suspense } from "react";
 import RegisterForm from "./components/RegisterForm";
 import Link from "next/link";
+import Logo from "components/Logo";
+import MarkString from "app/about/components/MarkString";
+import { APP_NAME } from "constant/common";
 
 export interface loginDataType {
   email: string;
@@ -11,12 +14,12 @@ export interface loginDataType {
 const Login = () => {
   return (
     <div className="flex flex-col gap-[103px] px-4 py-6 h-screen">
-      <div className="text-2xl font-semibold text-orange-400">E Wallet</div>
+      <Logo />
       <div className=" flex relative items-center justify-around w-full">
         <div className="flex flex-col gap-9">
           <div>
             <h2 className="font-bold text-3xl">Sign up to</h2>
-            <h3>E Wallet</h3>
+            <MarkString>{APP_NAME}</MarkString>
           </div>
           <div>
             <p>If you already have an account</p>

@@ -11,14 +11,9 @@ import {
   LucideProps,
   NotebookText,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
-import {
-  ForwardRefExoticComponent,
-  RefAttributes,
-  Suspense,
-  useState,
-} from "react";
+import { ForwardRefExoticComponent, RefAttributes, useState } from "react";
+import Logo from "./Logo";
 
 type navItemsProps = {
   name: string;
@@ -72,14 +67,7 @@ export default function Sidebar() {
         )}
       >
         <div className="absolute top-3 left-3">
-          <Suspense fallback={<p>Loading..</p>}>
-            <Image
-              src={"/tejoflowLogo-White.png"}
-              alt="tejoflowLogo-White"
-              width={150}
-              height={100}
-            />
-          </Suspense>
+          <Logo variant="white" width={isCollapse ? 50 : 150} />
         </div>
         <ul className="flex flex-col gap-5">
           {navItems.map((val, i) => (
