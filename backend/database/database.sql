@@ -28,6 +28,17 @@ create table users(
 	deleted_at TIMESTAMPTZ
 );
 
+
+create table password_tokens(
+	id BIGSERIAL primary key,
+	user_id BIGINT not null,
+	reset_token_number UUID default gen_random_uuid() not null,
+	created_at TIMESTAMPTZ default NOW(),
+	updated_at TIMESTAMPTZ default NOW(),
+	deleted_at TIMESTAMPTZ
+);
+
+
  
 create table wallets(
 	id BIGSERIAL primary key,
@@ -40,18 +51,6 @@ create table wallets(
 	foreign key (user_id) references users(id)
 );
 
-
-
-
-  
-create table password_tokens(
-	id BIGSERIAL primary key,
-	user_id BIGINT not null,
-	reset_token_number UUID default gen_random_uuid() not null,
-	created_at TIMESTAMPTZ default NOW(),
-	updated_at TIMESTAMPTZ default NOW(),
-	deleted_at TIMESTAMPTZ
-);
 
 
 

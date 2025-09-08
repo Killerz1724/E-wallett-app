@@ -18,6 +18,8 @@ import (
 type UserRepoItf interface {
 	UserLoginRepo( context.Context,  entity.LoginBody) (string, error) 
 	UserRepoRegister( context.Context,  entity.RegisterBody) error
+	UserReqResetPassRepo( context.Context,  entity.ResetReqPassBody) (*entity.ResetReqPassResponse, error)
+	UserUpdatePassRepo( context.Context, entity.ResetPassBody) error
 	UserShowUserDetailsRepo( context.Context,  string) (*entity.ShowUserProfileRes, error)
 	UserIncomeRepo(context.Context, string ) (*entity.UserIncomeRes,error)
 	UserExpenseRepo(context.Context, string ) (*entity.UserExpenseRes,error)
@@ -100,6 +102,110 @@ func (ur UserRepoImpl) UserLoginRepo(c context.Context, req entity.LoginBody) (s
 		}
 	}
 	return password, nil
+}
+
+func (ur UserRepoImpl) UserReqResetPassRepo(c context.Context, req entity.ResetReqPassBody) (*entity.ResetReqPassResponse, error) {
+	var check string
+
+	//Check user exist
+	userExist := ur.db.QueryRowContext(c, `
+		SELECT id
+		FROM users u
+		WHERE u.email = $1;
+	`, req.Email)
+
+	var userId int
+	err := userExist.Scan(&userId)
+
+	if err != nil {
+		return nil, &entity.CustomError{Msg: constant.QueryErrorType{Msg: constant.NotFound.Error()}, Log: err}
+	}
+
+	//Check is there a active token or not
+	tokenExist := ur.db.QueryRowContext(c, `
+		SELECT 1
+		FROM password_tokens pt
+		WHERE pt.user_Id = $1 AND pt.deleted_at is null;
+	`, userId)
+
+	err = tokenExist.Scan(&check)
+
+	//Auto delete previous token
+	if !errors.Is(err, sql.ErrNoRows) {
+		_, err := ur.db.ExecContext(c, `
+		UPDATE password_tokens
+		SET
+			deleted_at = NOW()
+		WHERE id = (select distinct on (user_id) id
+		from password_tokens
+		order by user_id, created_at desc);
+		`)
+		if err != nil {
+			return nil, &entity.CustomError{Msg: constant.CommonError, Log: err}
+		}
+	}
+
+	row := ur.db.QueryRowContext(c, `
+	INSERT INTO password_tokens(user_id)
+	VALUES
+		($1)
+	RETURNING reset_token_number;
+	`, userId)
+
+	var res entity.ResetReqPassResponse
+
+	err = row.Scan(&res.Token)
+
+	if err != nil {
+		return nil, &entity.CustomError{
+			Msg: constant.CommonError,
+			Log: err,
+		}
+	}
+
+	return &res, nil
+
+}
+
+func (ur UserRepoImpl) UserUpdatePassRepo(c context.Context, req entity.ResetPassBody) error {
+
+	var check int
+
+	//Check token exist or not
+	tokenExist := ur.db.QueryRowContext(c, `
+		SELECT user_id
+		FROM password_tokens pt
+		WHERE pt.reset_token_number = $1 AND pt.deleted_at is null;
+	`, req.Token)
+
+	err := tokenExist.Scan(&check)
+
+	if errors.Is(err, sql.ErrNoRows) {
+		return &entity.CustomError{Msg: constant.QueryErrorType{Msg: constant.NotFound.Error()}, Log: err}
+
+	}
+
+	_, err = ur.db.ExecContext(c, `
+	UPDATE users
+	SET password = $1
+	WHERE id = $2
+	`, req.NewPassword, check)
+
+	if err != nil {
+		return &entity.CustomError{Msg: constant.CommonError, Log: err}
+	}
+
+	_, err = ur.db.ExecContext(c, `
+	UPDATE password_tokens
+	SET deleted_at = NOW()
+	WHERE reset_token_number = $1
+	`, req.Token)
+
+	if err != nil {
+		return &entity.CustomError{Msg: constant.CommonError, Log: err}
+	}
+	return nil
+
 }
 
 func (ur UserRepoImpl) UserShowUserDetailsRepo(c context.Context, sub string) (*entity.ShowUserProfileRes, error){
@@ -291,3 +397,4 @@ func (ur UserRepoImpl) UserChangeProfilePicRepo(c context.Context, req entity.Ch
 	return &res, nil 
 	
 }
+

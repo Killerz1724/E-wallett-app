@@ -62,7 +62,9 @@ func main() {
 	{
 		auth := r.Group("/api/auth")
 		auth.POST("/login", uh.UserLoginHandler)
-		auth.POST("/register", uh.UserHandlerRegister)
+		auth.POST("/register", uh.UserRegisterHandler)
+		auth.POST("/request-reset", uh.ReqResetPassHandler)
+		auth.POST("/reset-password", uh.UpdateResetPassHandler)
 	}
 	{
 		profile := r.Group("/api/profile")

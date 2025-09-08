@@ -6,6 +6,8 @@ import (
 	"ewallet/entity"
 	"ewallet/repository"
 	"ewallet/utils"
+	"os"
+	"strconv"
 	"strings"
 
 	"golang.org/x/crypto/bcrypt"
@@ -13,7 +15,9 @@ import (
 
 type UserUsecaseItf interface {
 	UserLoginUsecase(context.Context, entity.LoginBody) (*entity.LoginResponse,error)
-	UsecaseRegister(context.Context, entity.RegisterBody) error
+	RegisterUsecase(context.Context, entity.RegisterBody) error
+	ReqResetPassUsecase( context.Context,  entity.ResetReqPassBody) (*entity.ResetReqPassResponse, error)
+	UpdatePassUsecase(c context.Context, req entity.ResetPassBody) error
 	UserShowUserDetailsUsecase( context.Context,  string) (*entity.ShowUserProfileRes, error)
 	UserIncomeUsecase(context.Context, string ) (*entity.UserIncomeRes,error)
 	UserExpenseUsecase(context.Context, string ) (*entity.UserExpenseRes,error)
@@ -30,7 +34,7 @@ func NewUserUsecase(ur repository.UserRepoItf) UserUsecaseImpl {
 	}
 }
 
-func (uuc UserUsecaseImpl) UsecaseRegister(c context.Context, req entity.RegisterBody) error {
+func (uuc UserUsecaseImpl) RegisterUsecase(c context.Context, req entity.RegisterBody) error {
 
 	hash, errCrypt := utils.HashPassword(req.Password)
 
@@ -79,6 +83,44 @@ func (uuc UserUsecaseImpl) UserLoginUsecase(c context.Context, req entity.LoginB
 	}
 
 	return res, nil
+}
+
+func (uuc UserUsecaseImpl) ReqResetPassUsecase(c context.Context, req entity.ResetReqPassBody) (*entity.ResetReqPassResponse, error) {
+	req.Email = strings.ToLower(req.Email)
+
+	res, err := uuc.ur.UserReqResetPassRepo(c, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return res, err
+}
+
+func (uuc UserUsecaseImpl)UpdatePassUsecase(c context.Context, req entity.ResetPassBody) error {
+	cryptCost := os.Getenv("COST_CRYPT")
+
+	cryptCostConv, err := strconv.Atoi(cryptCost)
+
+	if err != nil {
+
+		return &entity.CustomError{Msg: constant.CommonError, Log: err}
+	}
+
+	hash, errCrypt := bcrypt.GenerateFromPassword([]byte(req.NewPassword), cryptCostConv)
+
+	if errCrypt != nil {
+		return entity.CustomError{Msg: constant.CommonError, Log: errCrypt}
+	}
+
+	req.NewPassword = string(hash)
+
+	err = uuc.ur.UserUpdatePassRepo(c, req)
+
+	if err != nil {
+		return err
+	}
+
+	return err
 }
 
 func (uuc UserUsecaseImpl) UserShowUserDetailsUsecase(c context.Context, sub string) (*entity.ShowUserProfileRes, error){

@@ -24,7 +24,7 @@ func NewUserHandler(uuc usecase.UserUsecaseItf) UserHandlerImpl {
 
 
 
-func (uh UserHandlerImpl) UserHandlerRegister(c *gin.Context) {
+func (uh UserHandlerImpl) UserRegisterHandler(c *gin.Context) {
 	var reqBody dto.RegisterBody
 	err := c.ShouldBindBodyWithJSON(&reqBody)
 
@@ -39,7 +39,7 @@ func (uh UserHandlerImpl) UserHandlerRegister(c *gin.Context) {
 		Password: reqBody.Password,
 	}
 
-	err = uh.uuc.UsecaseRegister(c, req)
+	err = uh.uuc.RegisterUsecase(c, req)
 
 	if err != nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
@@ -80,6 +80,68 @@ func (uh UserHandlerImpl) UserLoginHandler(c *gin.Context) {
 		Error:   nil,
 		Data:    resBody,
 	})
+}
+
+func (uh UserHandlerImpl) ReqResetPassHandler(c *gin.Context) {
+	var reqBody dto.ResetReqPassBody
+	err := c.ShouldBindBodyWithJSON(&reqBody)
+
+	if err != nil {
+		c.Error(&entity.CustomError{Msg: constant.FailedJson{Msg: constant.JsonBad.Error()}, Log: err}).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	req := entity.ResetReqPassBody{
+		Email: reqBody.Email,
+	}
+
+	rawLog, customError := uh.uuc.ReqResetPassUsecase(c, req)
+
+	if customError != nil {
+		c.Error(customError).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	resLog := dto.ResetReqPassResponse(*rawLog)
+
+	res := dto.Response{
+		Success: true,
+		Error:   nil,
+		Data:    resLog,
+	}
+	c.JSON(http.StatusOK, res)
+
+}
+
+func (uh UserHandlerImpl) UpdateResetPassHandler(c *gin.Context) {
+	passToken := c.Query("tkn")
+	var reqBody dto.ResetPassBody
+	err := c.ShouldBindBodyWithJSON(&reqBody)
+
+	if err != nil {
+		c.Error(&entity.CustomError{Msg: constant.FailedJson{Msg: constant.JsonBad.Error()}, Log: err}).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	req := entity.ResetPassBody{
+		Token:       passToken,
+		NewPassword: reqBody.NewPassword,
+	}
+
+	customError := uh.uuc.UpdatePassUsecase(c, req)
+
+	if customError != nil {
+		c.Error(customError).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	res := dto.Response{
+		Success: true,
+		Error:   nil,
+		Data:    nil,
+	}
+	c.JSON(http.StatusOK, res)
+
 }
 
 func (uh UserHandlerImpl) UserShowUserDetailsHandler(c *gin.Context) {

@@ -21,6 +21,19 @@ type LoginResponse struct {
 	AccessToken string
 }
 
+type ResetReqPassBody struct {
+	Email string
+}
+
+type ResetReqPassResponse struct {
+	Token string
+}
+
+type ResetPassBody struct {
+	Token       string
+	NewPassword string
+}
+
 type ShowUserProfileRes struct {
 	ImgUrl   string
 	Username string

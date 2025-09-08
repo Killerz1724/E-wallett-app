@@ -17,6 +17,18 @@ type LoginResponse struct {
 	AccessToken string `json:"access_token"`
 }
 
+type ResetReqPassBody struct {
+	Email string `json:"email" binding:"required"`
+}
+
+type ResetReqPassResponse struct {
+	Token string `json:"token"`
+}
+
+type ResetPassBody struct {
+	NewPassword string `json:"new_password" binding:"required"`
+}
+
 type ShowUserProfileRes struct {
 	ImgUrl   string          `json:"img_url"`
 	Username string          `json:"username"`
