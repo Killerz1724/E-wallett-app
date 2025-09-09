@@ -8,8 +8,20 @@ import Modal from "components/Modal";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const metadata: Metadata = {
-  title: "E-wallet app",
+  title: {
+    default: "Tejoflow",
+    template: "%s | Tejoflow",
+  },
   description: "Solution for seamless wallet",
+  openGraph: {
+    title: "Tejoflow",
+    description: "Solution for seamless wallet",
+    siteName: "Tejoflow",
+    images: "/TejoflowLogo-Orange.png",
+    locale: "en_US",
+    type: "website",
+  },
+  icons: "/LogoIconOnly-Orange.png",
 };
 export default function RootLayout({
   children,

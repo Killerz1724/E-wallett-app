@@ -5,11 +5,18 @@ import Link from "next/link";
 import Logo from "components/Logo";
 import MarkString from "app/about/components/MarkString";
 import { APP_NAME } from "constant/common";
+import { Metadata } from "next";
 
 export interface loginDataType {
   email: string;
   password: string;
 }
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const metadata: Metadata = {
+  title: "Register",
+  description: "Solution for seamless wallet",
+};
 
 const Login = () => {
   return (

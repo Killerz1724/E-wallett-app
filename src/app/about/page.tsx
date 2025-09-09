@@ -2,7 +2,13 @@ import DashboardLayout from "components/DashboardLayout";
 import Logo from "components/Logo";
 import Link from "next/link";
 import MarkString from "./components/MarkString";
+import { Metadata } from "next";
 
+// eslint-disable-next-line react-refresh/only-export-components
+export const metadata: Metadata = {
+  title: "About",
+  description: "Solution for seamless wallet",
+};
 export default function AboutPage() {
   return (
     <DashboardLayout>

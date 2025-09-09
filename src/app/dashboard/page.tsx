@@ -4,6 +4,13 @@ import BalanceCard from "./components/BalanceCard";
 import IncomeCard from "./components/IncomeCard";
 import ExpenseCard from "./components/ExpenseCard";
 import ExchangeRatesComp from "./components/ExchangeRatesComp";
+import { Metadata } from "next";
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const metadata: Metadata = {
+  title: "Dashboard",
+  description: "Solution for seamless wallet",
+};
 
 export default function Dashboardage() {
   return (
