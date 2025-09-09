@@ -29,7 +29,9 @@ export async function Login(
       "/auth/login",
       reqBody
     );
+
     setToken(res.data.data.access_token);
+
     return { success: true, message: "success" };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {

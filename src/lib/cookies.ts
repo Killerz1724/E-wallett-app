@@ -8,13 +8,22 @@ export const getToken = async () => {
 };
 
 export const setToken = async (token: string) => {
-  const expiryDate = new Date(new Date().setDate(new Date().getDate() + 3));
-  (await cookies()).set(JWT_TOKEN_KEY, token, {
-    path: "/",
-    httpOnly: true,
-    secure: true,
-    expires: expiryDate,
-  });
+  try {
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + 3);
+    (await cookies()).set(JWT_TOKEN_KEY, token, {
+      path: "/",
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // secure only in prod
+      sameSite: "lax",
+      expires: expiryDate,
+      priority: "high",
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to set cookie:", error);
+    return { success: false, error };
+  }
 };
 
 export const removeToken = async () => {

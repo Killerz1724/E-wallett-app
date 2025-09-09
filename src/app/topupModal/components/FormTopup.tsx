@@ -125,7 +125,7 @@ export default function FormTopup() {
             setDisplayCurrency(values.value);
             handleChange("amount", values.float);
           }}
-          className="w-full border-1 border-gray-300 rounded-md p-2"
+          className="w-full border-2 border-gray-300 rounded-md p-2"
         />
         {errors.amount && <p className="text-red-500">{errors.amount}</p>}
       </div>

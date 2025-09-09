@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { PageInfo } from "app/transactions/components/TransactionsTable";
+import { PageInfo } from "app/transactions/hooks/mutation";
 import { AxiosError } from "axios";
 import { api } from "lib/axios";
 import { useSelector } from "react-redux";

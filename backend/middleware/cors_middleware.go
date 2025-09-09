@@ -10,7 +10,7 @@ import (
 func CorsMiddleware() gin.HandlerFunc {
 	
 		config := cors.Config{
-			AllowOrigins: []string{os.Getenv("SERVER_ADDRESS")},
+			AllowOrigins: []string{os.Getenv("SERVER_ADDRESS1"),os.Getenv("SERVER_ADDRESS2")},
 			AllowMethods: []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
 			AllowHeaders: []string{"Content-Type", "Authorization"},
 		}

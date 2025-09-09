@@ -98,7 +98,7 @@ export default function TransferModalContent() {
             Amount
           </label>
           <CurrencyInput
-            className="px-4 py-2 w-full  border-1 border-gray-300 rounded-md max-w-lg no-arrows"
+            className="px-4 py-2 w-full  border-2 border-gray-300 rounded-md max-w-lg no-arrows"
             name="amount"
             placeholder="ex: 10.000"
             allowNegativeValue={false}
@@ -120,7 +120,7 @@ export default function TransferModalContent() {
           <textarea
             name="description"
             placeholder="ex: Thank you for your support"
-            className="px-4 py-2 w-full  border-1 border-gray-300 rounded-md max-w-lg no-arrows"
+            className="px-4 py-2 w-full  border-2 border-gray-300 rounded-md max-w-lg no-arrows"
             onChange={(e) => handleChange("description", e.target.value)}
           />
           {errors.description && (

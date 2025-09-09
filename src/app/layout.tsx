@@ -1,7 +1,7 @@
 import AppProvider from "components/AppProvider";
 import QueryProviders from "components/QueryProviders";
 import ToastProvider from "components/ToastProvider";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import React from "react";
 import "./globals.css";
 import Modal from "components/Modal";
@@ -17,11 +17,24 @@ export const metadata: Metadata = {
     title: "Tejoflow",
     description: "Solution for seamless wallet",
     siteName: "Tejoflow",
-    images: "/TejoflowLogo-Orange.png",
+    images: [
+      {
+        url: "/TejoflowLogo-Orange.png",
+      },
+    ],
     locale: "en_US",
     type: "website",
   },
   icons: "/LogoIconOnly-Orange.png",
+};
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false, // prevent pinch-zoom
+  themeColor: "#ffffff", // sets mobile browser toolbar color
 };
 export default function RootLayout({
   children,

@@ -15,12 +15,13 @@ const customStyles: StylesConfig = {
     backgroundColor: state.isSelected
       ? "#f97316"
       : state.isFocused
-      ? "var(--color-orange-300)"
+      ? "#f97316"
       : "white",
     color: state.isSelected ? "white" : state.isFocused ? "white" : "black",
     borderRadius: "0.5rem",
     cursor: "pointer",
   }),
+
   control: (provided) => ({
     ...provided,
     borderRadius: "0.5rem",

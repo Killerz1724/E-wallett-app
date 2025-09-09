@@ -54,16 +54,14 @@ export default function Sidebar() {
   return (
     <aside
       className={clsxm(
-        `relative flex flex-col  w-full h-full  items-center rounded-br-lg  rounded-tr-lg justify-center`,
-        `relative flex flex-col  w-54 h-screen rounded-br-lg bg-gradient-to-r bg-orange-600 to-orange-500 rounded-tr-lg  `,
-        isCollapse && "w-20",
+        `relative flex flex-col px-2 w-52 h-screen rounded-br-lg bg-gradient-to-r bg-orange-500 to-orange-400 rounded-tr-lg  `,
+        isCollapse && "w-28",
         "transition-all duration-500 ease-in-out"
       )}
     >
       <div
         className={clsxm(
-          `relative flex flex-col  w-full h-full  items-center rounded-br-lg  rounded-tr-lg justify-center`,
-          "bg-white/30   backdrop-filter backdrop-blur-2xl  border border-gray-100"
+          `relative flex flex-col  w-full h-full  items-center rounded-br-lg  rounded-tr-lg justify-center`
         )}
       >
         <div className="absolute top-3 left-3">
@@ -97,7 +95,7 @@ export default function Sidebar() {
         <div
           onClick={() => setIsCollapse(!isCollapse)}
           className={clsxm(
-            `absolute bottom-4 right-4 cursor-pointer text-white`,
+            `absolute bottom-8 right-1 md:right-4 cursor-pointer text-white`,
             "transition-all duration-500 ease-in-out",
             isCollapse && "rotate-180 transition-all duration-500 ease-in-out"
           )}

@@ -8,7 +8,7 @@ function isServer() {
 }
 
 export const api = axios.create({
-  baseURL: "http://localhost:8000/api",
+  baseURL: "http://192.168.1.103:8000/api",
   headers: {
     "Content-Type": "application/json",
   },

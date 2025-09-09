@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
   experimental: {
     externalDir: false,
   },
-
+  output: "standalone",
   images: {
     remotePatterns: [
       {
@@ -14,16 +14,8 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-
-  // async redirects() {
-  //   return [
-  //     {
-  //       source: "/",
-  //       destination: "/dashboard",
-  //       permanent: true,
-  //     },
-  //   ];
-  // },
 };
+
+module.exports = nextConfig;
 
 export default nextConfig;

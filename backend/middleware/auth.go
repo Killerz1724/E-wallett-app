@@ -23,7 +23,7 @@ func AuthMiddleware() gin.HandlerFunc {
 		// log.Println("token auth")
 		// bearer := "Bearer "
 		authHeader := c.GetHeader("Authorization")
-	
+
 		if authHeader == "" {
 			cusErr := &entity.CustomError{Msg: constant.TokenProblem{Msg: constant.JwtTokenInvalid.Error()}, Log: constant.JwtTokenInvalid}
 			c.Error(cusErr).SetType(gin.ErrorTypePrivate)

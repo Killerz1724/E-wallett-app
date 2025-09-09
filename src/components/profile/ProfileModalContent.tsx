@@ -73,7 +73,7 @@ export default function ProfileModalContent() {
               disabled={isPending || !isDirty}
               onClick={handleSave}
               className={clsxm(
-                "p-2 w-full",
+                "px-16 py-4 w-full",
                 !isDirty && "hover:cursor-pointer"
               )}
             >
@@ -84,13 +84,16 @@ export default function ProfileModalContent() {
           <Button
             variant="secondary"
             onClick={() => setEditMode(!editMode)}
-            className="p-2 w-full"
+            className="px-16 py-4 w-full"
           >
             Cancel
           </Button>
         </div>
       ) : (
-        <Button onClick={() => setEditMode(!editMode)} className="p-2 w-full">
+        <Button
+          onClick={() => setEditMode(!editMode)}
+          className="px-16 py-4 w-full"
+        >
           Edit Profile Image
         </Button>
       )}
