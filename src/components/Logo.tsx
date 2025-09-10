@@ -11,8 +11,8 @@ export default function Logo({
   width?: number;
 }) {
   const variantImg = {
-    orange: "/tejoflowLogo-Orange.png",
-    white: "/tejoflowLogo-White.png",
+    orange: "/TejoflowLogo-Orange.png",
+    white: "/TejoflowLogo-White.jpg",
   };
   return (
     <Suspense fallback={<p>Loading..</p>}>

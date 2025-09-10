@@ -1,0 +1,35 @@
+FROM golang:1.24 AS build-stage
+
+WORKDIR /app
+
+# Copy dependency files
+COPY go.mod ./
+COPY go.sum ./
+
+# Verify files were copied
+RUN ls -la go.* || echo "go files not found"
+ENV GOPROXY=https://goproxy.io,direct
+RUN go mod download
+
+COPY . .
+
+RUN CGO_ENABLED=0 GOOS=linux go build -o tejoflow-backend
+
+FROM alpine:latest AS release-stage
+
+WORKDIR /
+
+COPY --from=build-stage /usr/share/zoneinfo /usr/share/zoneinfo
+
+COPY --from=build-stage /app/tejoflow-backend tejoflow-backend
+COPY --from=build-stage /app/database database
+COPY --from=build-stage /app/.env .env
+
+EXPOSE 8000
+
+# entrypoint script
+COPY --from=build-stage /app/script/seed-script.sh .
+
+RUN chmod +x seed-script.sh
+
+ENTRYPOINT ["./seed-script.sh"]

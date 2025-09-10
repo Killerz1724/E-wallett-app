@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   experimental: {
     externalDir: false,
   },
+  reactStrictMode: false,
   output: "standalone",
   images: {
     remotePatterns: [
