@@ -8,7 +8,9 @@ function isServer() {
 }
 
 export const api = axios.create({
-  baseURL: isServer() ? "http://nginx/api" : "/api",
+  baseURL: isServer()
+    ? process.env.NEXT_PUBLIC_SERVER_API_URL
+    : process.env.NEXT_PUBLIC_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
