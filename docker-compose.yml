@@ -1,0 +1,67 @@
+services:
+  nginx:
+    image: nginx
+    container_name: tejoflow-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - "./nginx.conf:/etc/nginx/nginx.conf"
+      - "./dist:/data/www"
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - tejoflow-network
+  database:
+    image: postgres
+    container_name: tejoflow_db
+    environment:
+      POSTGRES_PASSWORD: Zxcvb112
+      POSTGRES_DB: ewalletapp
+      POSTGRES_USER: postgres
+    ports:
+      - "5433:5432"
+    expose:
+      - 5432
+    networks:
+      - tejoflow-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  backend:
+    build:
+      context: ./backend
+      dockerfile: dockerfile.seed
+    env_file:
+      - ./backend/.env
+    container_name: tejoflow-backend
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - tejoflow-network
+  # backendseed:
+  #   build:
+  #     dockerfile: dockerfile.seed
+  #   env_file:
+  #     - ./backend/.env
+  #   container_name: tejoflow-backend
+  #   depends_on:
+  #     database:
+  #       condition: service_healthy
+  #   networks:
+  #     - tejoflow-network
+
+  frontend:
+    build: .
+    env_file:
+      - .env.production
+    container_name: tejoflow-frontend
+    networks:
+      - tejoflow-network
+
+networks:
+  tejoflow-network:
+    driver: bridge

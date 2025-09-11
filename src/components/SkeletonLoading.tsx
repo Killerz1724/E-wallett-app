@@ -1,0 +1,17 @@
+import clsxm from "@riverfl0w/clsxm";
+import React from "react";
+
+type SkeletonLoadingProps = {
+  className?: string;
+};
+
+export default function SkeletonLoading({ className }: SkeletonLoadingProps) {
+  return (
+    <div
+      className={clsxm(
+        "animate-pulse bg-gray-300  p-4  w-full  rounded-md",
+        className
+      )}
+    ></div>
+  );
+}

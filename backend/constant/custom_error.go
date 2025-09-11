@@ -1,0 +1,89 @@
+package constant
+
+import "errors"
+
+var (
+	LoginError          = errors.New("invalid credentials")
+	RegisterError       = errors.New("already exists")
+	ShowUserDetailsError = errors.New("failed to show user details")
+	QueryError          = errors.New("failed to query data")
+	AccountAlreadyExist = errors.New("account already exist")
+	ScanError           = errors.New("failed to scan data from database")
+	DecodeError         = errors.New("failed to decode data")
+	NotFound            = errors.New("no product found")
+	TimeOutError        = errors.New("request timeout")
+	ValidationError     = errors.New("one of the input is invalid please check again")
+	CommonError         = errors.New("error internal")
+	DuplicateError      = errors.New("data already exist")
+	DuplicateErrorCode  = "23505"
+	DataEmptyError      = errors.New("data not found")
+	UserNotFound        = errors.New("user not found")
+	NullErrorPg         = errors.New("violate null constraint")
+	CRYPTCOST           = 12
+	JwtTokenError       = errors.New("user token error, please re-login")
+	JwtTokenInvalid     = errors.New("user token is invalid, please re-login")
+	JwtTokenExpired     = errors.New("user token expired, please re-login")
+	JwtTokenSubject     = errors.New("user token subject is invalid")
+	TransactionFailed   = errors.New("transaction failed")
+	BalanceIsInufficient = errors.New("balance is insufficient")
+	JsonBad             = errors.New("invalid field or value input, check again")
+	InvalidExchangeRate  = errors.New("invalid exchange rate")
+	InvalidImageSize    = errors.New("invalid image size")
+	InvalidImageType    = errors.New("invalid image type")
+	InvalidToken        = errors.New("invalid token")
+)
+
+
+type LoginErrorType struct{ Msg string }
+
+func (d LoginErrorType) Error() string { return d.Msg }
+
+type RegisterErrorType struct{ Msg string }
+
+func (d RegisterErrorType) Error() string { return d.Msg }
+
+type ShowUserDetailError struct{ Msg string }
+
+func (d ShowUserDetailError) Error() string { return d.Msg }
+
+type DataNotFound struct{ Msg string }
+
+func (d DataNotFound) Error() string { return d.Msg }
+
+type QueryErrorType struct{ Msg string }
+
+func (d QueryErrorType) Error() string { return d.Msg }
+
+type DataEmpty struct{ Msg string }
+
+func (d DataEmpty) Error() string { return d.Msg }
+
+type FailedToTransfer struct{ Msg string }
+
+func (d FailedToTransfer) Error() string { return d.Msg }
+
+type FailedJson struct{ Msg string }
+
+func (d FailedJson) Error() string { return d.Msg }
+
+type TokenProblem struct{ Msg string }
+
+func (d TokenProblem) Error() string { return d.Msg }
+
+type TransactionProblem struct{ Msg string }
+
+func (d TransactionProblem) Error() string { return d.Msg }
+
+type TopUpProblem struct{ Msg string }
+
+func (d TopUpProblem) Error() string { return d.Msg }
+
+type ExchangesRateProblem struct{ Msg string }
+
+func (d ExchangesRateProblem) Error() string { return d.Msg }
+
+type ChangeProfilePictureProblem struct{ Msg string }
+
+func (d ChangeProfilePictureProblem) Error() string { return d.Msg }
+
+
