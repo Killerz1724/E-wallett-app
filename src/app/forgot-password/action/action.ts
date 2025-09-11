@@ -1,3 +1,4 @@
+"use server";
 import { COMMON_ERROR } from "constant/common";
 import { api } from "lib/axios";
 import { ApiResponse } from "types/api";

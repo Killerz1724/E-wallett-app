@@ -22,46 +22,13 @@ export default function LoginForm() {
     password: "",
   });
 
-  const [errors, setIsErrors] = useState<loginDataType>({
-    email: "",
-    password: "",
-  });
-  const [isFormValid, setIsFormValid] = useState(false);
-
-  function validate(name: string, value: string) {
-    const emailRegex: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let error = "";
-    if (name === "email") {
-      if (!emailRegex.test(value)) {
-        error = "Please enter a valid email address";
-      }
-    }
-
-    if (name === "password") {
-      if (value.length <= 5) {
-        error = "Password must be at least 6 characters long";
-      }
-    }
-
-    setIsErrors((prev) => ({
-      ...prev,
-      [name]: error,
-    }));
-  }
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
     setData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    validate(name, value);
   }
-
-  useEffect(() => {
-    const isNotError = Object.values(errors).every((error) => !error);
-    const isAllFilled = Object.values(data).every((data) => data.length > 0);
-    setIsFormValid(isNotError && isAllFilled);
-  }, [errors, data]);
 
   useEffect(() => {
     if (state.message) {
@@ -88,7 +55,6 @@ export default function LoginForm() {
             type="email"
             placeholder="Enter email"
           />
-          {errors.email && <p className="text-red-400">{errors.email}</p>}
         </div>
         <div className="flex flex-col gap-1">
           <div className="flex flex-col justify-between focus-within:outline-2 gap-4 items-center bg-[#F2F2F2] px-6 py-4 rounded-lg">
@@ -110,7 +76,6 @@ export default function LoginForm() {
               </span>
             </div>
           </div>
-          {errors.password && <p className="text-red-400">{errors.password}</p>}
         </div>
         <Link
           href="/forgot-password"
@@ -119,9 +84,7 @@ export default function LoginForm() {
           Forgot Password
         </Link>
       </div>
-      <Button disabled={!isFormValid} type="submit">
-        Login
-      </Button>
+      <Button type="submit">Login</Button>
     </form>
   );
 }
