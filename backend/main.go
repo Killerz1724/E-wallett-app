@@ -46,6 +46,8 @@ func main() {
 	eh := handler.NewExchangesHandler(eu)
 
 	schedulerRates := scheduler.NewScheduler()
+	schedulerReset := scheduler.NewScheduler()
+	//Scheduler Rates
 	schedulerRates.Register("0 0 * * *", func() {
 		log.Println("running rates seed from cron")
 		_ =	eu.ExchangeRatesUseCase()
@@ -57,7 +59,26 @@ func main() {
 		}
 		_ = eu.ExchangeRatesUseCase()
 	}
+
+	//Scheduler Resets
+	schedulerReset.Register("0 0 */2 * *", func() {
+		log.Println("running reset database from cron")
+		content, err := os.ReadFile("./database/database.sql")
+
+		if err != nil {
+			log.Fatalln("failed to read seed file", err)
+			log.Fatalln(err)
+		}
+
+		_, err = db.Exec(string(content))
+
+		if err != nil {
+			log.Fatalln("failed to execute seed file", err)
+			log.Fatalln(err)
+		}
+	})
 	schedulerRates.Start()
+	schedulerReset.Start()
 
 	{
 		auth := r.Group("/api/auth")
