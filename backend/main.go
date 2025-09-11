@@ -62,20 +62,7 @@ func main() {
 
 	//Scheduler Resets
 	schedulerReset.Register("0 0 */2 * *", func() {
-		log.Println("running reset database from cron")
-		content, err := os.ReadFile("./database/database.sql")
-
-		if err != nil {
-			log.Fatalln("failed to read seed file", err)
-			log.Fatalln(err)
-		}
-
-		_, err = db.Exec(string(content))
-
-		if err != nil {
-			log.Fatalln("failed to execute seed file", err)
-			log.Fatalln(err)
-		}
+		repository.ResetDatabaseRepo(db)
 	})
 	schedulerRates.Start()
 	schedulerReset.Start()
