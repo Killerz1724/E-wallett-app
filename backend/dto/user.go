@@ -34,6 +34,7 @@ type ShowUserProfileRes struct {
 	Username string          `json:"username"`
 	Email    string          `json:"email"`
 	Balance  decimal.Decimal `json:"balance"`
+	WalletNumber int         `json:"wallet_number"`
 }
 
 type UserIncomeRes struct {

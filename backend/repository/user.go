@@ -214,7 +214,7 @@ func (ur UserRepoImpl) UserUpdatePassRepo(c context.Context, req entity.ResetPas
 func (ur UserRepoImpl) UserShowUserDetailsRepo(c context.Context, sub string) (*entity.ShowUserProfileRes, error){
 
 	row := ur.db.QueryRowContext(c, `
-	SELECT u.username, u.email, u.profile_image, w.balance
+	SELECT u.username, u.email, u.profile_image, w.balance, w.wallet_number
 	FROM users u
 	JOIN wallets w
 	ON u.id = w.user_id
@@ -228,6 +228,7 @@ func (ur UserRepoImpl) UserShowUserDetailsRepo(c context.Context, sub string) (*
 		&user.Email,
 		&user.ImgUrl,
 		&user.Balance,
+		&user.WalletNumber,
 	)
 
 	if err != nil {

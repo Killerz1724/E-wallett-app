@@ -15,6 +15,7 @@ export type UserResponses = {
   username: string;
   email: string;
   balance: number;
+  wallet_number: number;
 };
 
 export async function Login(

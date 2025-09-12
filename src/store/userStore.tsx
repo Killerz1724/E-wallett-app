@@ -6,6 +6,7 @@ export type UserData = {
   username: string;
   email: string;
   balance: number;
+  walletNumber: number;
 };
 
 type userBehaviour = {
@@ -36,7 +37,13 @@ type UserState = {
 };
 
 const UserInitalState: UserState = {
-  userData: { profilPic: "", username: "", email: "", balance: 0 },
+  userData: {
+    profilPic: "",
+    username: "",
+    email: "",
+    balance: 0,
+    walletNumber: 0,
+  },
   userBehaviour: { seeBalance: false },
   userExchangeRate: {
     from: "USD",
@@ -63,6 +70,7 @@ const UserSlice = createSlice({
       state.userData.username = action.payload.username;
       state.userData.email = action.payload.email;
       state.userData.balance = action.payload.balance;
+      state.userData.walletNumber = action.payload.wallet_number;
     },
     setProfileImage: (state, action: PayloadAction<string>) => {
       state.userData.profilPic = action.payload;

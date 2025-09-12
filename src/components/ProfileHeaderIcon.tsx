@@ -32,7 +32,7 @@ export default function ProfileHeaderIcon() {
               />
             </Suspense>
           </div>
-          <p className="text-lg font-semibold truncate max-w-20 md:max-w-full">
+          <p className="hidden sm:block text-lg font-semibold truncate max-w-20 md:max-w-full">
             {userData.userData.username}
           </p>
         </div>

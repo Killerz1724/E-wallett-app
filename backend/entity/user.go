@@ -39,6 +39,7 @@ type ShowUserProfileRes struct {
 	Username string
 	Email    string
 	Balance  decimal.Decimal
+	WalletNumber int
 }
 
 type UserIncomeRes struct {

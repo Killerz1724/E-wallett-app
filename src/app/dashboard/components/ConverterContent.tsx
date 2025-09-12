@@ -75,7 +75,7 @@ export default function ConverterContent() {
         ) : (
           <div className="flex flex-col gap-3">
             <span className="font-semibold text-sm text-gray-400">
-              1 {from} ={" "}
+              {amountVal} {from} ={" "}
             </span>
 
             {isPending ? (
