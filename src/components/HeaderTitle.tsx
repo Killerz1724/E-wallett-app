@@ -4,5 +4,9 @@ import React from "react";
 
 export default function HeaderTitle() {
   const currentPath = usePathname().split("/")[1];
-  return <h3 className="font-bold text-2xl ">{currentPath.toUpperCase()}</h3>;
+  return (
+    <h3 className="font-bold text-xl md:text-2xl ">
+      {currentPath.toUpperCase()}
+    </h3>
+  );
 }

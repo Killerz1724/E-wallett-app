@@ -54,28 +54,39 @@ export default function Sidebar() {
   return (
     <aside
       className={clsxm(
-        `relative flex flex-col px-2 w-52 h-screen rounded-br-lg bg-gradient-to-r bg-orange-500 to-orange-400 rounded-tr-lg  `,
-        isCollapse && "w-28",
-        "transition-all duration-500 ease-in-out"
+        `md:relative flex flex-col  px-2 w-full  md:w-52  md:rounded-br-lg md:rounded-tr-lg bg-gradient-to-r bg-orange-500 to-orange-400 `,
+        "transition-all duration-500 ease-in-out overflow-x-clip",
+        "fixed bottom-0 z-50 md:z-0",
+        isCollapse && "md:w-20 w-full"
       )}
     >
       <div
         className={clsxm(
-          `relative flex flex-col  w-full h-full  items-center rounded-br-lg  rounded-tr-lg justify-center`
+          `relative flex flex-col overflow-x-hidden  w-full md:h-full  items-center rounded-br-lg  rounded-tr-lg justify-center`
         )}
       >
-        <div className="absolute top-3 left-3">
-          <Logo variant="white" width={isCollapse ? 50 : 150} />
+        <div className="hidden md:block absolute top-3 right-1">
+          {isCollapse ? (
+            <Logo variant="whiteIcon" height={40} width={40} />
+          ) : (
+            <Logo variant="white" />
+          )}
         </div>
-        <ul className="flex flex-col gap-5">
+        <ul
+          className={clsxm(
+            "flex md:flex-col md:justify-normal md:items-start md:gap-5 overflow-x-hidden",
+            "flex-row gap-2 justify-between items-center w-full",
+            isCollapse && " md:items-end"
+          )}
+        >
           {navItems.map((val, i) => (
-            <li key={i} className="text-white">
+            <li key={i} className="text-white w-full">
               {val.path ? (
                 <Link href={val.path}>
-                  <div className="flex items-center gap-4 cursor-pointer hover:bg-white/40 p-2 rounded-md transition-all duration-500 ease-in-out">
+                  <div className="flex overflow-x-hidden flex-col md:flex-row w-full items-center gap-1 md:gap-4 cursor-pointer hover:bg-white/40 p-2 rounded-md transition-all duration-500 ease-in-out">
                     <val.icon className="size-[20px]" />
                     {!isCollapse && (
-                      <p className="text-sm lg:text-base">{val.name}</p>
+                      <p className="text-xs md:text-base">{val.name}</p>
                     )}
                   </div>
                 </Link>
@@ -95,9 +106,10 @@ export default function Sidebar() {
         <div
           onClick={() => setIsCollapse(!isCollapse)}
           className={clsxm(
-            `absolute bottom-8 right-1 md:right-4 cursor-pointer text-white`,
+            `absolute bottom-8 right-1 md:right-2 cursor-pointer text-white`,
             "transition-all duration-500 ease-in-out",
-            isCollapse && "rotate-180 transition-all duration-500 ease-in-out"
+            isCollapse && "rotate-180 transition-all duration-500 ease-in-out",
+            "hidden md:block"
           )}
         >
           <ArrowLeftFromLine />
