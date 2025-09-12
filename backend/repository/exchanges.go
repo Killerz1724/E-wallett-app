@@ -28,6 +28,14 @@ func NewExchangeRatesRepo(db *sql.DB) ExchangeRatesRepoImpl {
 func (er ExchangeRatesRepoImpl) ExchangeRatesRepo(req entity.ExchangeRatesResponse) error {
 
 	q := `
+	TRUNCATE TABLE exchange_rates
+	RESTART IDENTITY; `
+	_, err := er.db.Exec(q)
+	if err != nil {
+		return &entity.CustomError{Msg: constant.CommonError, Log: err}
+	}
+
+	q = `
 	INSERT INTO exchange_rates(base_currency, target_currency, rate, rate_date) 
 		VALUES
 	`
@@ -54,7 +62,7 @@ func (er ExchangeRatesRepoImpl) ExchangeRatesRepo(req entity.ExchangeRatesRespon
 
 	q += ";"
 
-	_, err :=er.db.Exec(q, params...)
+	_, err =er.db.Exec(q, params...)
 
 	if err != nil {
 		return &entity.CustomError{Msg: constant.CommonError, Log: err}

@@ -26,4 +26,7 @@ dist-ssr
 
 # personal
 .env
+.env.production
+.env.development
 backend/.env
+update_note.txt
