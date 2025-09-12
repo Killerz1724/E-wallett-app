@@ -54,7 +54,7 @@ export default function Sidebar() {
   return (
     <aside
       className={clsxm(
-        `md:relative flex flex-col  px-2 w-full  md:w-52  md:rounded-br-lg md:rounded-tr-lg bg-gradient-to-r bg-orange-500 to-orange-400 `,
+        `md:relative flex flex-col  px-2 w-full  md:w-52  md:rounded-br-lg md:rounded-tr-lg bg-gradient-to-r dark:bg-gray-700 bg-orange-500   to-orange-400 `,
         "transition-all duration-500 ease-in-out overflow-x-clip",
         "fixed bottom-0 z-50 md:z-0",
         isCollapse && "md:w-20 w-full"

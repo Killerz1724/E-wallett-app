@@ -15,9 +15,9 @@ export default function Modal() {
   return (
     <section className="fixed top-0 h-screen w-screen flex items-center z-20 justify-center">
       <div className="absolute w-full h-full bg-black/50 z-20" />
-      <article className="absolute pt-4 pb-10 px-8 w-sm lg:min-w-md min-h-64 z-40 bg-white rounded-xl">
+      <article className="relative pt-10 pb-10 px-8 w-sm lg:min-w-md min-h-64 z-40 bg-white dark:bg-gray-800 rounded-xl">
         <div
-          className="flex w-full justify-end"
+          className=" absolute flex  right-2 top-2"
           onClick={() => dispatch(closeModal())}
         >
           <div className=" hover:cursor-pointer p-2 rounded-lg hover:bg-gray-100 transition-all">

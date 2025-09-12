@@ -1,10 +1,11 @@
 import AppProvider from "components/AppProvider";
+import Modal from "components/Modal";
 import QueryProviders from "components/QueryProviders";
+import ThemeProviderClient from "components/ThemeProviderClient";
 import ToastProvider from "components/ToastProvider";
 import type { Metadata, Viewport } from "next";
 import React from "react";
 import "./globals.css";
-import Modal from "components/Modal";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const metadata: Metadata = {
@@ -44,13 +45,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <QueryProviders>
-          <AppProvider>
-            {children}
-            <Modal />
-          </AppProvider>
-        </QueryProviders>
-        <ToastProvider />
+        <ThemeProviderClient>
+          <QueryProviders>
+            <AppProvider>
+              {children}
+              <Modal />
+            </AppProvider>
+          </QueryProviders>
+          <ToastProvider />
+        </ThemeProviderClient>
       </body>
     </html>
   );

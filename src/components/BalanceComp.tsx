@@ -28,7 +28,7 @@ export default function BalanceComp({
         <p
           className={clsxm(
             `text-2xl lg:text-4xl font-bold tracking-tight`,
-            style === "black" && "text-black",
+            style === "black" && "text-black dark:text-white",
             style === "white" && "text-white"
           )}
         >
@@ -44,8 +44,8 @@ export default function BalanceComp({
         <Eye
           className={clsxm(
             "h-7 w-7  cursor-pointer",
-            style === "black" && "text-black",
-            style === "white" && "text-white"
+            style === "black" && "text-black dark:text-white",
+            style === "white" && "text-white "
           )}
           onClick={() => dispatch(setUserSeeBalance())}
         />
@@ -53,7 +53,7 @@ export default function BalanceComp({
         <EyeClosed
           className={clsxm(
             "h-7 w-7  cursor-pointer",
-            style === "black" && "text-black",
+            style === "black" && "text-black dark:text-white",
             style === "white" && "text-white"
           )}
           onClick={() => dispatch(setUserSeeBalance())}
