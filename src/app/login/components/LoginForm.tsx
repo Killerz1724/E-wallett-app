@@ -50,19 +50,19 @@ export default function LoginForm() {
             value={data.email}
             onChange={handleChange}
             id="email"
-            className="flex justify-between items-center bg-[#F2F2F2] px-6 py-4 rounded-lg"
+            className="flex justify-between items-center bg-[#F2F2F2] dark:bg-gray-700 px-6 py-4 rounded-lg"
             name="email"
             type="email"
             placeholder="Enter email"
           />
         </div>
         <div className="flex flex-col gap-1">
-          <div className="flex flex-col justify-between focus-within:outline-2 gap-4 items-center bg-[#F2F2F2] px-6 py-4 rounded-lg">
+          <div className="flex flex-col justify-between focus-within:outline-2 gap-4 items-center bg-[#F2F2F2] dark:bg-gray-700 px-6 py-4 rounded-lg">
             <div className="flex justify-between outline-none  w-full">
               <input
                 value={data.password}
                 onChange={handleChange}
-                className="border-none outline-none bg-transparent"
+                className="border-none outline-none bg-transparent "
                 id="password"
                 name="password"
                 type={isHidden ? "password" : "text"}

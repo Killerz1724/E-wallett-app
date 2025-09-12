@@ -16,9 +16,9 @@ export default function ImageProfileForm({
     <>
       <div className={clsxm("relative rounded-full border-2 w-fit")}>
         {editMode && (
-          <form className="flex absolute w-full rounded-full z-20 bg-gray-100 opacity-50 h-full items-center justify-center ">
+          <form className="flex absolute w-full rounded-full z-20 bg-gray-100 opacity-70 h-full items-center justify-center ">
             <label htmlFor="profImage" className="cursor-pointer">
-              <Pencil className="size-15" />
+              <Pencil className="size-14 text-orange-400 " />
             </label>
             <input
               type="file"

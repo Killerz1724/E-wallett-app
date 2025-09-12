@@ -6,13 +6,15 @@ export default function Logo({
   height = 100,
   width = 200,
 }: {
-  variant?: "orange" | "white";
+  variant?: "orange" | "white" | "orangeIcon" | "whiteIcon";
   height?: number;
   width?: number;
 }) {
   const variantImg = {
     orange: "/TejoflowLogo-Orange.png",
     white: "/TejoflowLogo-White.jpg",
+    orangeIcon: "/LogoIconOnly-Orange.png",
+    whiteIcon: "/LogoIconOnly-White.png",
   };
   return (
     <Suspense fallback={<p>Loading..</p>}>

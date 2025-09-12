@@ -61,7 +61,7 @@ export default function RequestResetForm() {
         </strong>
       </div>
       <form action={dispatchRequest} className="w-full flex flex-col gap-4">
-        <div className="flex flex-col justify-between focus-within:outline-2 gap-4 items-center bg-[#F2F2F2] px-6 py-4 rounded-lg">
+        <div className="flex flex-col justify-between focus-within:outline-2 gap-4 items-center bg-[#F2F2F2] dark:bg-gray-700 px-6 py-4 rounded-lg">
           <div className="flex justify-between outline-none  w-full">
             <input
               className="border-none outline-none bg-transparent w-full"

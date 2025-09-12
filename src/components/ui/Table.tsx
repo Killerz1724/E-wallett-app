@@ -26,7 +26,11 @@ function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
   return (
     <thead
       data-slot="table-header"
-      className={clsxm("[&_tr]:border-b", "bg-orange-200", className)}
+      className={clsxm(
+        "[&_tr]:border-b",
+        "bg-orange-200 dark:bg-gray-700",
+        className
+      )}
       {...props}
     />
   );
@@ -60,7 +64,7 @@ function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
     <tr
       data-slot="table-row"
       className={clsxm(
-        "hover:bg-orange-200/50 data-[state=selected]:bg-orange-200 border-b border-gray-200 transition-colors",
+        "hover:bg-orange-200/50 dark:hover:bg-gray-600 data-[state=selected]:dark:bg-gray-400 data-[state=selected]:bg-orange-200  border-b border-gray-200 transition-colors",
 
         className
       )}

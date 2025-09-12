@@ -41,7 +41,7 @@ export default function TransactionsTable() {
       {isError ? (
         <p>{COMMON_ERROR}</p>
       ) : (
-        <div className="max-w-[21rem] md:max-w-full md:w-full">
+        <div className="max-w-[22rem] sm:max-w-[34rem] md:max-w-full md:w-full transition-all">
           <Table>
             <TableHeader>
               <TableRow>

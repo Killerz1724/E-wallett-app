@@ -4,7 +4,7 @@ import IncomeBalance from "../tinyClientComponent/IncomeBalance";
 
 export default function IncomeCard() {
   return (
-    <div className="w-full rounded-2xl bg-gradient-to-br bg-green-600 to-green-500 border border-orange-200/30 backdrop-blur-xl shadow-lg p-6 flex justify-between items-center gap-3">
+    <div className="w-full rounded-2xl bg-gradient-to-br bg-green-600 dark:bg-green-700 to-green-500 border border-orange-200/30 backdrop-blur-xl shadow-lg p-6 flex justify-between items-center gap-3">
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-2">
           <ChartNoAxesCombined className="h-5 w-5 text-white/90" />

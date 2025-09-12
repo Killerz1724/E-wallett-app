@@ -16,10 +16,10 @@ export default function Pagination({
   const isDisablePrev = page === 1;
   const isDisableNext = total < limit;
   return (
-    <div className="w-full gap-3 flex items-center justify-end">
+    <div className="w-full gap-3 flex items-center justify-center md:justify-end">
       <button
         className={clsxm(
-          "px-4 py-2 border bg-orange-400 text-white hover:cursor-pointer hover:bg-orange-300 border-gray-300 rounded-md",
+          "px-4 py-2 border bg-orange-400 dark:bg-orange-600 text-white hover:cursor-pointer dark:hover:bg-orange-400 hover:bg-orange-300 border-gray-300 rounded-md",
           "transition-all",
           isDisablePrev && "opacity-50 hover:cursor-not-allowed"
         )}
@@ -31,7 +31,7 @@ export default function Pagination({
       <p className="text-lg font-semibold">{page}</p>
       <button
         className={clsxm(
-          "px-4 py-2 border bg-orange-400 text-white hover:cursor-pointer hover:bg-orange-300 border-gray-300 rounded-md",
+          "px-4 py-2 border bg-orange-400 dark:bg-orange-600 text-white hover:cursor-pointer dark:hover:bg-orange-400 hover:bg-orange-300 border-gray-300 rounded-md",
           "transition-all",
           isDisableNext && "opacity-50 hover:cursor-not-allowed"
         )}

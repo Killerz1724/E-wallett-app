@@ -1,41 +1,8 @@
+import clsxm from "@riverfl0w/clsxm";
 import MultipleSkeletonLoading from "components/MultipleSkeletonLoading";
 import { COMMON_ERROR } from "constant/common";
 import { JSX } from "react";
-import Select, {
-  GroupBase,
-  OptionsOrGroups,
-  Props,
-  StylesConfig,
-} from "react-select";
-
-const customStyles: StylesConfig = {
-  option: (provided, state) => ({
-    ...provided,
-    marginBottom: "8px",
-    backgroundColor: state.isSelected
-      ? "#f97316"
-      : state.isFocused
-      ? "#f97316"
-      : "white",
-    color: state.isSelected ? "white" : state.isFocused ? "white" : "black",
-    borderRadius: "0.5rem",
-    cursor: "pointer",
-  }),
-
-  control: (provided) => ({
-    ...provided,
-    borderRadius: "0.5rem",
-    borderColor: "#e5e7eb",
-    boxShadow: "none",
-    "&:hover": {
-      borderColor: "#f97316",
-    },
-  }),
-  menu: (provided) => ({
-    ...provided,
-    padding: "8px",
-  }),
-};
+import Select, { GroupBase, OptionsOrGroups, Props } from "react-select";
 
 type Option = {
   value: string | number;
@@ -65,7 +32,28 @@ export default function SelectServer({
   const data = isPending ? skeletonLoad.options : options;
   return (
     <Select
-      styles={customStyles}
+      classNames={{
+        option(props) {
+          return clsxm(
+            props.isSelected
+              ? "dark:!bg-orange-600 !bg-orange-400  !text-white rounded-md"
+              : props.isFocused
+              ? " dark:!bg-orange-600 !bg-orange-400 !text-white rounded-md"
+              : "bg-white bg-orange-400 text-black",
+            "mb-2"
+          );
+        },
+        control(props) {
+          return clsxm(
+            "rounded-md bg-white  dark:bg-gray-200 dark:text-gray-100 !boder-orange-400 p-1",
+            props.isFocused && "!border-2 !border-orange-400 ",
+            props.menuIsOpen && "!border-2 !border-orange-400 "
+          );
+        },
+        menu(props) {
+          return clsxm("bg-white dark:bg-gray-600 rounded-md p-2");
+        },
+      }}
       options={isError ? [error] : data}
       {...props}
     />
