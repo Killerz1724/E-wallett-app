@@ -37,7 +37,7 @@ services:
       context: ./backend
       dockerfile: dockerfile.seed
     env_file:
-      - ./backend/.env
+      - ./backend/.env.production
     container_name: tejoflow-backend
     depends_on:
       database:

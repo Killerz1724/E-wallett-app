@@ -48,7 +48,7 @@ func main() {
 	schedulerRates := scheduler.NewScheduler()
 	schedulerReset := scheduler.NewScheduler()
 	//Scheduler Rates
-	schedulerRates.Register("*/2 * * * *", func() {
+	schedulerRates.Register("0 0 * * *", func() {
 		log.Println("running rates seed from cron")
 		_ =	eu.ExchangeRatesUseCase()
 	})
