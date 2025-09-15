@@ -90,6 +90,7 @@ func main() {
 		transaction.POST("/transactions/top-up", th.TopUpHandler)
 		transaction.POST("/transactions/transfer", th.TransferHandler)
 		transaction.GET("/transactions/source-funds", th.SourceOfFundsHandler)
+		transaction.GET("/transactions/rewards", th.GetRewardsHandler)
 	}
 	{
 		exchanges := r.Group("/api/exchanges-rates")

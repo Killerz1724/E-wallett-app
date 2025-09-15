@@ -19,6 +19,7 @@ type TransactionRepoItf interface {
 	TransferTransactionRepo(context.Context, entity.TransferBody, string) error
 	ListAllUsersRepo(context.Context, string, string, int) (*entity.ListAllUsersResponse, error)
 	SourceOfFundsRepo(context.Context) ([]*entity.SourceOfFundResponse, error)
+	GetRewardsRepo(context.Context) (*entity.RewardsResponse, error)
 }
 
 type TransactionRepoImpl struct {
@@ -487,3 +488,33 @@ func (tr TransactionRepoImpl) SourceOfFundsRepo(c context.Context) ([]*entity.So
 
 	return sofs, nil
 }
+
+func (tr TransactionRepoImpl) GetRewardsRepo(c context.Context) (*entity.RewardsResponse, error) {
+
+	q := `
+	SELECT prize_number, prize_amount, weight_number
+	FROM prizes
+	`
+
+	rows, err := tr.db.QueryContext(c, q)
+
+	if err != nil {
+		return nil, &entity.CustomError{Msg: constant.CommonError, Log: err}
+	}
+	
+	var rewards entity.RewardsResponse
+
+	for rows.Next(){
+		var reward entity.Reward
+
+		err = rows.Scan(&reward.Prize_id, &reward.Prize_amount, &reward.Prize_weight)
+
+		if err != nil {
+			return nil, &entity.CustomError{Msg: constant.CommonError, Log: err}
+		}
+
+		rewards.Rewards = append(rewards.Rewards, reward)
+	}
+
+	return &rewards, nil
+}	

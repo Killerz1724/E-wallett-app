@@ -20,6 +20,7 @@ type TransactionUsecaseItf interface {
 	TransferUsecase(context.Context, entity.TransferBody, string) error
 	ListAllUsersUsecase(context.Context,  string, string,  string) (*entity.ListAllUsersResponse, error)
 	SourceOfFundsUsecase(context.Context) ([]*entity.SourceOfFundResponse, error)
+	GetRewardsUsecase( context.Context) (*entity.RewardsResponse, error)
 }
 
 type TransactionUsecaseImpl struct {
@@ -201,4 +202,14 @@ func (tu TransactionUsecaseImpl) SourceOfFundsUsecase(c context.Context) ([]*ent
 	}
 
 	return res, nil
+}
+
+func (tu TransactionUsecaseImpl) GetRewardsUsecase(c context.Context) (*entity.RewardsResponse, error) {
+ res, err := tu.tr.GetRewardsRepo(c)
+
+ if err != nil {
+	return  nil, err
+ }
+
+ return  res, nil
 }
