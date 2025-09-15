@@ -217,3 +217,28 @@ func (th TransactionHandlerImpl) GetRewardsHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, resJson)
 	
 }
+
+func (th TransactionHandlerImpl) GetGachaHandler(c *gin.Context) {
+
+	email := c.Value("subject").(string)
+
+	res, err := th.tu.GetGachaUsecase(c, email)
+
+	if err !=nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	resBody := dto.Reward{
+		Prize_id: res.Prize_id,
+		Prize_amount: res.Prize_amount.BigInt().Int64(),
+	}
+
+	resJson := dto.Response {
+		Success: true,
+		Data: resBody,
+	}
+
+	c.JSON(http.StatusOK, resJson)
+
+}

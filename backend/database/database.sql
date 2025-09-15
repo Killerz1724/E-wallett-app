@@ -77,6 +77,7 @@ create table prizes(
 	prize_number INT unique not null,
 	prize_amount numeric not null,
 	weight_number INT not null,
+	amount_get INT default 0,
 	created_at TIMESTAMPTZ default NOW(),
 	updated_at TIMESTAMPTZ default NOW(),
 	deleted_at TIMESTAMPTZ
@@ -147,7 +148,8 @@ values
 insert into transaction_categories(name)
 values
 	('transfer'),
-	('top up');
+	('top up'),
+	('reward');
 
 insert into source_funds (name)
 values

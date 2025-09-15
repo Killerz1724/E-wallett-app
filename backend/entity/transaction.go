@@ -63,7 +63,7 @@ type SourceOfFundResponse struct {
 type Reward struct {
 	Prize_id int
 	Prize_amount decimal.Decimal
-	Prize_weight int
+	Prize_weight int64
 
 }
 
