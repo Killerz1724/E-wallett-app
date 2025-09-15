@@ -6,6 +6,7 @@ import {
   ArrowLeftFromLine,
   BanknoteArrowDown,
   BanknoteArrowUp,
+  Gift,
   HouseIcon,
   Info,
   LucideProps,
@@ -41,6 +42,11 @@ const navItems: navItemsProps[] = [
   {
     name: "TopUp",
     icon: BanknoteArrowUp,
+  },
+  {
+    name: "Rewards",
+    path: "/reward",
+    icon: Gift,
   },
   {
     name: "About",

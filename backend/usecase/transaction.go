@@ -245,14 +245,20 @@ func (tu TransactionUsecaseImpl) GetGachaUsecase(c context.Context, email string
 
 	
 	tempVal := randomNum.Int64()
+	var perSegmentDegree float32
+	var accumulateDegree float32
+	perSegmentDegree = float32(constant.CIRCLE_DEGREE) / float32(len(rewards.Rewards))
+	
 	for _,val := range rewards.Rewards {
 		if tempVal - val.Prize_weight <=0 {
 
 			selectedReward.Prize_id = val.Prize_id
 			selectedReward.Prize_amount = val.Prize_amount
+			selectedReward.Prize_angle = accumulateDegree
 			break;
 		}
 		tempVal = tempVal - val.Prize_weight
+		accumulateDegree += perSegmentDegree
 	}
 
 	err = tu.tr.UserGachaRewardRepo(c, email, selectedReward)

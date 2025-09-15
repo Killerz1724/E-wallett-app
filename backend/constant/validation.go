@@ -15,4 +15,5 @@ var (
 	MAX_TOPUP_AMOUNT          int64 = 10000000 // 100,000,000
 	MIN_TRANSFER_AMOUNT       int64 = 1000     // 1,000
 	MAX_TRANSFER_AMOUNT       int64 = 50000000 // 50,000,000
+	CIRCLE_DEGREE                   = 360      //360
 )

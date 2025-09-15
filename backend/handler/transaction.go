@@ -232,6 +232,7 @@ func (th TransactionHandlerImpl) GetGachaHandler(c *gin.Context) {
 	resBody := dto.Reward{
 		Prize_id: res.Prize_id,
 		Prize_amount: res.Prize_amount.BigInt().Int64(),
+		Prize_angle: res.Prize_angle,
 	}
 
 	resJson := dto.Response {

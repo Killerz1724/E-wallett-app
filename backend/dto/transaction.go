@@ -63,6 +63,7 @@ type SourceOfFundResponse struct {
 type Reward struct {
 	Prize_id int `json:"prize_id"`
 	Prize_amount int64 `json:"prize_amount"`
+	Prize_angle float32 `json:"prize_angle"`
 
 }
 

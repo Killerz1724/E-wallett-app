@@ -64,6 +64,7 @@ type Reward struct {
 	Prize_id int
 	Prize_amount decimal.Decimal
 	Prize_weight int64
+	Prize_angle float32
 
 }
 
