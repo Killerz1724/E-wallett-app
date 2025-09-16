@@ -206,6 +206,7 @@ func (th TransactionHandlerImpl) GetRewardsHandler(c *gin.Context) {
 		var reward dto.Reward
 		reward.Prize_id = val.Prize_id
 		reward.Prize_amount = val.Prize_amount.BigInt().Int64()
+		reward.Prize_weight = val.Prize_weight
 		resBody.Rewards = append(resBody.Rewards, reward)
 	}
 
@@ -232,7 +233,7 @@ func (th TransactionHandlerImpl) GetGachaHandler(c *gin.Context) {
 	resBody := dto.Reward{
 		Prize_id: res.Prize_id,
 		Prize_amount: res.Prize_amount.BigInt().Int64(),
-		Prize_angle: res.Prize_angle,
+		Prize_angle: &res.Prize_angle,
 	}
 
 	resJson := dto.Response {

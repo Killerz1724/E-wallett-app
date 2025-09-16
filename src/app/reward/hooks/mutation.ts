@@ -8,7 +8,7 @@ import { number } from "zod";
 export type PrizeGachaTypeRes = {
   prize_id: number;
   prize_amount: number;
-  prize_angle: number;
+  prize_angle?: number;
 };
 export type RewardsTypeRes = {
   prizes: Prize[];
@@ -17,6 +17,7 @@ export type RewardsTypeRes = {
 export type Prize = {
   prize_id: number;
   prize_amount: number;
+  prize_weight: number;
 };
 
 export function useGetRewards() {

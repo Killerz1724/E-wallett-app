@@ -496,7 +496,7 @@ func (tr TransactionRepoImpl) GetRewardsRepo(c context.Context) (*entity.Rewards
 	q := `
 	SELECT prize_number, prize_amount, weight_number
 	FROM prizes
-	ORDER BY weight_number ASC;
+	ORDER BY prize_amount DESC;
 	`
 
 	rows, err := tr.db.QueryContext(c, q)

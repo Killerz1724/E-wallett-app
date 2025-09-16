@@ -1,28 +1,42 @@
 "use client";
 import clsxm from "@riverfl0w/clsxm";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Prize, useGetGacha, useGetRewards } from "../hooks/mutation";
+import {
+  Prize,
+  RewardsTypeRes,
+  useGetGacha,
+  useGetRewards,
+} from "../hooks/mutation";
 import SkeletonLoading from "components/SkeletonLoading";
 import { COMMON_ERROR } from "constant/common";
 import Button from "components/Button";
 
-export default function GachaWheel() {
-  const [rotation, setRotation] = useState(0);
+export default function GachaWheel({
+  rewards,
+  isRewardsPending,
+  isRewardsError,
+}: {
+  rewards: RewardsTypeRes;
+  isRewardsPending: boolean;
+  isRewardsError: boolean;
+}) {
+  const initialPosition = 180;
+  const [rotation, setRotation] = useState(initialPosition);
   const [isSpinning, setIsSpinning] = useState(false);
   const [selectedPrize, setSelectedPrize] = useState<Prize>();
   const [segmentWidth, setSegmentWidth] = useState(0);
-  const {
-    data: rewardList,
-    isPending: isRewardsPending,
-    isError: isRewardsError,
-  } = useGetRewards();
+
   const { mutateAsync: getGacha } = useGetGacha();
-  const numSegments = isRewardsPending ? 0 : rewardList.prizes.length;
+  const spinControls = useAnimation();
+  const numSegments = isRewardsPending ? 0 : rewards.prizes.length;
   const segmentAngles = 360 / numSegments;
 
   const onSpinStart = async () => {
     if (isSpinning) return;
+
+    setRotation(initialPosition);
+
     setIsSpinning(true);
     setSelectedPrize(undefined);
     const result = await getGacha().catch(() => {
@@ -39,24 +53,20 @@ export default function GachaWheel() {
     const randomSpin =
       Math.floor(Math.random() * (maxSpins - minSpins + 1)) + minSpins;
 
-    const pointerOffset = 108; // where wheel starts
-    const centeringOffset = 2 * segmentAngles; // 72° (2 slices)
+    // const adjustedAngle =
+    //   ((360 - result.prize_angle + pointerOffset) % 360) + centeringOffset;
+    const adjustedAngle = result.prize_angle;
+    const totalRotation = 360 * randomSpin + initialPosition + adjustedAngle;
 
-    // Final adjustment
-    const adjustedAngle =
-      ((360 - result.prize_angle + pointerOffset) % 360) + centeringOffset;
-    const totalRotation = 360 * randomSpin + adjustedAngle;
     setRotation(totalRotation);
 
     setTimeout(() => {
       setSelectedPrize(
-        rewardList.prizes.find((prize) => prize.prize_id === result.prize_id)
+        rewards.prizes.find((prize) => prize.prize_id === result.prize_id)
       );
 
       setIsSpinning(false);
-      // normalize rotation so next spin starts clean, but keep alignment
-      setRotation(adjustedAngle);
-    }, 4200);
+    }, 4300);
   };
 
   useEffect(() => {
@@ -69,6 +79,22 @@ export default function GachaWheel() {
     setSegmentWidth(segmentWidth);
   }, [isRewardsPending]);
 
+  useEffect(() => {
+    if (rotation === initialPosition) {
+      spinControls.set({
+        rotate: initialPosition,
+      });
+    } else {
+      spinControls.start({
+        rotate: -rotation,
+        transition: {
+          duration: 4,
+          ease: "easeOut",
+        },
+      });
+    }
+  }, [spinControls, rotation]);
+
   return (
     <div className="flex flex-col items-center space-y-4">
       {/* Spincontainer */}
@@ -77,15 +103,14 @@ export default function GachaWheel() {
         {/* Rewards */}
         <motion.div
           className="border-2 border-orange-400 w-[25rem] h-[25rem] relative rounded-full flex items-center justify-center overflow-hidden"
-          animate={{ rotate: rotation }}
-          transition={{ duration: 4, ease: "easeOut" }}
+          animate={spinControls}
         >
           {isRewardsPending ? (
             <SkeletonLoading />
           ) : isRewardsError ? (
             <p>{COMMON_ERROR}</p>
           ) : (
-            rewardList.prizes.map((prize, index) => (
+            rewards.prizes.map((prize, index) => (
               <div
                 key={index}
                 className={clsxm(
@@ -94,7 +119,13 @@ export default function GachaWheel() {
                     ? "bg-green-500"
                     : index % 2 === 0
                     ? "bg-orange-400"
-                    : "bg-orange-600"
+                    : "bg-orange-600",
+                  prize.prize_id === 10 &&
+                    " bg-gradient-to-tr from-yellow-200 to-yellow-600",
+                  prize.prize_id === 9 &&
+                    "bg-gradient-to-tr from-purple-200 to-purple-600 ",
+                  prize.prize_id === 8 &&
+                    " bg-gradient-to-tr from-yellow-700 to-yellow-900"
                 )}
                 style={{
                   transform: `rotate(${
@@ -106,8 +137,24 @@ export default function GachaWheel() {
                   zIndex: numSegments - index,
                 }}
               >
-                <span className="rotate-90 text-center text-sm font-bold text-white bg-orange-300 p-1 rounded mt-5">
-                  {prize.prize_amount.toLocaleString("id-ID")} IDR
+                <span
+                  className={clsxm(
+                    "rotate-90 text-center text-sm font-bold text-white  bg-orange-300 p-1 rounded mt-5",
+                    prize.prize_id >= 8 && "bg-gray-600"
+                  )}
+                >
+                  <p
+                    className={clsxm(
+                      prize.prize_id === 10 &&
+                        "text-transparent bg-clip-text bg-gradient-to-tr from-yellow-200 to-yellow-400",
+                      prize.prize_id === 9 &&
+                        "text-transparent bg-clip-text bg-gradient-to-tr from-purple-100 to-purple-400",
+                      prize.prize_id === 8 &&
+                        "text-transparent bg-clip-text bg-gradient-to-tr from-yellow-600 to-yellow-800"
+                    )}
+                  >
+                    {prize.prize_amount.toLocaleString("id-ID")} IDR
+                  </p>
                 </span>
               </div>
             ))
