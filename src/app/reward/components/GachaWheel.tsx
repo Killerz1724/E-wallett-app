@@ -96,13 +96,25 @@ export default function GachaWheel({
   }, [spinControls, rotation]);
 
   return (
-    <div className="flex flex-col items-center space-y-4">
+    <div className="flex flex-col items-center space-y-8">
+      {selectedPrize ? (
+        <div className="text-center space-y-1">
+          <p className="font-semibold text-xl">Congratulations You Have Won</p>
+          <p className="text-xl text-orange-400 font-bold">
+            {selectedPrize.prize_amount.toLocaleString("id-ID")} IDR!
+          </p>
+        </div>
+      ) : (
+        <h4 className="font-semibold text-2xl text-orange-400">
+          Spin for a Prize !
+        </h4>
+      )}
       {/* Spincontainer */}
       <div className="spinWheelContainer ">
         <div className="absolute top-0 left-1/2  -translate-x-1/2 z-20 w-0 h-0 border-l-[12px] border-r-[12px] border-b-[28px] border-transparent border-b-red-600 drop-shadow-lg" />
         {/* Rewards */}
         <motion.div
-          className="border-2 border-orange-400 w-[25rem] h-[25rem] relative rounded-full flex items-center justify-center overflow-hidden"
+          className="border-2 border-orange-400 w-[20rem] h-[20rem] relative rounded-full flex items-center justify-center overflow-hidden"
           animate={spinControls}
         >
           {isRewardsPending ? (
@@ -133,13 +145,14 @@ export default function GachaWheel({
                   }deg) translateY(50%)`,
                   clipPath: "polygon(50% 0%, -8% 100%, 100% 100%)",
                   height: "60%",
-                  width: `${1.5 * segmentWidth}px`,
                   zIndex: numSegments - index,
+                  width: `${1.3 * segmentWidth}px`,
+                  // responsive adjustment
                 }}
               >
                 <span
                   className={clsxm(
-                    "rotate-90 text-center text-sm font-bold text-white  bg-orange-300 p-1 rounded mt-5",
+                    "rotate-90 text-center text-xs  font-bold text-white  bg-orange-300 p-1 rounded mt-5",
                     prize.prize_id >= 8 && "bg-gray-600"
                   )}
                 >
@@ -165,14 +178,10 @@ export default function GachaWheel({
       <Button
         onClick={onSpinStart}
         disabled={isSpinning || isRewardsPending || isRewardsError}
+        className="px-12"
       >
-        {isSpinning ? "Spinning..." : "Spin"}
+        {isSpinning ? "Spinning..." : "SPIN!"}
       </Button>
-      {selectedPrize && (
-        <p className="fs-5 fw-semibold text-light">
-          You won: {selectedPrize.prize_amount.toLocaleString("id-ID")} IDR!
-        </p>
-      )}
     </div>
   );
 }

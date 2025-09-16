@@ -11,7 +11,7 @@ export default function ProbalitiesPopover({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div className="p-2 rounded-md bg-orange-400 hover:bg-orange-500 hover:cursor-pointer">
+        <div className="p-2 rounded-md text-white bg-orange-400 hover:bg-orange-500 hover:cursor-pointer">
           Probabilites
         </div>
       </PopoverTrigger>
