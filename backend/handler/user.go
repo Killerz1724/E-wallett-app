@@ -268,3 +268,23 @@ func (uh UserHandlerImpl) UserChangeProfilePicHandler(c *gin.Context) {
 		Data: resBody,
 	})
 }
+
+func (uh UserHandlerImpl)GetUserGachaChanceHandler( c*gin.Context) {
+
+	email := c.Value("subject").(string)
+
+	res, err := uh.uuc.GetUserGachaChanceUsecase(c, email)
+
+	if err != nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	resBody := dto.UserGachaChanceRes(*res)
+
+	c.JSON(http.StatusOK, dto.Response{
+		Success: true,
+		Error: nil,
+		Data: resBody,
+	})
+}

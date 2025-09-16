@@ -21,7 +21,8 @@ type UserUsecaseItf interface {
 	UserShowUserDetailsUsecase( context.Context,  string) (*entity.ShowUserProfileRes, error)
 	UserIncomeUsecase(context.Context, string ) (*entity.UserIncomeRes,error)
 	UserExpenseUsecase(context.Context, string ) (*entity.UserExpenseRes,error)
-	UserChangeProfilePicUsecase(context.Context, entity.ChangeProfilePictureBody) (*entity.ChangeProfilePictureRes,error)  
+	UserChangeProfilePicUsecase(context.Context, entity.ChangeProfilePictureBody) (*entity.ChangeProfilePictureRes,error) 
+	GetUserGachaChanceUsecase( context.Context,  string) (*entity.UserGachaChanceRes, error) 
 }
 
 type UserUsecaseImpl struct {
@@ -172,6 +173,16 @@ func (uuc UserUsecaseImpl) UserChangeProfilePicUsecase(c context.Context,req ent
 
 	if err != nil {
 		return nil, err
+	}
+
+	return res, nil
+}
+
+func (uuc UserUsecaseImpl)GetUserGachaChanceUsecase( c context.Context,  email string) (*entity.UserGachaChanceRes, error) {
+	res, err := uuc.ur.GetUserGachaChanceRepo(c, email)
+
+	if err !=nil {
+		return  nil, err
 	}
 
 	return res, nil

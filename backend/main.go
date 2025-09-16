@@ -81,6 +81,7 @@ func main() {
 		profile.GET("/income", uh.UserIncomeHandler)
 		profile.GET("/expense", uh.UserExpenseHandler)
 		profile.PATCH("/profile-picture", uh.UserChangeProfilePicHandler)
+		profile.GET("/gacha-chance", uh.GetUserGachaChanceHandler)
 	}
 	{
 		transaction := r.Group("/api/users")
