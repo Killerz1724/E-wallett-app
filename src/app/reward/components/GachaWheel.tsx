@@ -6,7 +6,7 @@ import {
   Prize,
   RewardsTypeRes,
   useGetGacha,
-  useGetRewards,
+  useGetUserGachaChance,
 } from "../hooks/mutation";
 import SkeletonLoading from "components/SkeletonLoading";
 import { COMMON_ERROR } from "constant/common";
@@ -28,6 +28,8 @@ export default function GachaWheel({
   const [segmentWidth, setSegmentWidth] = useState(0);
 
   const { mutateAsync: getGacha } = useGetGacha();
+  const { data, isPending, isError, refetch } = useGetUserGachaChance();
+
   const spinControls = useAnimation();
   const numSegments = isRewardsPending ? 0 : rewards.prizes.length;
   const segmentAngles = 360 / numSegments;
@@ -53,12 +55,13 @@ export default function GachaWheel({
     const randomSpin =
       Math.floor(Math.random() * (maxSpins - minSpins + 1)) + minSpins;
 
-    // const adjustedAngle =
-    //   ((360 - result.prize_angle + pointerOffset) % 360) + centeringOffset;
     const adjustedAngle = result.prize_angle;
     const totalRotation = 360 * randomSpin + initialPosition + adjustedAngle;
 
     setRotation(totalRotation);
+
+    //Refetch User Gacha Chance
+    refetch();
 
     setTimeout(() => {
       setSelectedPrize(
@@ -89,7 +92,8 @@ export default function GachaWheel({
         rotate: -rotation,
         transition: {
           duration: 4,
-          ease: "easeOut",
+          ease: [0.25, 0.1, 0.25, 1],
+          type: "tween",
         },
       });
     }
@@ -174,14 +178,24 @@ export default function GachaWheel({
           )}
         </motion.div>
       </div>
-
-      <Button
-        onClick={onSpinStart}
-        disabled={isSpinning || isRewardsPending || isRewardsError}
-        className="px-12"
-      >
-        {isSpinning ? "Spinning..." : "SPIN!"}
-      </Button>
+      <div className="flex flex-col gap-2 items-center">
+        <Button
+          onClick={onSpinStart}
+          disabled={
+            isSpinning || isRewardsPending || isRewardsError || data.chance <= 0
+          }
+          className="px-12"
+        >
+          {isSpinning ? "Spinning..." : "SPIN!"}
+        </Button>
+        {isPending ? (
+          <SkeletonLoading />
+        ) : isError ? (
+          <p>{COMMON_ERROR}</p>
+        ) : (
+          <p>You have {data.chance} spins left</p>
+        )}
+      </div>
     </div>
   );
 }

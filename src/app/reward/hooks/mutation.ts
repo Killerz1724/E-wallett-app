@@ -20,6 +20,25 @@ export type Prize = {
   prize_weight: number;
 };
 
+export type GachaChanceRes = {
+  chance: number;
+};
+
+export function useGetUserGachaChance() {
+  const res = useQuery<GachaChanceRes, AxiosError<ApiError>>({
+    queryKey: ["gacha-chance"],
+    queryFn: async () => {
+      const res = await api.get<ApiResponse<GachaChanceRes>>(
+        "/profile/gacha-chance"
+      );
+
+      return res.data.data;
+    },
+  });
+
+  return res;
+}
+
 export function useGetRewards() {
   const res = useQuery<RewardsTypeRes, AxiosError<ApiError>>({
     queryKey: ["rewards"],
