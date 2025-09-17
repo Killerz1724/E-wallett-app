@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { createPersistStorage } from "lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import modalReducer from "./modalStore";
+import sliderNavReducer from "./sliderNavStore";
 import userReducer from "./userStore";
 
 const userPersistConfig = {
@@ -11,6 +12,7 @@ const userPersistConfig = {
 
 const rootReducer = combineReducers({
   modal: modalReducer,
+  sliderNav: sliderNavReducer,
   user: persistReducer(userPersistConfig, userReducer),
 });
 

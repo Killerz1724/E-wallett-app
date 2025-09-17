@@ -6,6 +6,7 @@ import ToastProvider from "components/ToastProvider";
 import type { Metadata, Viewport } from "next";
 import React from "react";
 import "./globals.css";
+import MoreSliderModal from "components/layouts/MoreSliderModal";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const metadata: Metadata = {
@@ -50,6 +51,7 @@ export default function RootLayout({
             <AppProvider>
               {children}
               <Modal />
+              <MoreSliderModal />
             </AppProvider>
           </QueryProviders>
           <ToastProvider />

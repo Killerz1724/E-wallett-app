@@ -10,9 +10,9 @@ export default function ModalTrigger({ iconMode }: { iconMode?: boolean }) {
       className="flex flex-col overflow-x-hidden md:flex-row text-xs md:text-base items-center gap-1 md:gap-4 cursor-pointer hover:bg-white/40 p-2 rounded-md transition-all duration-500 ease-in-out"
       onClick={() => dispatch(openModal("TRANSFER"))}
     >
-      {!iconMode && <BanknoteArrowDown className="size-[20px]" />}
+      {!iconMode && <BanknoteArrowDown className="iconSizeNavbar" />}
       {iconMode ? (
-        <BanknoteArrowDown className="size-[20px]" />
+        <BanknoteArrowDown className="iconSizeNavbar" />
       ) : (
         <p className="hidden text-xs md:block md:text-base">Transfer</p>
       )}

@@ -1,38 +1,26 @@
 "use client";
 import { LucideProps } from "lucide-react";
-import React, {
-  ForwardRefExoticComponent,
-  RefAttributes,
-  useState,
-} from "react";
-import MoreSliderModal from "./MoreSliderModal";
-import { AnimatePresence } from "framer-motion";
-import { NavItem } from "components/Sidebar";
+import { ForwardRefExoticComponent, RefAttributes } from "react";
+import { useDispatch } from "react-redux";
+import { openSliderNav } from "store/sliderNavStore";
 
 export default function MoreComp({
   Icon,
-  NavItems,
 }: {
   Icon: ForwardRefExoticComponent<
     Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
   >;
-  NavItems: NavItem[];
 }) {
-  const [isCollapse, setIsCollapse] = useState(true);
+  const dispatch = useDispatch();
   return (
     <div>
       <div
         className="flex flex-col md:hidden overflow-x-hidden md:flex-row items-center gap-1 md:gap-4 text-xs md:text-base  cursor-pointer hover:bg-white/40 p-2 rounded-md transition-all duration-500 ease-in-out"
-        onClick={() => setIsCollapse(!isCollapse)}
+        onClick={() => dispatch(openSliderNav())}
       >
-        <Icon className="size-[20px]" />
+        <Icon className="iconSizeNavbar" />
         <p className="hidden text-xs md:block md:text-base">More</p>
       </div>
-      <AnimatePresence>
-        {!isCollapse && (
-          <MoreSliderModal setClose={setIsCollapse} navItems={NavItems} />
-        )}
-      </AnimatePresence>
     </div>
   );
 }

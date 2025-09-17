@@ -114,3 +114,8 @@
   border-radius: 50%;
   box-shadow: 0px 0px 30px #fb923c, 0px 0px 0px #fb923c;
 }
+
+.iconSizeNavbar {
+  width: 25px;
+  height: 25px;
+}
