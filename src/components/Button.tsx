@@ -28,7 +28,7 @@ export default function Button({
       className={clsxm(
         "py-4 px-[6rem] lg:px-[10rem] rounded-lg  border-none shadow-2xl hover:cursor-pointer transition-all",
         variant === "primary" &&
-          "bg-orange-400 dark:bg-orange-600 hover:bg-orange-300  text-white",
+          "bg-orange-400 dark:bg-orange-600 dark:hover:bg-orange-400 hover:bg-orange-300  text-white",
         variant === "secondary" && "bg-white hover:bg-gray-200 text-black",
         isDisabled && "opacity-50 hover:cursor-not-allowed hover:bg-orange-400",
         className
