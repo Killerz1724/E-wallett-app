@@ -100,21 +100,23 @@ export default function GachaWheel({
   }, [spinControls, rotation]);
 
   return (
-    <div className="flex flex-col items-center space-y-8">
+    <div className="flex flex-col items-center space-y-2">
+      <h4 className="font-semibold text-2xl text-orange-400">
+        Spin for a Prize !
+      </h4>
       {selectedPrize ? (
-        <div className="text-center space-y-1">
+        <div className="text-center space-y-[2px] py-4">
           <p className="font-semibold text-xl">Congratulations You Have Won</p>
           <p className="text-xl text-orange-400 font-bold">
             {selectedPrize.prize_amount.toLocaleString("id-ID")} IDR!
           </p>
         </div>
       ) : (
-        <h4 className="font-semibold text-2xl text-orange-400">
-          Spin for a Prize !
-        </h4>
+        <div className="h-14 py-4"></div>
       )}
+
       {/* Spincontainer */}
-      <div className="spinWheelContainer ">
+      <div className="spinWheelContainer">
         <div className="absolute top-0 left-1/2  -translate-x-1/2 z-20 w-0 h-0 border-l-[12px] border-r-[12px] border-b-[28px] border-transparent border-b-red-600 drop-shadow-lg" />
         {/* Rewards */}
         <motion.div
@@ -178,7 +180,7 @@ export default function GachaWheel({
           )}
         </motion.div>
       </div>
-      <div className="flex flex-col gap-2 items-center">
+      <div className="flex flex-col gap-2 items-center pt-8">
         <Button
           onClick={onSpinStart}
           disabled={
