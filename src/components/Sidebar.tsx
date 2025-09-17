@@ -6,6 +6,7 @@ import {
   ArrowLeftFromLine,
   BanknoteArrowDown,
   BanknoteArrowUp,
+  CircleEllipsis,
   Gift,
   HouseIcon,
   Info,
@@ -15,14 +16,20 @@ import {
 import Link from "next/link";
 import { ForwardRefExoticComponent, RefAttributes, useState } from "react";
 import Logo from "./Logo";
+import MoreComp from "./layouts/MoreComp";
 
-type navItemsProps = {
+export type NavItem = {
   name: string;
   path?: string;
   icon: ForwardRefExoticComponent<
     Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
   >;
+  hideOnMobile?: boolean;
 };
+
+type navItemsProps = {
+  nestedNav?: NavItem[];
+} & NavItem;
 
 const navItems: navItemsProps[] = [
   {
@@ -49,9 +56,21 @@ const navItems: navItemsProps[] = [
     icon: Gift,
   },
   {
+    name: "More",
+    icon: CircleEllipsis,
+    nestedNav: [
+      {
+        name: "About",
+        path: "/about",
+        icon: Info,
+      },
+    ],
+  },
+  {
     name: "About",
     path: "/about",
     icon: Info,
+    hideOnMobile: true,
   },
 ];
 
@@ -85,29 +104,42 @@ export default function Sidebar() {
             isCollapse && " md:items-end"
           )}
         >
-          {navItems.map((val, i) => (
-            <li key={i} className="text-white w-full">
-              {val.path ? (
-                <Link href={val.path}>
-                  <div className="flex overflow-x-hidden flex-col md:flex-row w-full items-center gap-1 md:gap-4 cursor-pointer hover:bg-white/40 p-2 rounded-md transition-all duration-500 ease-in-out">
-                    <val.icon className="size-[20px]" />
-                    {!isCollapse && (
-                      <p className="text-xs md:text-base">{val.name}</p>
+          {navItems.map((val, i) => {
+            return (
+              <li
+                key={i}
+                className={clsxm(
+                  "text-white w-full",
+                  val.hideOnMobile && "hidden md:block"
+                )}
+              >
+                {val.path ? (
+                  <Link href={val.path}>
+                    <div className="flex overflow-x-hidden flex-col md:flex-row w-full items-center gap-1 md:gap-4 cursor-pointer hover:bg-white/40 p-2 rounded-md transition-all duration-500 ease-in-out">
+                      <val.icon className="size-[20px]" />
+                      {!isCollapse && (
+                        <p className="hidden text-xs md:block md:text-base">
+                          {val.name}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                ) : (
+                  <div>
+                    {val.name === "Transfer" && (
+                      <ModalTrigger iconMode={isCollapse} />
+                    )}
+                    {val.name === "TopUp" && (
+                      <TopupModalTrigger iconMode={isCollapse} />
+                    )}
+                    {val.name === "More" && (
+                      <MoreComp Icon={val.icon} NavItems={val.nestedNav} />
                     )}
                   </div>
-                </Link>
-              ) : (
-                <div>
-                  {val.name === "Transfer" && (
-                    <ModalTrigger iconMode={isCollapse} />
-                  )}
-                  {val.name === "TopUp" && (
-                    <TopupModalTrigger iconMode={isCollapse} />
-                  )}
-                </div>
-              )}
-            </li>
-          ))}
+                )}
+              </li>
+            );
+          })}
         </ul>
         <div
           onClick={() => setIsCollapse(!isCollapse)}

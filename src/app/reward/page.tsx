@@ -13,7 +13,7 @@ export default function RewardPage() {
   return (
     <DashboardLayout>
       <section className="flex flex-col gap-4">
-        <div className="w-full flex justify-between gap-4">
+        <div className="w-full lg:px-60 flex justify-between gap-4">
           {isPending ? (
             <SkeletonLoading />
           ) : isError ? (

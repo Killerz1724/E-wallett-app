@@ -11,7 +11,11 @@ export default function ModalTrigger({ iconMode }: { iconMode?: boolean }) {
       onClick={() => dispatch(openModal("TRANSFER"))}
     >
       {!iconMode && <BanknoteArrowDown className="size-[20px]" />}
-      {iconMode ? <BanknoteArrowDown className="size-[20px]" /> : "Transfer"}
+      {iconMode ? (
+        <BanknoteArrowDown className="size-[20px]" />
+      ) : (
+        <p className="hidden text-xs md:block md:text-base">Transfer</p>
+      )}
     </div>
   );
 }

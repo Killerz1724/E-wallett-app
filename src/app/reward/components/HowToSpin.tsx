@@ -6,7 +6,7 @@ export default function HowToSpin() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div className="flex gap-2 text-gray-400 items-center font-semibold">
+        <div className="flex gap-2 text-gray-400 hover:cursor-pointer hover:text-gray-300 items-center font-semibold">
           <Info className="text-gray-400 size-4" />
           <p>How to spin</p>
         </div>

@@ -15,7 +15,11 @@ export default function TopupModalTrigger({
       onClick={() => dispatch(openModal("TOPUP"))}
     >
       {!iconMode && <BanknoteArrowUp className="size-[20px]" />}
-      {iconMode ? <BanknoteArrowUp className="size-[20px]" /> : "Top Up"}
+      {iconMode ? (
+        <BanknoteArrowUp className="size-[20px]" />
+      ) : (
+        <p className="hidden text-xs md:block md:text-base">Top Up</p>
+      )}
     </div>
   );
 }
