@@ -91,7 +91,7 @@ export default function ConverterContent() {
                 <>
                   <p className="text-2xl lg:text-4xl font-bold">
                     {data.Result.toLocaleString("id-ID", {
-                      maximumFractionDigits: 7,
+                      maximumSignificantDigits: 7,
                     })}{" "}
                     {to}{" "}
                   </p>
@@ -107,7 +107,7 @@ export default function ConverterContent() {
                   <>
                     1 {from} ={" "}
                     {data.To.Rates.toLocaleString("id-ID", {
-                      maximumFractionDigits: 7,
+                      maximumSignificantDigits: 7,
                     })}{" "}
                     {to}{" "}
                   </>

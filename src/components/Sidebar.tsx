@@ -25,6 +25,7 @@ export type NavItem = {
     Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
   >;
   hideOnMobile?: boolean;
+  hideOnDesktop?: boolean;
 };
 
 type navItemsProps = {
@@ -66,6 +67,7 @@ const navItems: navItemsProps[] = [
   {
     name: "More",
     icon: CircleEllipsis,
+    hideOnDesktop: true,
   },
   {
     name: "About",
@@ -111,7 +113,8 @@ export default function Sidebar() {
                 key={i}
                 className={clsxm(
                   "text-white w-full",
-                  val.hideOnMobile && "hidden md:block"
+                  val.hideOnMobile && "hidden md:block",
+                  val.hideOnDesktop && "md:hidden"
                 )}
               >
                 {val.path ? (
