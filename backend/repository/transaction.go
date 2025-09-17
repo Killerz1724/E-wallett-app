@@ -19,6 +19,9 @@ type TransactionRepoItf interface {
 	TransferTransactionRepo(context.Context, entity.TransferBody, string) error
 	ListAllUsersRepo(context.Context, string, string, int) (*entity.ListAllUsersResponse, error)
 	SourceOfFundsRepo(context.Context) ([]*entity.SourceOfFundResponse, error)
+	GetRewardsRepo(context.Context) (*entity.RewardsResponse, error)
+	UserCheckGachaRepo(context.Context, string) error
+	UserGachaRewardRepo(context.Context, string, entity.Reward) error
 }
 
 type TransactionRepoImpl struct {
@@ -255,7 +258,7 @@ func (tr TransactionRepoImpl) TopupTransactionRepo(c context.Context, req entity
 		return &entity.CustomError{Msg: constant.CommonError, Log: err}
 	}
 
-	var minTopUpGacha int64 = 10000000
+	minTopUpGacha := constant.MIN_TOPUP_GACHA
 
 	if req.Amount.IntPart()/minTopUpGacha >= 1 {
 		gachaChance := req.Amount.RoundDown(-2).IntPart() / minTopUpGacha
@@ -486,4 +489,139 @@ func (tr TransactionRepoImpl) SourceOfFundsRepo(c context.Context) ([]*entity.So
 	}	
 
 	return sofs, nil
+}
+
+func (tr TransactionRepoImpl) GetRewardsRepo(c context.Context) (*entity.RewardsResponse, error) {
+
+	q := `
+	SELECT prize_number, prize_amount, weight_number
+	FROM prizes
+	ORDER BY prize_amount DESC;
+	`
+
+	rows, err := tr.db.QueryContext(c, q)
+
+	if err != nil {
+		return nil, &entity.CustomError{Msg: constant.CommonError, Log: err}
+	}
+	
+	var rewards entity.RewardsResponse
+
+	for rows.Next(){
+		var reward entity.Reward
+
+		err = rows.Scan(&reward.Prize_id, &reward.Prize_amount, &reward.Prize_weight)
+
+		if err != nil {
+			return nil, &entity.CustomError{Msg: constant.CommonError, Log: err}
+		}
+
+		rewards.Rewards = append(rewards.Rewards, reward)
+	}
+
+	return &rewards, nil
+}	
+
+func (tr TransactionRepoImpl) UserCheckGachaRepo(c context.Context, email string) error {
+
+	tx :=utils.ExtractTx(c)
+
+	q := `
+	SELECT gacha_chance
+	FROM users
+	WHERE email = $1
+	`
+	row := tx.QueryRowContext(c, q, email)
+
+	var gachaChance int
+
+	err := row.Scan(&gachaChance)
+
+	if err != nil {
+		return &entity.CustomError{Msg: constant.CommonError, Log: err}
+	}
+
+	if gachaChance <= 0 {
+		return &entity.CustomError{Msg: constant.GachaProblem{Msg: constant.ErrInsufficientGachaChance.Error()}, Log: constant.ErrInsufficientGachaChance}
+	}
+
+	return nil
+}
+
+func (tr TransactionRepoImpl) UserGachaRewardRepo(c context.Context, email string, reward entity.Reward) error {
+
+	exTx :=utils.ExtractTx(c)
+
+	//Get user id
+	q := `
+	SELECT id
+	FROM users
+	WHERE email = $1;
+	`
+
+	var userId int
+
+	err := exTx.QueryRowContext(c, q, email).Scan(&userId)
+
+	if err != nil {
+		return &entity.CustomError{Msg: constant.CommonError, Log: err}
+	}
+
+	//Update user gacha chance
+	q = `
+	UPDATE users
+	SET gacha_chance = gacha_chance - 1
+	WHERE email = $1;
+	`
+
+	_,err = exTx.ExecContext(c, q, email)
+
+	if err != nil {
+		return &entity.CustomError{Msg: constant.CommonError, Log: err}
+	}
+
+	//Update user balance
+	q = `
+	UPDATE wallets 
+	SET balance = balance + $1
+	WHERE user_id = $2;
+	`
+
+	_,err = exTx.ExecContext(c, q, reward.Prize_amount, userId)
+
+	if err != nil {
+		return &entity.CustomError{Msg: constant.CommonError, Log: err}
+	}
+
+	//Add default description 
+	description := fmt.Sprintf("Congratulations! You have won  %d rupiahs", reward.Prize_amount.BigInt().Int64())
+
+	getInvoiceNumber, err := utils.GenerateInvNumber()
+
+	if err != nil {
+		return err
+	}
+	//Add to transaction histories
+	_, err = exTx.ExecContext(c, `
+	INSERT INTO transaction_histories(invoice_number, user_id, transaction_category_id, source_fund_id, description, recipient_id, amount) 
+	VALUES
+		($1, $2, 3, $3, $4, $5, $6);
+	`, getInvoiceNumber,userId, constant.REWARD_SOURCEOFFUND, description, userId, reward.Prize_amount.BigInt().Int64())
+
+	if err != nil {
+		return &entity.CustomError{Msg: constant.CommonError, Log: err}
+	}
+
+	//Add prize accumulate history
+	_, err = exTx.ExecContext(c, `
+	UPDATE prizes
+	SET amount_get = amount_get + 1
+	WHERE prize_number = $1;
+	`, reward.Prize_id)
+
+	if err != nil {
+		return &entity.CustomError{Msg: constant.CommonError, Log: err}
+	}
+
+	return nil
 }

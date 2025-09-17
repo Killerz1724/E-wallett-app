@@ -140,6 +140,7 @@ func (th TransactionHandlerImpl) ListAllUsersHandler(c *gin.Context){
 
 	if err != nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
 	}
 	
 	var resBody  dto.ListAllUsersResponse
@@ -173,6 +174,7 @@ func (th TransactionHandlerImpl) SourceOfFundsHandler(c *gin.Context) {
 
 	if err !=nil {
 		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
 	}
 
 	var resBody []dto.SourceOfFundResponse
@@ -187,4 +189,58 @@ func (th TransactionHandlerImpl) SourceOfFundsHandler(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, resJson)
+}
+
+func (th TransactionHandlerImpl) GetRewardsHandler(c *gin.Context) {
+
+	res, err := th.tu.GetRewardsUsecase(c)
+
+	if err !=nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+	
+	var resBody dto.RewardsResponse
+
+	for _,val := range res.Rewards {
+		var reward dto.Reward
+		reward.Prize_id = val.Prize_id
+		reward.Prize_amount = val.Prize_amount.BigInt().Int64()
+		reward.Prize_weight = val.Prize_weight
+		resBody.Rewards = append(resBody.Rewards, reward)
+	}
+
+	resJson := dto.Response {
+		Success: true,
+		Data: resBody,
+	}
+
+	c.JSON(http.StatusOK, resJson)
+	
+}
+
+func (th TransactionHandlerImpl) GetGachaHandler(c *gin.Context) {
+
+	email := c.Value("subject").(string)
+
+	res, err := th.tu.GetGachaUsecase(c, email)
+
+	if err !=nil {
+		c.Error(err).SetType(gin.ErrorTypePublic)
+		return
+	}
+
+	resBody := dto.Reward{
+		Prize_id: res.Prize_id,
+		Prize_amount: res.Prize_amount.BigInt().Int64(),
+		Prize_angle: &res.Prize_angle,
+	}
+
+	resJson := dto.Response {
+		Success: true,
+		Data: resBody,
+	}
+
+	c.JSON(http.StatusOK, resJson)
+
 }

@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type ModalState = {
   isOpen: boolean;
-  content: "TRANSFER" | "TOPUP" | "PROFILE" | null;
+  content: "TRANSFER" | "TOPUP" | "PROFILE" | "CHANGE_LOGS" | null;
 };
 
 const initialState: ModalState = {

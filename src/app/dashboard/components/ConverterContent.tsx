@@ -3,7 +3,9 @@ import { COMMON_ERROR } from "constant/common";
 import { useDebounce } from "hooks/useDebounce";
 import { ArrowLeftRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import CurrencyInput from "react-currency-input-field";
+import CurrencyInput, {
+  CurrencyInputOnChangeValues,
+} from "react-currency-input-field";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "store";
 import {
@@ -21,14 +23,18 @@ export default function ConverterContent() {
   const { from, amount, to } = useSelector(
     (state: RootState) => state.user.userExchangeRate
   );
-  const [amountVal, setAmountVal] = useState<string>(
-    String(amount ? amount : 0)
-  );
+  const [amountVal, setAmountVal] = useState<number>(amount ? amount : 0);
+  const [displayVal, setDisplayVal] = useState<string>("");
   const dispatch = useDispatch();
   const debounceValue = useDebounce(amountVal, 500);
-  function handleChange(value: string | undefined) {
-    const val = value;
+  function handleChange(
+    _: string | undefined,
+    __: string,
+    values: CurrencyInputOnChangeValues
+  ) {
+    const val = values.float;
 
+    setDisplayVal(values.value);
     setAmountVal(val);
   }
 
@@ -75,7 +81,7 @@ export default function ConverterContent() {
         ) : (
           <div className="flex flex-col gap-3">
             <span className="font-semibold text-sm text-gray-400">
-              {amountVal} {from} ={" "}
+              {displayVal ? displayVal : "0"} {from} ={" "}
             </span>
 
             {isPending ? (
@@ -84,7 +90,10 @@ export default function ConverterContent() {
               data && (
                 <>
                   <p className="text-2xl lg:text-4xl font-bold">
-                    {data.Result.toLocaleString("id-ID")} {to}{" "}
+                    {data.Result.toLocaleString("id-ID", {
+                      maximumSignificantDigits: 7,
+                    })}{" "}
+                    {to}{" "}
                   </p>
                 </>
               )
@@ -96,7 +105,11 @@ export default function ConverterContent() {
               ) : (
                 data && (
                   <>
-                    1 {from} = {data.To.Rates.toLocaleString("id-ID")} {to}{" "}
+                    1 {from} ={" "}
+                    {data.To.Rates.toLocaleString("id-ID", {
+                      maximumSignificantDigits: 7,
+                    })}{" "}
+                    {to}{" "}
                   </>
                 )
               )}

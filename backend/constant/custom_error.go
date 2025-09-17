@@ -31,6 +31,7 @@ var (
 	InvalidImageSize    = errors.New("invalid image size")
 	InvalidImageType    = errors.New("invalid image type")
 	InvalidToken        = errors.New("invalid token")
+	ErrInsufficientGachaChance = errors.New("insufficient gacha chance")
 )
 
 
@@ -85,5 +86,9 @@ func (d ExchangesRateProblem) Error() string { return d.Msg }
 type ChangeProfilePictureProblem struct{ Msg string }
 
 func (d ChangeProfilePictureProblem) Error() string { return d.Msg }
+
+type GachaProblem struct{ Msg string }
+
+func (d GachaProblem) Error() string { return d.Msg }
 
 

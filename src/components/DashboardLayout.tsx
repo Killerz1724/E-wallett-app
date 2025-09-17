@@ -14,7 +14,7 @@ export default function DashboardLayout({
       <div className="flex flex-col h-full w-full">
         <Header />
         <div className="flex w-full justify-center overflow-hidden">
-          <main className="pt-8 pb-36  px-4 lg:px-8 relative flex flex-col w-full h-screen overflow-y-auto overflow-x-hidden max-w-[750px] lg:max-w-[1600px]">
+          <main className="pt-8 pb-[12rem] px-4 lg:px-8 relative flex flex-col w-full h-screen overflow-y-auto overflow-x-hidden max-w-[750px] lg:max-w-[1600px]">
             {children}
           </main>
         </div>

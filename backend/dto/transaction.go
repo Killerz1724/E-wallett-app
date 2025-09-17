@@ -59,3 +59,14 @@ type SourceOfFundResponse struct {
 	Id int `json:"id"`
 	Name string `json:"name"`
 }
+
+type Reward struct {
+	Prize_id int `json:"prize_id"`
+	Prize_amount int64 `json:"prize_amount"`
+	Prize_angle *float32 `json:"prize_angle,omitempty"`
+	Prize_weight int64`json:"prize_weight,omitempty"`
+}
+
+type RewardsResponse struct {
+	Rewards []Reward `json:"prizes"`
+}

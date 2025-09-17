@@ -24,7 +24,8 @@ type UserRepoItf interface {
 	UserIncomeRepo(context.Context, string ) (*entity.UserIncomeRes,error)
 	UserExpenseRepo(context.Context, string ) (*entity.UserExpenseRes,error)
 	UserChangeProfilePicRepo(context.Context, entity.ChangeProfilePictureBody) (*entity.ChangeProfilePictureRes, error)
-	GetUsernameByEmail(context.Context, string) (*string, error) 
+	GetUsernameByEmailRepo(context.Context, string) (*string, error) 
+	GetUserGachaChanceRepo(context.Context, string) (*entity.UserGachaChanceRes, error)
 }
 
 type UserRepoImpl struct {
@@ -327,7 +328,7 @@ func (ur UserRepoImpl) UserExpenseRepo(c context.Context, email string ) (*entit
 	return &entity.UserExpenseRes{TotalExpense: totalAmount}, nil
 } 
 
-func (ur UserRepoImpl) GetUsernameByEmail(c context.Context, email string) (*string, error) {
+func (ur UserRepoImpl) GetUsernameByEmailRepo(c context.Context, email string) (*string, error) {
 
 	q := `
 	SELECT username
@@ -352,7 +353,7 @@ func (ur UserRepoImpl) GetUsernameByEmail(c context.Context, email string) (*str
 
 func (ur UserRepoImpl) UserChangeProfilePicRepo(c context.Context, req entity.ChangeProfilePictureBody) (*entity.ChangeProfilePictureRes,error) {
 
-	username, err := ur.GetUsernameByEmail(c, req.UserId)
+	username, err := ur.GetUsernameByEmailRepo(c, req.UserId)
 
 	if err != nil {
 		return nil, err
@@ -400,5 +401,29 @@ func (ur UserRepoImpl) UserChangeProfilePicRepo(c context.Context, req entity.Ch
 
 	return &res, nil 
 	
+}
+
+func (ur UserRepoImpl)GetUserGachaChanceRepo(c context.Context, email string) (*entity.UserGachaChanceRes, error){
+
+	q := `
+	SELECT gacha_chance
+	FROM users
+	WHERE email=$1;
+	`
+
+	row := ur.db.QueryRowContext(c, q, email)
+
+	var res entity.UserGachaChanceRes
+
+	err := row.Scan(&res.Chance)
+
+	if err != nil {
+		return nil, &entity.CustomError{
+			Msg: constant.CommonError,
+			Log: err,
+		}
+	}
+
+	return &res, nil
 }
 

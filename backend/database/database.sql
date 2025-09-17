@@ -76,6 +76,8 @@ create table prizes(
 	id BIGSERIAL primary key,
 	prize_number INT unique not null,
 	prize_amount numeric not null,
+	weight_number INT not null,
+	amount_get INT default 0,
 	created_at TIMESTAMPTZ default NOW(),
 	updated_at TIMESTAMPTZ default NOW(),
 	deleted_at TIMESTAMPTZ
@@ -119,20 +121,21 @@ values
 	('yunus granger', '', 'yunus@mail.com', '$2a$12$WsyhnJ/lUSJRk.2N9lirl.EHQAHMxntdwVXPSq2e1A5rtpiq9XLpm'),
 	('rio deterjen', '', 'rio@mail.com', '$2a$12$8KH8Tkp2AStBP5UEcCDU4Oc6HURe.R6cXRJTGRRDNVUK5AHXPL5qy'),
 	('ino maheswara', '', 'ino@mail.com', '$2a$12$oQ/KSe8TTXKq1DYWOkbTgO7h68pfVgbtbRfTJBLe0DEArTR/zRhke'),
-	('bryan tikitaka', '', 'bryan@mail.com', '$2a$12$tM7H9/McRkxFo3DhwrzHsugzCtW5Day/Ui5Odw8C/YPs81nuNLlg.');
-	-- ('rian sigma', 'rian@mail.com', '$2a$12$hswbpIz0LBtrn7Q7bUKnkOjA0gcNmjDu9KgJ5uMUDsVJ43XhRNbKS');
+	('bryan tikitaka', '', 'bryan@mail.com', '$2a$12$tM7H9/McRkxFo3DhwrzHsugzCtW5Day/Ui5Odw8C/YPs81nuNLlg.'),
+	('tejo', '', 'tejo@mail.com', '$2a$12$YDWc44p646C9o2J0qg1LZ.X7b16ieMUsqYZVVB7tzP23oiC5hKdtO');
 
-insert into prizes(prize_number, prize_amount)
+insert into prizes(prize_number, prize_amount, weight_number)
 values
-	(1, 10000),
-	(2, 20000),
-	(3, 30000),
-	(4, 40000),
-	(5, 50000),
-	(6, 60000),
-	(7, 70000),
-	(8, 80000),
-	(9, 90000);
+	(1, 10000, 225000),
+	(2, 15000, 225000),
+	(3, 20000, 250000),
+	(4, 50000, 150000),
+	(5, 100000, 100000),
+	(6, 500000, 40000),
+	(7, 600000, 9000),
+	(8, 1000000, 800),
+	(9, 10000000, 150),
+	(10, 100000000, 50);
 
 insert into wallets(user_id, balance)
 values
@@ -140,13 +143,15 @@ values
 	(2, 100000),
 	(3, 100000),
 	(4, 100000),
-	(5, 100000);
+	(5, 100000),
+	(6, 696969);
 
 	
 insert into transaction_categories(name)
 values
 	('transfer'),
-	('top up');
+	('top up'),
+	('reward');
 
 insert into source_funds (name)
 values

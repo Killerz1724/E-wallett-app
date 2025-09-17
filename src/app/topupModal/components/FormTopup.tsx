@@ -74,6 +74,7 @@ export default function FormTopup() {
         queryClient.invalidateQueries({ queryKey: ["balance"] });
         queryClient.invalidateQueries({ queryKey: ["income"] });
         queryClient.invalidateQueries({ queryKey: ["transactions"] });
+        queryClient.invalidateQueries({ queryKey: ["gacha-chance"] });
         toast.success(state.message);
       } else {
         toast.error(state.message);

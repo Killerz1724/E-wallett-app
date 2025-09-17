@@ -48,3 +48,7 @@ type UserExpenseRes struct {
 type ChangeProfilePictureRes struct {
 	ImgUrl string `json:"img_url"`
 }
+
+type UserGachaChanceRes struct {
+	Chance int `json:"chance"`
+}

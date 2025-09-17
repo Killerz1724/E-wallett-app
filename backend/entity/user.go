@@ -59,3 +59,7 @@ type ChangeProfilePictureBody struct {
 type ChangeProfilePictureRes struct {
 	ImgUrl string
 }
+
+type UserGachaChanceRes struct {
+	Chance int
+}

@@ -3,6 +3,8 @@ import Logo from "components/Logo";
 import Link from "next/link";
 import MarkString from "./components/MarkString";
 import { Metadata } from "next";
+import Button from "components/Button";
+import ChangeLogModalTrigger from "./components/ChangeLogModalTrigger";
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const metadata: Metadata = {
@@ -53,6 +55,7 @@ export default function AboutPage() {
             </li>
           </ul>
         </div>
+        <ChangeLogModalTrigger />
       </section>
     </DashboardLayout>
   );

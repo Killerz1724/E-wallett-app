@@ -6,8 +6,8 @@ type ErrorResponse struct {
 
 type Response struct {
 	Success bool           `json:"success"`
-	Error   *ErrorResponse `json:"error" binding:"omitempty"`
-	Data    interface{}    `json:"data" binding:"omitempty"`
+	Error   *ErrorResponse `json:"error,omitempty" `
+	Data    interface{}    `json:"data,omitempty" `
 }
 
 type Error struct {

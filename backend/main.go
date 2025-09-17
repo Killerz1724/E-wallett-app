@@ -81,6 +81,7 @@ func main() {
 		profile.GET("/income", uh.UserIncomeHandler)
 		profile.GET("/expense", uh.UserExpenseHandler)
 		profile.PATCH("/profile-picture", uh.UserChangeProfilePicHandler)
+		profile.GET("/gacha-chance", uh.GetUserGachaChanceHandler)
 	}
 	{
 		transaction := r.Group("/api/users")
@@ -90,6 +91,8 @@ func main() {
 		transaction.POST("/transactions/top-up", th.TopUpHandler)
 		transaction.POST("/transactions/transfer", th.TransferHandler)
 		transaction.GET("/transactions/source-funds", th.SourceOfFundsHandler)
+		transaction.GET("/transactions/rewards", th.GetRewardsHandler)
+		transaction.GET("/transactions/gacha", th.GetGachaHandler)
 	}
 	{
 		exchanges := r.Group("/api/exchanges-rates")

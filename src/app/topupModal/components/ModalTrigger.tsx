@@ -14,8 +14,12 @@ export default function TopupModalTrigger({
       className="flex flex-col overflow-x-hidden md:flex-row items-center gap-1 md:gap-4 text-xs md:text-base  cursor-pointer hover:bg-white/40 p-2 rounded-md transition-all duration-500 ease-in-out"
       onClick={() => dispatch(openModal("TOPUP"))}
     >
-      {!iconMode && <BanknoteArrowUp className="size-[20px]" />}
-      {iconMode ? <BanknoteArrowUp className="size-[20px]" /> : "Top Up"}
+      {!iconMode && <BanknoteArrowUp className="iconSizeNavbar" />}
+      {iconMode ? (
+        <BanknoteArrowUp className="iconSizeNavbar" />
+      ) : (
+        <p className="hidden text-xs md:block md:text-base">Top Up</p>
+      )}
     </div>
   );
 }
